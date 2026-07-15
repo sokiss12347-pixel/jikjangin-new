@@ -3853,15 +3853,14 @@ function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggl
   function esc(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function hl(t){ return esc(t).replace(/\{([^}]*)\}/g, '<span class="hl">$1</span>'); }
 
-  function buildCard(c, extraCls, cornerHtml){
+  function buildCard(c, extraCls, cornerHtml, idAttr){
     var badges='';
     if(c.is_hot)  badges+='<span class="kb kb-hot">HOT</span>';
     if(c.is_best) badges+='<span class="kb kb-best">BEST</span>';
     if(c.is_new)  badges+='<span class="kb kb-new">NEW</span>';
 
-    var photoStyle = c.thumbnail_url
-      ? 'background-image:url(\''+c.thumbnail_url+'\');background-position:'+(c.photo_position||'20% 30%')+';'
-      : 'background-position:'+(c.photo_position||'20% 30%')+';';
+    var photoStyle = 'background-position:'+(c.photo_position||'20% 30%')+';';
+    if(c.thumbnail_url) photoStyle = 'background-image:url(\''+c.thumbnail_url+'\');' + photoStyle;
 
     var hook = hl(c.hook_line1||'');
     if(c.hook_line2) hook += '<br>' + hl(c.hook_line2);
@@ -3869,7 +3868,7 @@ function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggl
     var foot = '';
     if(c.expert_name) foot = '<div class="bfoot">'+esc(c.expert_label||'')+' <b>'+esc(c.expert_name)+'</b></div>';
 
-    return '<a href="'+esc(c.link_url||'chulgeo_detail.html')+'" class="'+extraCls+' kard" onclick="ncTrackView(\''+esc(c.link_url||'chulgeo_detail.html')+'\')">'
+    return '<a href="'+esc(c.link_url||'chulgeo_detail.html')+'"'+(idAttr?' id="'+idAttr+'"':'')+' class="'+extraCls+' kard" onclick="ncTrackView(\''+esc(c.link_url||'chulgeo_detail.html')+'\')">'
       + '<div class="bthumb"><div class="bphoto" style="'+photoStyle+'"></div><div class="bgrad"></div>'
       + (cornerHtml||'')
       + '<span class="blogo"><span class="lb">직</span>장인</span>'
@@ -3909,7 +3908,7 @@ function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggl
         var track=document.getElementById('carousel-track');
         if(track){
           track.innerHTML = by.featured.map(function(c,i){
-            return '<div class="carousel-slide">'+buildCard(c, 'featured-card featured-card--linked'+(i===0?'" id="card-chulgeo':''), '')+'</div>';
+            return '<div class="carousel-slide">'+buildCard(c, 'featured-card featured-card--linked', '', i===0?'card-chulgeo':'')+'</div>';
           }).join('');
           var tot=document.getElementById('carousel-total');
           if(tot) tot.textContent = by.featured.length;
