@@ -314,7 +314,7 @@
       <h2>클래스 카드 등록</h2>
       <div style="font-size:13px;color:#64748B;margin-bottom:14px;">
         메인/인기/신규 섹션에 노출되는 배너형 카드를 등록합니다.
-        강조하고 싶은 단어는 <b>{중괄호}</b>로 감싸면 파란색으로 표시됩니다. (예: 월 <b>{2,000만 원}</b> 버는)
+        후킹 문구 1줄·2줄 모두 강조하고 싶은 단어를 <b>{중괄호}</b>로 감싸면 파란색으로 표시됩니다. (예: <b>{직장}</b> 때려치고, / 월 <b>{2,000만 원}</b> 버는)
       </div>
 
       <div class="grid2">
@@ -356,11 +356,11 @@
 
       <div class="grid2" style="margin-top:12px;">
         <div>
-          <label>후킹 문구 1줄</label>
+          <label>후킹 문구 1줄 ({} 강조 가능)</label>
           <input id="c-hook1" placeholder="직장 때려치고,">
         </div>
         <div>
-          <label>후킹 문구 2줄 ({} 안이 파란 강조)</label>
+          <label>후킹 문구 2줄 ({} 강조 가능)</label>
           <input id="c-hook2" placeholder="월 {2,000만 원} 버는">
         </div>
       </div>
@@ -388,29 +388,40 @@
 
       <div class="grid2">
         <div>
-          <label>카테고리 (대괄호 안에 표시)</label>
-          <input id="c-cat" placeholder="철거·원상복구">
+          <label>대분류</label>
+          <select id="c-group" onchange="fillSubCats()">
+            <option value="">선택해주세요</option>
+          </select>
         </div>
         <div>
-          <label>제목</label>
-          <input id="c-title" placeholder="요즘 2030 사이에서 뜨고있는 철거 기술">
+          <label>세부분류 (제목 앞 대괄호에 자동 표시)</label>
+          <select id="c-cat">
+            <option value="">대분류를 먼저 선택하세요</option>
+          </select>
         </div>
       </div>
 
-      <div class="grid2" style="margin-top:12px;">
-        <div>
-          <label>정렬 순서 (작을수록 먼저)</label>
-          <input id="c-sort" type="number" value="0">
-        </div>
-        <div></div>
+      <label style="margin-top:12px;">제목</label>
+      <input id="c-title" placeholder="요즘 2030 사이에서 뜨고있는 철거 기술">
+      <div style="font-size:12px;color:#94A3B8;margin-top:5px;">
+        카드에는 <b>[세부분류] 제목</b> 형태로 표시됩니다.
       </div>
+      <input id="c-sort" type="hidden" value="0">
 
       <button id="c-add-btn" class="btn" style="margin-top:16px;" onclick="addCard()">카드 등록</button>
       <div id="c-msg" style="margin-top:10px;font-size:13px;"></div>
     </div>
 
     <div class="card">
-      <h2>등록된 카드 <span class="muted" id="c-count"></span></h2>
+      <h2>카드 순서 배치 <span class="muted" id="c-count"></span></h2>
+      <div style="font-size:13px;color:#64748B;margin-bottom:12px;">
+        섹션을 선택하고 <b>▲ ▼</b> 로 순서를 바꾸세요. <b>맨 위에 있는 카드가 사이트에서 가장 먼저</b> 나옵니다.
+      </div>
+      <div class="tabbar" style="margin-bottom:14px;">
+        <button class="tab on" data-ctab="featured" onclick="switchCardTab('featured')">현재 모집중</button>
+        <button class="tab" data-ctab="popular" onclick="switchCardTab('popular')">요즘 인기있는</button>
+        <button class="tab" data-ctab="new" onclick="switchCardTab('new')">신규</button>
+      </div>
       <div id="c-list"><div class="empty">불러오는 중…</div></div>
     </div>
   </div>
@@ -1389,6 +1400,35 @@ async function phMove(id, dir){
 (function(){ var fi=document.getElementById('ph-file'); if(fi) fi.addEventListener('change', phUpload); })();
 
 /* ===================== 클래스 카드 관리 ===================== */
+/* 대분류 → 세부분류 */
+var CARD_CATS = {
+  '인테리어·건축·목공': ['철거·원상복구','인테리어·목공','도배·도장','타일·조적','줄눈 시공','누수·방수','에어컨청소'],
+  '기계·전기': ['전기·설비'],
+  '뷰티·패션': ['미용·헤어','네일·속눈썹','피부·에스테틱','메이크업·반영구'],
+  '요리': ['베이커리·제과','바리스타·카페'],
+  '펫': ['애견미용'],
+  '기타': ['기타']
+};
+
+function initCatSelects(){
+  var g=document.getElementById('c-group');
+  if(!g || g.options.length>1) return;
+  Object.keys(CARD_CATS).forEach(function(k){
+    var o=document.createElement('option'); o.value=k; o.textContent=k; g.appendChild(o);
+  });
+}
+
+function fillSubCats(){
+  var g=document.getElementById('c-group').value;
+  var c=document.getElementById('c-cat');
+  c.innerHTML='';
+  if(!g){ c.innerHTML='<option value="">대분류를 먼저 선택하세요</option>'; return; }
+  var o0=document.createElement('option'); o0.value=''; o0.textContent='선택해주세요'; c.appendChild(o0);
+  (CARD_CATS[g]||[]).forEach(function(sub){
+    var o=document.createElement('option'); o.value=sub; o.textContent=sub; c.appendChild(o);
+  });
+}
+
 function cMsg(t, ok){
   var el=document.getElementById('c-msg');
   el.textContent=t||''; el.style.color = ok ? '#10B981' : '#EF4444';
@@ -1414,12 +1454,14 @@ function hlText(t){
 async function addCard(){
   var btn=document.getElementById('c-add-btn');
   var section=document.getElementById('c-section').value;
+  var grp=document.getElementById('c-group').value;
   var cat=document.getElementById('c-cat').value.trim();
   var title=document.getElementById('c-title').value.trim();
   var fileEl=document.getElementById('c-file');
   var f=fileEl.files && fileEl.files[0];
 
-  if(!cat || !title){ cMsg('카테고리와 제목을 입력해주세요.'); return; }
+  if(!grp || !cat){ cMsg('대분류와 세부분류를 선택해주세요.'); return; }
+  if(!title){ cMsg('제목을 입력해주세요.'); return; }
 
   btn.disabled=true; btn.textContent='등록 중…'; cMsg('');
   var path=null, url=null;
@@ -1445,10 +1487,11 @@ async function addCard(){
       is_hot: document.getElementById('c-hot').checked,
       is_best: document.getElementById('c-best').checked,
       is_new: document.getElementById('c-new').checked,
+      group_name: grp,
       category: cat,
       title: title,
       link_url: document.getElementById('c-link').value.trim() || 'chulgeo_detail.html',
-      sort_order: parseInt(document.getElementById('c-sort').value||'0',10),
+      sort_order: await nextSortOrder(section),
       is_active: true
     };
 
@@ -1458,7 +1501,7 @@ async function addCard(){
       cMsg('등록 실패: '+ins.error.message);
     }else{
       cMsg('카드가 등록되었습니다.', true);
-      ['c-small','c-hook1','c-hook2','c-bar','c-ename','c-cat','c-title'].forEach(function(id){ document.getElementById(id).value=''; });
+      ['c-small','c-hook1','c-hook2','c-bar','c-ename','c-title'].forEach(function(id){ document.getElementById(id).value=''; });
       fileEl.value=''; document.getElementById('c-preview').style.display='none';
       document.getElementById('c-hot').checked=false;
       document.getElementById('c-best').checked=false;
@@ -1472,17 +1515,39 @@ async function addCard(){
 }
 
 var SECTION_LABEL={ featured:'현재 모집중', popular:'요즘 인기있는', new:'신규' };
+var cardTab='featured';
+var allCards=[];
+
+function switchCardTab(name){
+  cardTab=name;
+  document.querySelectorAll('[data-ctab]').forEach(function(t){ t.classList.toggle('on', t.getAttribute('data-ctab')===name); });
+  renderCardList();
+}
+
+/* 해당 섹션의 다음 순서값 (맨 뒤) */
+async function nextSortOrder(section){
+  var r=await sb.from('class_cards').select('sort_order').eq('section', section).order('sort_order',{ascending:false}).limit(1);
+  if(r.error || !r.data || !r.data.length) return 0;
+  return (r.data[0].sort_order||0) + 1;
+}
 
 async function loadCards(){
+  initCatSelects();
   var box=document.getElementById('c-list');
   box.innerHTML='<div class="empty">불러오는 중…</div>';
-  var r=await sb.from('class_cards').select('*').order('section',{ascending:true}).order('sort_order',{ascending:true});
+  var r=await sb.from('class_cards').select('*').order('sort_order',{ascending:true});
   if(r.error){ box.innerHTML='<div class="empty">불러오기 실패: '+r.error.message+'</div>'; return; }
-  var rows=r.data||[];
-  document.getElementById('c-count').textContent='('+rows.length+'개)';
-  if(!rows.length){ box.innerHTML='<div class="empty">등록된 카드가 없습니다.</div>'; return; }
+  allCards=r.data||[];
+  document.getElementById('c-count').textContent='(전체 '+allCards.length+'개)';
+  renderCardList();
+}
 
-  box.innerHTML=rows.map(function(c){
+function renderCardList(){
+  var box=document.getElementById('c-list');
+  var rows=allCards.filter(function(c){ return c.section===cardTab; });
+  if(!rows.length){ box.innerHTML='<div class="empty">이 섹션에 등록된 카드가 없습니다.</div>'; return; }
+
+  box.innerHTML=rows.map(function(c, idx){
     var badges=[];
     if(c.is_hot) badges.push('<span style="border:1.4px solid #F0300C;color:#F0300C;background:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;">HOT</span>');
     if(c.is_best) badges.push('<span style="background:#C4161C;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;">BEST</span>');
@@ -1491,9 +1556,14 @@ async function loadCards(){
       ? '<img src="'+c.thumbnail_url+'" style="width:110px;height:74px;object-fit:cover;border-radius:8px;flex:0 0 auto;">'
       : '<div style="width:110px;height:74px;background:#0B1120;border-radius:8px;flex:0 0 auto;"></div>';
     return '<div style="display:flex;gap:12px;align-items:center;padding:12px;border:1px solid #E2E8F0;border-radius:10px;margin-bottom:10px;'+(c.is_active?'':'opacity:.5;')+'">'
+      + '<div style="display:flex;flex-direction:column;gap:3px;flex:0 0 auto;">'
+      +   '<button class="btn-sm" style="padding:2px 8px;" onclick="moveCard('+c.id+',-1)"'+(idx===0?' disabled':'')+'>▲</button>'
+      +   '<button class="btn-sm" style="padding:2px 8px;" onclick="moveCard('+c.id+',1)"'+(idx===rows.length-1?' disabled':'')+'>▼</button>'
+      + '</div>'
+      + '<div style="font-size:13px;font-weight:800;color:#94A3B8;flex:0 0 auto;width:20px;text-align:center;">'+(idx+1)+'</div>'
       + thumb
       + '<div style="flex:1;min-width:0;">'
-      +   '<div style="font-size:12px;color:#005BFF;font-weight:700;">'+(SECTION_LABEL[c.section]||c.section)+' · 순서 '+c.sort_order+'</div>'
+      +   '<div style="font-size:12px;color:#005BFF;font-weight:700;">'+(c.group_name||'-')+'</div>'
       +   '<div style="font-weight:700;margin:3px 0;">['+(c.category||'')+'] '+(c.title||'')+'</div>'
       +   '<div style="display:flex;gap:5px;margin-top:5px;">'+badges.join('')+'</div>'
       + '</div>'
@@ -1503,6 +1573,23 @@ async function loadCards(){
       + '</div>'
       + '</div>';
   }).join('');
+}
+
+/* 위/아래 이동 - 같은 섹션 안에서 sort_order 교환 */
+async function moveCard(id, dir){
+  var rows=allCards.filter(function(c){ return c.section===cardTab; });
+  var i=rows.findIndex(function(c){ return c.id===id; });
+  var j=i+dir;
+  if(i<0 || j<0 || j>=rows.length) return;
+
+  var a=rows[i], b=rows[j];
+  var ao=a.sort_order, bo=b.sort_order;
+  if(ao===bo){ bo = ao + dir; }   /* 값이 같으면 강제로 벌림 */
+
+  var r1=await sb.from('class_cards').update({ sort_order: bo }).eq('id', a.id);
+  var r2=await sb.from('class_cards').update({ sort_order: ao }).eq('id', b.id);
+  if(r1.error || r2.error){ alert('순서 변경 실패: '+((r1.error||r2.error).message)); }
+  loadCards();
 }
 
 async function toggleCard(id, to){

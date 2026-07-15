@@ -2342,19 +2342,35 @@ var CLASSES=[
 ];
 
 function catCard(c){
-  return '<a href="'+c.link+'" class="kard">'
-    +'<div class="bthumb"><div class="bphoto"></div><div class="bgrad"></div>'
+  function esc(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function hl(t){ return esc(t).replace(/\{([^}]*)\}/g, '<span class="hl">$1</span>'); }
+
+  var badges='';
+  if(c.is_hot)  badges+='<span class="kb kb-hot">HOT</span>';
+  if(c.is_best) badges+='<span class="kb kb-best">BEST</span>';
+  if(c.is_new)  badges+='<span class="kb kb-new">NEW</span>';
+
+  var photoStyle='background-position:'+(c.photo_position||'20% 30%')+';';
+  if(c.thumbnail_url) photoStyle='background-image:url(\''+c.thumbnail_url+'\');'+photoStyle;
+
+  var hook=hl(c.hook_line1||'');
+  if(c.hook_line2) hook+='<br>'+hl(c.hook_line2);
+
+  var foot = c.expert_name ? '<div class="bfoot">'+esc(c.expert_label||'')+' <b>'+esc(c.expert_name)+'</b></div>' : '';
+
+  return '<a href="'+esc(c.link||c.link_url||'chulgeo_detail.html')+'" class="kard">'
+    +'<div class="bthumb"><div class="bphoto" style="'+photoStyle+'"></div><div class="bgrad"></div>'
     +'<span class="blogo"><span class="lb">직</span>장인</span>'
     +'<div class="btext">'
-    +'<div class="bsmall">무경험 OK · 철거 기술 완전 정복</div>'
-    +'<div class="bbig">직장 때려치고,<br>월 <span class="hl">2,000만 원</span> 버는</div>'
-    +'<div class="bbar">철거 사장님!</div>'
-    +'</div>'
-    +'<div class="bfoot">철거 기술 전문가 <b>정우진</b></div></div>'
-    +'<div class="kbadges"><span class="kb kb-hot">HOT</span><span class="kb kb-best">BEST</span></div>'
-    +'<div class="ktitle">[' + c.cat + '] 요즘 2030 사이에서 뜨고있는 철거 기술</div>'
+    + (c.small_text ? '<div class="bsmall">'+esc(c.small_text)+'</div>' : '')
+    +'<div class="bbig">'+hook+'</div>'
+    + (c.bar_text ? '<div class="bbar">'+esc(c.bar_text)+'</div>' : '')
+    +'</div>'+foot+'</div>'
+    +'<div class="kbadges">'+badges+'</div>'
+    +'<div class="ktitle">['+esc(c.cat||c.category||'')+'] '+esc(c.title||'')+'</div>'
     +'</a>';
 }
+
 
 
 function catScroll(id, dir){
@@ -2415,15 +2431,47 @@ function renderField(field){
 /* 강사 지원 링크: 기본 이동 허용 (로그인 체크는 해당 페이지에서) */
 function checkInstructorAccess(e){ }
 
-(function(){
+function routeRender(){
   try{
     var p=new URLSearchParams(location.search);
     var cat=p.get('cat');
     var field=p.get('field');
-    if(field && FIELD_TO_GROUP[field]) renderField(field);          /* 소분류 → 해당 교육만 */
-    else if(cat && GROUPS.some(function(g){return g.name===cat;})) renderGroup(cat);  /* 대분류 → 소분류 전체 */
+    if(field && FIELD_TO_GROUP[field]) renderField(field);
+    else if(cat && GROUPS.some(function(g){return g.name===cat;})) renderGroup(cat);
     else renderAll();
   }catch(err){ renderAll(); }
+}
+
+/* Supabase에 등록된 카드로 CLASSES 교체 → 없으면 기본 카드 유지 */
+(function(){
+  var CC_URL='https://fgllsqgzgshneforfkoy.supabase.co';
+  var CC_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbGxzcWd6Z3NobmVmb3Jma295Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NjU3NTMsImV4cCI6MjA5NTM0MTc1M30.aBaEUieQCiih3J0uv79TdhFU2cv2UWbeNZ7C9xvs54g';
+
+  function loadScript(src){
+    return new Promise(function(res, rej){
+      var sc=document.createElement('script'); sc.src=src; sc.onload=res; sc.onerror=rej;
+      document.head.appendChild(sc);
+    });
+  }
+
+  async function init(){
+    try{
+      if(!window.supabase || !window.supabase.createClient){
+        await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');
+      }
+      var cli=window.supabase.createClient(CC_URL, CC_KEY);
+      var r=await cli.from('class_cards').select('*').eq('is_active', true).order('sort_order',{ascending:true});
+      if(!r.error && r.data && r.data.length){
+        CLASSES = r.data.filter(function(c){ return c.group_name && c.category; }).map(function(c){
+          return Object.assign({}, c, { group: c.group_name, cat: c.category, link: c.link_url || 'chulgeo_detail.html' });
+        });
+      }
+    }catch(e){ /* 실패 시 기본 CLASSES 유지 */ }
+    routeRender();
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
 </script>
 
