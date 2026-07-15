@@ -2005,7 +2005,7 @@
   /* 카테고리 그리드: 3열 */
   .cat-grid{ grid-template-columns:repeat(3, 1fr) !important; gap:16px; }
   .cat-grid .kard{ flex:none; width:100%; max-width:none; }
-  .cat-slider > .kard{ flex:0 0 373px; }
+
   @media (max-width:768px){
     .kard{ flex:0 0 86vw !important; max-width:373px; }
     .cat-grid{ grid-template-columns:1fr !important; }
@@ -2070,6 +2070,12 @@
     .cat-grid{ gap:14px; }
     .cat-grid > .kard{ flex:0 0 88vw !important; width:88vw !important; max-width:420px !important; }
     .grp-ic{ width:20px; height:20px; vertical-align:-3px; }
+  }
+
+  /* 슬라이더 카드도 메인과 동일(420) */
+  .cat-slider > .kard{ flex:0 0 420px !important; width:420px !important; max-width:420px !important; scroll-snap-align:start; }
+  @media (max-width:768px){
+    .cat-slider > .kard{ flex:0 0 88vw !important; width:88vw !important; max-width:420px !important; }
   }
 </style>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
