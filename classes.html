@@ -2002,34 +2002,6 @@
   /* 하단(및 상단) 오버스크롤 흰색 방지: 캔버스 배경을 navy로 */
   html{ background:#0B1120; }
 
-  /* ===== 배너형 통일 카드 ===== */
-  .kard{ display:block !important; height:auto !important; padding:0 !important; background:transparent !important; border:0 !important; box-shadow:none !important; text-decoration:none; color:inherit; flex:0 0 373px; max-width:373px; margin:0 !important; }
-  .kard .bthumb{ position:relative; height:250px; background:#0B1120; overflow:hidden; border-radius:14px; }
-  .kard .bphoto{ position:absolute; inset:0; background-image:url('class_chulgeo.jpg'); background-size:cover; background-repeat:no-repeat; background-position:20% 30%; }
-  .kard .bgrad{ position:absolute; inset:0; background:linear-gradient(to right,rgba(8,13,26,.96) 0%,rgba(8,13,26,.9) 36%,rgba(8,13,26,.5) 60%,rgba(8,13,26,.08) 84%,rgba(8,13,26,0) 100%); }
-  .kard .blogo{ position:absolute; top:13px; left:15px; z-index:4; font-family:'Noto Sans KR',sans-serif; font-size:14px; font-weight:800; letter-spacing:-.5px; line-height:1; color:#fff; }
-  .kard .blogo .lb{ color:#005BFF; }
-  .kard .btext{ position:absolute; left:15px; top:60px; right:112px; z-index:3; font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif; }
-  .kard .bsmall{ font-size:12px; color:#C7D2E5; font-weight:600; margin-bottom:8px; }
-  .kard .bbig{ font-size:22px; font-weight:900; color:#fff; line-height:1.3; letter-spacing:-1px; word-break:keep-all; }
-  .kard .bbig .hl{ color:#5BB0FF; }
-  .kard .bbar{ display:inline-block; margin-top:7px; background:#005BFF; color:#fff; font-size:20px; font-weight:900; letter-spacing:-1px; padding:3px 10px; border-radius:3px; font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif; }
-  .kard .bfoot{ position:absolute; left:15px; bottom:13px; z-index:3; font-size:12px; color:#A9B8D0; font-weight:600; }
-  .kard .bfoot b{ color:#fff; font-weight:800; }
-  .kard .kbadges{ display:flex; gap:6px; margin:11px 0 7px; }
-  .kard .kb{ font-size:11px; font-weight:800; padding:3px 9px; border-radius:4px; letter-spacing:.3px; }
-  .kard .kb-hot{ border:1.4px solid #F0300C; color:#F0300C; background:#fff; }
-  .kard .kb-best{ background:#C4161C; color:#fff; }
-  .kard .kb-new{ background:#005BFF; color:#fff; }
-  .kard .ktitle{ font-size:14.5px; font-weight:700; line-height:1.45; color:#1E293B; word-break:keep-all; }
-  /* 미니 카드(최근 본): 제목/뱃지 없이 사진만 */
-  .mini-kard .kbadges, .mini-kard .ktitle{ display:none !important; }
-  .mini-kard .bthumb{ height:190px; }
-  .mini-kard .bbig{ font-size:17px; }
-  .mini-kard .bbar{ font-size:15px; }
-  .mini-kard .btext{ top:46px; right:88px; }
-  .mini-kard .bsmall{ font-size:10.5px; margin-bottom:6px; }
-  .mini-kard .bfoot{ font-size:10.5px; }
   /* 카테고리 그리드: 3열 */
   .cat-grid{ grid-template-columns:repeat(3, 1fr) !important; gap:16px; }
   .cat-grid .kard{ flex:none; width:100%; max-width:none; }
@@ -2038,6 +2010,50 @@
     .kard{ flex:0 0 86vw !important; max-width:373px; }
     .cat-grid{ grid-template-columns:1fr !important; }
     .cat-grid .kard{ flex:none !important; width:100%; }
+  }
+
+  /* ===== 배너형 통일 카드 (카드=이미지, 뱃지/제목은 카드 밖) ===== */
+  .kard{ display:block !important; height:auto !important; padding:0 !important; margin:0 !important;
+         background:transparent !important; border:0 !important; box-shadow:none !important;
+         overflow:visible !important; border-radius:0 !important;
+         text-decoration:none; color:inherit; flex:0 0 420px; max-width:420px; transform:none !important; }
+  .kard:hover{ box-shadow:none !important; transform:none !important; }
+  .kard .bthumb{ position:relative; height:280px; background:#0B1120; overflow:hidden; border-radius:16px;
+                 box-shadow:0 6px 22px rgba(15,23,42,.10); }
+  .kard .bphoto{ position:absolute; inset:0; background-image:url('class_chulgeo.jpg'); background-size:cover; background-repeat:no-repeat; background-position:20% 30%; }
+  .kard .bgrad{ position:absolute; inset:0; background:linear-gradient(to right,rgba(8,13,26,.96) 0%,rgba(8,13,26,.9) 36%,rgba(8,13,26,.5) 60%,rgba(8,13,26,.08) 84%,rgba(8,13,26,0) 100%); }
+  .kard .blogo{ position:absolute; top:14px; left:16px; z-index:4; font-family:'Noto Sans KR',sans-serif; font-size:16px; font-weight:800; letter-spacing:-.5px; line-height:1; color:#fff; }
+  .kard .blogo .lb{ color:#005BFF; }
+  .kard .btext{ position:absolute; left:16px; top:66px; right:120px; z-index:3; font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif; }
+  .kard .bsmall{ font-size:13px; color:#C7D2E5; font-weight:600; margin-bottom:9px; }
+  .kard .bbig{ font-size:25px; font-weight:900; color:#fff; line-height:1.3; letter-spacing:-1.1px; word-break:keep-all; }
+  .kard .bbig .hl{ color:#5BB0FF; }
+  .kard .bbar{ display:inline-block; margin-top:8px; background:#005BFF; color:#fff; font-size:23px; font-weight:900; letter-spacing:-1.1px; padding:3px 11px; border-radius:3px; font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif; }
+  .kard .bfoot{ position:absolute; left:16px; bottom:14px; z-index:3; font-size:13px; color:#A9B8D0; font-weight:600; }
+  .kard .bfoot b{ color:#fff; font-weight:800; }
+  /* 카드 밖 하단 탭 */
+  .kard .kbadges{ display:flex; gap:7px; margin:13px 0 8px; padding:0 2px; }
+  .kard .kb{ font-size:12px; font-weight:800; padding:4px 10px; border-radius:4px; letter-spacing:.3px; }
+  .kard .kb-hot{ border:1.4px solid #F0300C; color:#F0300C; background:#fff; }
+  .kard .kb-best{ background:#C4161C; color:#fff; }
+  .kard .kb-new{ background:#005BFF; color:#fff; }
+  .kard .ktitle{ font-size:16px; font-weight:700; line-height:1.5; color:#1E293B; word-break:keep-all; padding:0 2px; }
+  /* 미니 카드(최근 본): 사진만 */
+  .mini-kard .kbadges, .mini-kard .ktitle{ display:none !important; }
+  .mini-kard .bthumb{ height:200px; }
+  .mini-kard .bbig{ font-size:18px; }
+  .mini-kard .bbar{ font-size:16px; }
+  .mini-kard .btext{ top:48px; right:92px; }
+  .mini-kard .bsmall{ font-size:11px; margin-bottom:6px; }
+  .mini-kard .bfoot{ font-size:11px; }
+  .ps-card-wrap .kard{ flex:none !important; max-width:none; width:100%; }
+  @media (max-width:768px){
+    .kard{ flex:0 0 88vw !important; max-width:420px; }
+    .kard .bthumb{ height:250px; }
+    .kard .bbig{ font-size:21px; }
+    .kard .bbar{ font-size:19px; }
+    .kard .btext{ top:56px; right:100px; }
+    .kard .ktitle{ font-size:15px; }
   }
 </style>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
