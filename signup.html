@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원가입 — 직장인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: #F8FAFC; color: #1E293B; min-height: 100vh; display: flex; flex-direction: column; }
+  .right-link { font-size: 13px; color: rgba(255,255,255,.5); text-decoration: none; margin-left: auto; }
+  .right-link:hover { color: #fff; }
+  .right-link b { color: #005BFF; }
+  .wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
+  .card { background: #fff; border-radius: 20px; border: 1px solid #E2E8F0; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 4px 24px rgba(0,0,0,.07); }
+  .card-title { font-size: 24px; font-weight: 900; color: #1E293B; letter-spacing: -.5px; margin-bottom: 6px; }
+  .card-sub { font-size: 14px; color: #94A3B8; margin-bottom: 32px; }
+  .form-group { margin-bottom: 18px; }
+  label { display: block; font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 6px; }
+  input, select { width: 100%; height: 48px; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 0 14px; font-size: 14px; font-family: 'Noto Sans KR', sans-serif; color: #1E293B; outline: none; transition: border-color .15s; background: #fff; }
+  input:focus, select:focus { border-color: #005BFF; }
+  .input-wrap { position: relative; }
+  .input-wrap input { padding-right: 48px; }
+  .eye-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; color: #94A3B8; padding: 4px; }
+  .pw-strength { display: none; margin-top: 8px; }
+  .strength-bars { display: flex; gap: 4px; margin-bottom: 4px; }
+  .strength-bars span { flex: 1; height: 4px; border-radius: 2px; background: #E2E8F0; transition: background .2s; }
+  .strength-label { font-size: 12px; color: #94A3B8; }
+  .submit-btn { width: 100%; height: 50px; background: #005BFF; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; transition: background .15s; }
+  .submit-btn:hover { background: #0041CC; }
+  .submit-btn:disabled { background: #94A3B8; cursor: not-allowed; }
+  .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #E2E8F0; }
+  .divider span { font-size: 12px; color: #94A3B8; }
+  .kakao-btn { width: 100%; height: 50px; background: #FEE500; color: #191919; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .15s; }
+  .kakao-btn:hover { background: #F0D800; }
+  .terms-txt { font-size: 13px; color: #94A3B8; text-align: center; margin-top: 20px; line-height: 1.7; }
+  .terms-txt a { color: #005BFF; text-decoration: none; font-weight: 700; }
+  .role-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .role-btn { border: 2px solid #E2E8F0; border-radius: 14px; padding: 20px 16px; cursor: pointer; text-align: center; transition: all .2s; background: #fff; }
+  .role-btn:hover { border-color: #005BFF; }
+  .role-btn.active { border-color: #005BFF; background: #EBF0FF; }
+  .role-btn .r-icon { font-size: 28px; margin-bottom: 8px; }
+  .role-btn .r-title { font-size: 15px; font-weight: 900; color: #1E293B; margin-bottom: 3px; }
+  .role-btn .r-desc { font-size: 12px; color: #94A3B8; }
+  .role-btn.active .r-title { color: #005BFF; }
+  .extra-fields { display: none; }
+  .extra-fields.show { display: block; }
+  .error-msg { font-size: 13px; color: #EF4444; margin-top: 12px; text-align: center; display: none; }
+  .error-msg.show { display: block; }
+  header { background: #0B1120; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; height: 62px; gap: 32px; }
+  .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
+  .logo-text { font-family: 'Noto Sans KR', sans-serif; font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; display: flex; align-items: center; gap: 1px; line-height: 1; }
+  .logo-blue { color: #005BFF; }
+  .pw-rule { font-size: 12px; color: #94A3B8; transition: color .15s; }
+  .pw-rule.pass { color: #22C55E; }
+  .pw-rule.fail { color: #EF4444; }
+
+  @media (max-width: 480px){
+    .header-inner{ height:auto; min-height:56px; padding:10px 16px; flex-wrap:wrap; row-gap:6px; }
+    .right-link, .back-btn, .back-link{ font-size:12px; margin-left:0; }
+    .wrap{ padding:32px 16px; }
+    .card{ padding:32px 20px; border-radius:16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-text"><span class="logo-blue">직</span>장인</span>
+    </a>
+    <a href="login.html" class="right-link">이미 계정이 있으신가요? <b>로그인</b></a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <div class="card-title">회원가입</div>
+    <div class="card-sub">어떤 분으로 가입하시겠어요?</div>
+    <div class="role-select">
+      <div class="role-btn active" id="role-student" onclick="selectRole('student')">
+        <div class="r-icon">🎓</div>
+        <div class="r-title">교육생</div>
+        <div class="r-desc">기술을 배우고 싶어요</div>
+      </div>
+      <div class="role-btn" id="role-instructor" onclick="selectRole('instructor')">
+        <div class="r-icon">👨‍🏫</div>
+        <div class="r-title">강사</div>
+        <div class="r-desc">교육을 제공하고 싶어요</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>이름</label>
+      <input type="text" id="name" placeholder="실명을 입력해주세요">
+    </div>
+
+    <div class="form-group">
+      <label>이메일</label>
+      <input type="email" id="email" placeholder="example@email.com">
+    </div>
+
+    <div class="form-group">
+      <label>비밀번호</label>
+      <div class="input-wrap">
+        <input type="password" id="password" placeholder="8자 이상 입력해주세요" oninput="checkPwStrength()">
+        <button type="button" class="eye-btn" id="pw-eye" onclick="togglePwVisibility()">👁</button>
+      </div>
+      <div class="pw-strength" id="pw-strength">
+        <div class="strength-bars">
+          <span id="ps1"></span><span id="ps2"></span><span id="ps3"></span>
+        </div>
+        <div class="strength-label" id="pw-label"></div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:4px;" id="pw-rules">
+          <div class="pw-rule" id="rule-len">✗ 8자 이상</div>
+          <div class="pw-rule" id="rule-upper">✗ 대문자 포함 (A-Z)</div>
+          <div class="pw-rule" id="rule-lower">✗ 소문자 포함 (a-z)</div>
+          <div class="pw-rule" id="rule-num">✗ 숫자 포함 (0-9)</div>
+          <div class="pw-rule" id="rule-special">✗ 특수문자 포함 (!@#$ 등)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>연락처</label>
+      <input type="tel" id="phone" placeholder="010-0000-0000" maxlength="13" oninput="autoHyphen(this)">
+    </div>
+
+    <div class="extra-fields show" id="student-fields">
+      <div class="form-group">
+        <label>관심 분야</label>
+        <select id="interest">
+          <option value="">선택해주세요</option>
+          <option>철거·원상복구</option>
+          <option>인테리어·목공</option>
+          <option>줄눈 시공</option>
+          <option>누수·방수</option>
+          <option>에어컨청소</option>
+          <option>도배·도장</option>
+          <option>타일·조적</option>
+          <option>전기·설비</option>
+          <option>미용·헤어</option>
+          <option>네일·속눈썹</option>
+          <option>피부·에스테틱</option>
+          <option>메이크업·반영구</option>
+          <option>베이커리·제과</option>
+          <option>바리스타·카페</option>
+          <option>애견미용</option>
+          <option>기타</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="extra-fields" id="instructor-fields">
+      <div class="form-group">
+        <label>전문 분야</label>
+        <select id="specialty">
+          <option value="">선택해주세요</option>
+          <option>철거·원상복구</option>
+          <option>인테리어·목공</option>
+          <option>줄눈 시공</option>
+          <option>누수·방수</option>
+          <option>에어컨청소</option>
+          <option>도배·도장</option>
+          <option>타일·조적</option>
+          <option>전기·설비</option>
+          <option>미용·헤어</option>
+          <option>네일·속눈썹</option>
+          <option>피부·에스테틱</option>
+          <option>메이크업·반영구</option>
+          <option>베이커리·제과</option>
+          <option>바리스타·카페</option>
+          <option>애견미용</option>
+          <option>기타</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>현장 경력</label>
+        <select id="career">
+          <option value="">선택해주세요</option>
+          <option>1년 미만</option>
+          <option>1~3년</option>
+          <option>3~5년</option>
+          <option>5~10년</option>
+          <option>10년 이상</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="signup-btn" onclick="doSignup()">가입하기</button>
+    <div class="error-msg" id="error-msg"></div>
+    <div class="divider"><span>또는</span></div>
+    <button class="kakao-btn" onclick="doKakaoLogin()">💬 카카오로 시작하기</button>
+    <p class="terms-txt">가입하면 <a href="terms.html">이용약관</a> 및 <a href="privacy.html">개인정보 처리방침</a>에 동의하는 것으로 간주됩니다.</p>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fgllsqgzgshneforfkoy.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbGxzcWd6Z3NobmVmb3Jma295Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NjU3NTMsImV4cCI6MjA5NTM0MTc1M30.aBaEUieQCiih3J0uv79TdhFU2cv2UWbeNZ7C9xvs54g';
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+var currentRole = 'student';
+
+// 역할 선택
+function selectRole(role) {
+  currentRole = role;
+  document.getElementById('role-student').classList.toggle('active', role === 'student');
+  document.getElementById('role-instructor').classList.toggle('active', role === 'instructor');
+  document.getElementById('student-fields').classList.toggle('show', role === 'student');
+  document.getElementById('instructor-fields').classList.toggle('show', role === 'instructor');
+}
+
+// 비밀번호 보기/숨기기
+function togglePwVisibility() {
+  var input = document.getElementById('password');
+  var eye = document.getElementById('pw-eye');
+  if (input.type === 'password') {
+    input.type = 'text';
+    eye.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    eye.textContent = '👁';
+  }
+}
+
+// 비밀번호 강도 + 조건 체크
+function checkPwStrength() {
+  var pw = document.getElementById('password').value;
+  var strengthEl = document.getElementById('pw-strength');
+  var s1 = document.getElementById('ps1');
+  var s2 = document.getElementById('ps2');
+  var s3 = document.getElementById('ps3');
+  var label = document.getElementById('pw-label');
+  var input = document.getElementById('password');
+
+  if (pw.length === 0) {
+    strengthEl.style.display = 'none';
+    input.style.borderColor = '#E2E8F0';
+    return;
+  }
+  strengthEl.style.display = 'block';
+
+  // 조건 체크
+  var rules = {
+    len:     pw.length >= 8,
+    upper:   /[A-Z]/.test(pw),
+    lower:   /[a-z]/.test(pw),
+    num:     /[0-9]/.test(pw),
+    special: /[^A-Za-z0-9]/.test(pw)
+  };
+
+  setRule('rule-len',     rules.len,     '8자 이상');
+  setRule('rule-upper',   rules.upper,   '대문자 포함 (A-Z)');
+  setRule('rule-lower',   rules.lower,   '소문자 포함 (a-z)');
+  setRule('rule-num',     rules.num,     '숫자 포함 (0-9)');
+  setRule('rule-special', rules.special, '특수문자 포함 (!@#$ 등)');
+
+  // 강도 계산
+  var passed = Object.values(rules).filter(Boolean).length;
+
+  s1.style.background = '#E2E8F0';
+  s2.style.background = '#E2E8F0';
+  s3.style.background = '#E2E8F0';
+
+  if (passed <= 2) {
+    s1.style.background = '#EF4444';
+    label.textContent = '취약한 비밀번호';
+    label.style.color = '#EF4444';
+    input.style.borderColor = '#EF4444';
+  } else if (passed <= 3) {
+    s1.style.background = '#F59E0B';
+    s2.style.background = '#F59E0B';
+    label.textContent = '보통 비밀번호';
+    label.style.color = '#F59E0B';
+    input.style.borderColor = '#F59E0B';
+  } else if (passed === 4) {
+    s1.style.background = '#22C55E';
+    s2.style.background = '#22C55E';
+    label.textContent = '강한 비밀번호';
+    label.style.color = '#22C55E';
+    input.style.borderColor = '#22C55E';
+  } else {
+    s1.style.background = '#22C55E';
+    s2.style.background = '#22C55E';
+    s3.style.background = '#22C55E';
+    label.textContent = '매우 강한 비밀번호 👍';
+    label.style.color = '#22C55E';
+    input.style.borderColor = '#22C55E';
+  }
+}
+
+function setRule(id, pass, text) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = (pass ? '✓ ' : '✗ ') + text;
+  el.className = 'pw-rule ' + (pass ? 'pass' : 'fail');
+}
+
+function isPwValid() {
+  var pw = document.getElementById('password').value;
+  return pw.length >= 8
+    && /[A-Z]/.test(pw)
+    && /[a-z]/.test(pw)
+    && /[0-9]/.test(pw)
+    && /[^A-Za-z0-9]/.test(pw);
+}
+
+// 연락처 자동 하이픈
+function autoHyphen(input) {
+  var val = input.value.replace(/[^0-9]/g, '');
+  if (val.length <= 3) {
+    input.value = val;
+  } else if (val.length <= 7) {
+    input.value = val.slice(0,3) + '-' + val.slice(3);
+  } else {
+    input.value = val.slice(0,3) + '-' + val.slice(3,7) + '-' + val.slice(7,11);
+  }
+}
+
+// 에러 표시
+function showError(msg) {
+  var el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+// 회원가입
+async function doSignup() {
+  var name  = document.getElementById('name').value.trim();
+  var email = document.getElementById('email').value.trim();
+  var pw    = document.getElementById('password').value;
+  var phone = document.getElementById('phone').value.trim();
+
+  if (!name || !email || !pw || !phone) { showError('모든 필수 항목을 입력해주세요.'); return; }
+  if (!isPwValid()) {
+    showError('비밀번호 조건을 모두 충족해야 합니다. (8자 이상, 대문자·소문자·숫자·특수문자 포함)');
+    document.getElementById('pw-strength').style.display = 'block';
+    checkPwStrength();
+    return;
+  }
+
+  var btn = document.getElementById('signup-btn');
+  btn.disabled = true;
+  btn.textContent = '가입 중...';
+  document.getElementById('error-msg').classList.remove('show');
+
+  var { data, error } = await sbClient.auth.signUp({
+    email: email,
+    password: pw,
+    options: {
+      data: {
+        name: name,
+        phone: phone,
+        role: currentRole,
+        interest: currentRole === 'student' ? document.getElementById('interest').value : null,
+        specialty: currentRole === 'instructor' ? document.getElementById('specialty').value : null,
+        career: currentRole === 'instructor' ? document.getElementById('career').value : null
+      }
+    }
+  });
+
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = '가입하기';
+    if (error.message.includes('already registered')) {
+      showError('이미 사용 중인 이메일입니다.');
+    } else {
+      showError('가입 중 오류가 발생했습니다: ' + error.message);
+    }
+    return;
+  }
+
+  localStorage.setItem('jikjangin_user', JSON.stringify({ name, email, phone, role: currentRole }));
+  localStorage.setItem('jikjangin_logged_in', 'true');
+  alert(name + '님, 가입을 환영합니다! 🎉');
+  window.location.href = 'mypage.html';
+}
+
+async function doKakaoLogin() {
+  var { error } = await sbClient.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: {
+      redirectTo: window.location.origin + '/kakao_register.html'
+    }
+  });
+  if (error) alert('카카오 로그인 중 오류가 발생했습니다.');
+}
+</script>
+</body>
+</html>

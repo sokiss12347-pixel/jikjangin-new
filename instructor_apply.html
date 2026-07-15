@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>강사 지원 — 직장인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:#F8FAFC;color:#1E293B;min-height:100vh;display:flex;flex-direction:column;}
+
+header{background:#0B1120;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06);}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:62px;gap:32px;}
+.logo{display:flex;align-items:center;text-decoration:none;}
+.logo-text{font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px;display:flex;align-items:center;}
+.logo-blue{color:#005BFF;}
+.back-link{margin-left:auto;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .15s;}
+.back-link:hover{color:#fff;}
+
+.wrap{flex:1;max-width:680px;margin:0 auto;padding:48px 24px 80px;width:100%;}
+
+/* 상단 헤더 */
+.page-head{margin-bottom:40px;}
+.page-tag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:2px;color:#005BFF;margin-bottom:14px;}
+.page-title{font-size:32px;font-weight:900;color:#1E293B;letter-spacing:-.5px;line-height:1.3;margin-bottom:12px;word-break:keep-all;}
+.page-title em{color:#005BFF;font-style:normal;}
+.page-sub{font-size:15px;color:#94A3B8;line-height:1.75;word-break:keep-all;}
+
+/* 폼 카드 */
+.form-card{background:#fff;border-radius:20px;border:1px solid #E2E8F0;padding:40px;box-shadow:0 4px 24px rgba(0,0,0,.05);}
+
+.form-section{margin-bottom:32px;}
+.form-section-title{font-size:13px;font-weight:900;color:#005BFF;letter-spacing:.5px;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid #EBF0FF;}
+
+.form-group{margin-bottom:20px;}
+.form-group:last-child{margin-bottom:0;}
+label{display:block;font-size:13px;font-weight:700;color:#475569;margin-bottom:7px;}
+label .req{color:#005BFF;margin-left:2px;}
+input[type="text"],input[type="tel"],input[type="email"],select,textarea{
+  width:100%;border:1.5px solid #E2E8F0;border-radius:10px;
+  padding:12px 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;
+  color:#1E293B;outline:none;transition:border-color .15s;background:#fff;
+}
+input:focus,select:focus,textarea:focus{border-color:#005BFF;}
+textarea{resize:vertical;min-height:120px;line-height:1.7;}
+select{cursor:pointer;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* 약관 동의 */
+.agree-box{background:#F8FAFC;border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1.5px solid #E2E8F0;transition:border-color .15s;margin-top:8px;}
+.agree-box:hover{border-color:#005BFF;}
+.agree-box input[type="checkbox"]{width:18px;height:18px;accent-color:#005BFF;cursor:pointer;flex-shrink:0;}
+.agree-txt{font-size:13px;color:#64748B;line-height:1.6;}
+.agree-txt a{color:#005BFF;text-decoration:none;font-weight:700;}
+
+/* 제출 버튼 */
+.submit-btn{width:100%;height:54px;background:#005BFF;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .15s;margin-top:28px;}
+.submit-btn:hover{background:#0041CC;}
+.submit-btn:disabled{background:#94A3B8;cursor:not-allowed;}
+
+/* 안내 박스 */
+.info-box{background:#EBF0FF;border-radius:14px;padding:20px 22px;margin-bottom:32px;}
+.info-box-title{font-size:13px;font-weight:900;color:#005BFF;margin-bottom:8px;}
+.info-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.info-list li{font-size:13px;color:#475569;display:flex;align-items:flex-start;gap:8px;line-height:1.6;}
+.info-list li::before{content:'✓';color:#005BFF;font-weight:900;flex-shrink:0;margin-top:1px;}
+
+@media(max-width:600px){
+  .form-row{grid-template-columns:1fr;}
+  .form-card{padding:28px 20px;}
+  .page-title{font-size:26px;}
+}
+
+  @media (max-width: 480px){
+    .header-inner{ height:auto; min-height:56px; padding:10px 16px; flex-wrap:wrap; row-gap:6px; }
+    .right-link, .back-btn, .back-link{ font-size:12px; margin-left:0; }
+    .wrap{ padding:32px 16px; }
+    .card{ padding:32px 20px; border-radius:16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-text"><span class="logo-blue">직</span>장인</span>
+    </a>
+    <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <span class="page-tag">INSTRUCTOR</span>
+    <h1 class="page-title">직장인 강사 <em>지원서</em></h1>
+    <p class="page-sub">현장 기술을 가진 분이라면 분야 상관없이 지원 가능합니다.<br>작성 후 담당자가 직접 연락드립니다.</p>
+  </div>
+
+  <!-- 안내 -->
+  <div class="info-box">
+    <div class="info-box-title">지원 전 확인해주세요</div>
+    <ul class="info-list">
+      <li>교육생들을 책임감 있게 양성해주실 분만 지원해주세요</li>
+      <li>지원서 제출 후 3~5 영업일 내 담당자가 연락드립니다</li>
+    </ul>
+  </div>
+
+  <div class="form-card">
+
+    <!-- 기본 정보 -->
+    <div class="form-section">
+      <div class="form-section-title">기본 정보</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>이름<span class="req">*</span></label>
+          <input type="text" placeholder="실명을 입력해주세요">
+        </div>
+        <div class="form-group">
+          <label>연락처<span class="req">*</span></label>
+          <input type="tel" id="apply-phone" placeholder="010-0000-0000" maxlength="13" oninput="fmtPhone(this)">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>이메일<span class="req">*</span></label>
+        <input type="email" placeholder="답변 받을 이메일을 입력해주세요">
+      </div>
+    </div>
+
+    <!-- 전문 분야 -->
+    <div class="form-section">
+      <div class="form-section-title">전문 분야</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>분야<span class="req">*</span></label>
+          <select>
+            <option value="">선택해주세요</option>
+            <option>철거·원상복구</option>
+            <option>인테리어·목공</option>
+            <option>줄눈 시공</option>
+            <option>누수·방수</option>
+            <option>에어컨청소</option>
+            <option>도배·도장</option>
+            <option>타일·조적</option>
+            <option>전기·설비</option>
+            <option>미용·헤어</option>
+            <option>네일·속눈썹</option>
+            <option>피부·에스테틱</option>
+            <option>메이크업·반영구</option>
+            <option>베이커리·제과</option>
+            <option>바리스타·카페</option>
+            <option>애견미용</option>
+            <option>기타</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>현장 경력<span class="req">*</span></label>
+          <select>
+            <option value="">선택해주세요</option>
+            <option>1년 미만</option>
+            <option>1~3년</option>
+            <option>3~5년</option>
+            <option>5~10년</option>
+            <option>10년 이상</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 자기소개 -->
+    <div class="form-section">
+      <div class="form-section-title">자기소개</div>
+      <div class="form-group">
+        <label>현장 경험 및 지원 동기<span class="req">*</span></label>
+        <textarea placeholder="현장에서 쌓은 경험, 강사로 지원하게 된 이유를 자유롭게 작성해주세요. (100자 이상 권장)"></textarea>
+      </div>
+    </div>
+
+    <!-- 현재 활동 현황 -->
+    <div class="form-section">
+      <div class="form-section-title">현재 활동 현황</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>사업자 등록 여부<span class="req">*</span></label>
+          <select>
+            <option value="">선택해주세요</option>
+            <option>개인사업자</option>
+            <option>법인</option>
+            <option>없음</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>직접 수주 운영 중<span class="req">*</span></label>
+          <select>
+            <option value="">선택해주세요</option>
+            <option>예, 운영 중입니다</option>
+            <option>아니오</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>월 평균 문의·수주 건수<span class="req">*</span></label>
+          <select>
+            <option value="">선택해주세요</option>
+            <option>5건 미만</option>
+            <option>5~10건</option>
+            <option>10~20건</option>
+            <option>20~30건</option>
+            <option>30건 이상</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>함께 일하는 직원·팀원<span class="req">*</span></label>
+          <select>
+            <option value="">선택해주세요</option>
+            <option>없음 (혼자)</option>
+            <option>1~3명</option>
+            <option>4~6명</option>
+            <option>7~10명</option>
+            <option>10명 이상</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 교육 환경 -->
+    <div class="form-section">
+      <div class="form-section-title">교육 환경</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>교육 가능 지역<span class="req">*</span></label>
+          <select>
+            <option value="">선택해주세요</option>
+            <option>서울</option>
+            <option>경기·인천</option>
+            <option>충청권</option>
+            <option>전라권</option>
+            <option>경상권</option>
+            <option>강원·제주</option>
+            <option>전국 가능</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>교육장 보유 여부<span class="req">*</span></label>
+          <select>
+            <option value="">선택해주세요</option>
+            <option>보유 중</option>
+            <option>임대 가능</option>
+            <option>없음</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>실습 장비·공구 보유<span class="req">*</span></label>
+        <select>
+          <option value="">선택해주세요</option>
+          <option>전부 보유</option>
+          <option>일부 보유</option>
+          <option>없음</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 교육 경험 -->
+    <div class="form-section">
+      <div class="form-section-title">교육 경험</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>교육·강의 경험<span class="req">*</span></label>
+          <select id="edu-exp" onchange="toggleEduType(this)">
+            <option value="">선택해주세요</option>
+            <option>있음</option>
+            <option>없음</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>교육 형태 (있는 경우)</label>
+          <select id="edu-type" disabled onchange="toggleEduEtc(this)" style="opacity:0.4;cursor:default;">
+            <option value="">선택해주세요</option>
+            <option>외부 강의</option>
+            <option>유튜브·SNS</option>
+            <option>기타</option>
+          </select>
+        </div>
+      </div>
+      <div id="edu-etc-wrap" style="display:none; margin-bottom:20px;">
+        <div class="form-group">
+          <label>교육 내용 직접 입력</label>
+          <input type="text" id="edu-etc-input" placeholder="어떤 교육을 진행하셨는지 작성해주세요">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>최대 교육 가능 인원<span class="req">*</span></label>
+        <select>
+          <option value="">선택해주세요</option>
+          <option>1~3명</option>
+          <option>4~10명</option>
+          <option>10명 이상</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 가용 시간 -->
+    <div class="form-section">
+      <div class="form-section-title">교육 가능 시간</div>
+      <div class="form-group">
+        <label>교육 가능 요일·시간대<span class="req">*</span></label>
+        <select>
+          <option value="">선택해주세요</option>
+          <option>주중 (평일)</option>
+          <option>주말</option>
+          <option>주중·주말 모두 가능</option>
+          <option>협의 가능</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 약관 -->
+    <div class="form-section" style="margin-bottom:0;">
+      <div class="form-section-title">약관 동의</div>
+      <label class="agree-box">
+        <input type="checkbox" id="agree">
+        <span class="agree-txt">
+          <a href="privacy.html" target="_blank">개인정보 처리방침</a>에 동의하며, 지원서에 입력한 정보가 채용 검토 목적으로 수집·이용됨에 동의합니다.<span class="req">*</span>
+        </span>
+      </label>
+      <label class="agree-box" style="margin-top:10px;">
+        <input type="checkbox" id="agree-photo">
+        <span class="agree-txt">
+          교육 홍보 과정에서 <strong style="color:#005BFF;font-weight:700;">강사 사진·영상</strong>이 직장인 공식 채널(웹사이트, SNS 등)에 <strong style="color:#005BFF;font-weight:700;">활용될 수 있음</strong>에 동의합니다.<span class="req">*</span>
+        </span>
+      </label>
+    </div>
+
+    <button class="submit-btn" onclick="submitApply()">지원서 제출하기</button>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+function toggleEduType(sel) {
+  var typeSelect = document.getElementById('edu-type');
+  if (sel.value === '있음') {
+    typeSelect.disabled = false;
+    typeSelect.style.opacity = '1';
+  } else {
+    typeSelect.disabled = true;
+    typeSelect.value = '';
+    typeSelect.style.opacity = '';
+    document.getElementById('edu-etc-wrap').style.display = 'none';
+  }
+}
+
+function toggleEduEtc(sel) {
+  var wrap = document.getElementById('edu-etc-wrap');
+  wrap.style.display = sel.value === '기타' ? 'block' : 'none';
+  if (sel.value !== '기타') document.getElementById('edu-etc-input').value = '';
+}
+
+function fmtPhone(input) {
+  var val = input.value.replace(/[^0-9]/g, '');
+  if (val.length <= 3) input.value = val;
+  else if (val.length <= 7) input.value = val.slice(0,3) + '-' + val.slice(3);
+  else input.value = val.slice(0,3) + '-' + val.slice(3,7) + '-' + val.slice(7,11);
+}
+
+var sbClient = null;
+
+window.addEventListener('DOMContentLoaded', function() {
+  emailjs.init('TIgQqpA4B5gBGn4NP');
+  sbClient = window.supabase.createClient(
+    'https://fgllsqgzgshneforfkoy.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbGxzcWd6Z3NobmVmb3Jma295Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NjU3NTMsImV4cCI6MjA5NTM0MTc1M30.aBaEUieQCiih3J0uv79TdhFU2cv2UWbeNZ7C9xvs54g'
+  );
+});
+
+function checkAgree() {
+  var btn = document.querySelector('.submit-btn');
+  var agree = document.getElementById('agree').checked;
+  var agreePhoto = document.getElementById('agree-photo').checked;
+  btn.disabled = !(agree && agreePhoto);
+}
+
+function getVal(id) {
+  var el = document.getElementById(id);
+  return el ? el.value : '';
+}
+
+function getSelect(idx) {
+  var selects = document.querySelectorAll('select');
+  return selects[idx] ? selects[idx].value : '';
+}
+
+async function submitApply() {
+  if (!document.getElementById('agree').checked) {
+    alert('개인정보 처리방침에 동의해주세요.');
+    return;
+  }
+  if (!document.getElementById('agree-photo').checked) {
+    alert('사진·영상 활용에 동의해주세요.');
+    return;
+  }
+
+  var selects = document.querySelectorAll('select');
+  var inputs = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
+
+  var name     = inputs[0] ? inputs[0].value.trim() : '';
+  var phone    = getVal('apply-phone');
+  var email    = inputs[2] ? inputs[2].value.trim() : '';
+  var field    = selects[0] ? selects[0].value : '';
+  var career   = selects[1] ? selects[1].value : '';
+  var message  = document.querySelector('textarea') ? document.querySelector('textarea').value.trim() : '';
+
+  var biz_type          = selects[2] ? selects[2].value : '';
+  var is_operating      = selects[3] ? selects[3].value : '';
+  var monthly_inquiries = selects[4] ? selects[4].value : '';
+  var team_size         = selects[5] ? selects[5].value : '';
+  var region            = selects[6] ? selects[6].value : '';
+  var has_space         = selects[7] ? selects[7].value : '';
+  var has_equipment     = selects[8] ? selects[8].value : '';
+  var edu_experience    = selects[9] ? selects[9].value : '';
+  var edu_type          = getVal('edu-type');
+  var edu_type_detail   = getVal('edu-etc-input');
+  var max_students      = selects[11] ? selects[11].value : '';
+  var available_time    = selects[12] ? selects[12].value : '';
+
+  if (!name || !phone || !field || !career || !message) {
+    alert('필수 항목을 모두 입력해주세요.');
+    return;
+  }
+
+  var btn = document.querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.textContent = '제출 중...';
+
+  // 1. Supabase 저장
+  var { error: dbError } = await sbClient.from('instructor_applications').insert([{
+    name, phone, email, field, career, message,
+    biz_type, is_operating, monthly_inquiries, team_size,
+    region, has_space, has_equipment,
+    edu_experience, edu_type, edu_type_detail, max_students, available_time
+  }]);
+
+  if (dbError) {
+    console.error('DB 저장 오류:', dbError);
+  }
+
+  // 2. EmailJS 발송
+  var templateParams = {
+    name, phone, email, field, career, message,
+    biz_type, is_operating, monthly_inquiries, team_size,
+    region, has_space, has_equipment,
+    edu_experience, edu_type: edu_type + (edu_type_detail ? ' (' + edu_type_detail + ')' : ''),
+    max_students, available_time
+  };
+
+  emailjs.send('service_i2h6m81', 'template_qqh4jnj', templateParams)
+    .then(function() {
+      btn.textContent = '제출 완료!';
+      btn.style.background = '#22C55E';
+      alert('지원서가 성공적으로 제출됐습니다! 3~5 영업일 내 담당자가 연락드릴게요 😊');
+      window.location.href = 'index.html';
+    }, function(error) {
+      console.error('이메일 발송 오류:', error);
+      btn.disabled = false;
+      btn.textContent = '지원서 제출하기';
+      alert('제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+    });
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('agree').addEventListener('change', checkAgree);
+  document.getElementById('agree-photo').addEventListener('change', checkAgree);
+  document.querySelector('.submit-btn').disabled = true;
+});
+</script>
+
+<script>
+(function() {
+  var loggedIn = localStorage.getItem('jikjangin_logged_in');
+  var userStr  = localStorage.getItem('jikjangin_user');
+  var signup   = document.getElementById('hdr-signup');
+  var login    = document.getElementById('hdr-login');
+  var name     = document.getElementById('hdr-name');
+  var mypage   = document.getElementById('hdr-mypage');
+  var logout   = document.getElementById('hdr-logout');
+  if (loggedIn && userStr) {
+    if (signup) signup.style.display = 'none';
+    if (login)  login.style.display  = 'none';
+    if (mypage) mypage.style.display = '';
+    if (logout) logout.style.display = '';
+    if (name) {
+      name.style.display = '';
+      try { name.textContent = JSON.parse(userStr).name + '님'; } catch(e) {}
+    }
+  }
+})();
+function doLogout() {
+  localStorage.removeItem('jikjangin_user');
+  localStorage.removeItem('jikjangin_logged_in');
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

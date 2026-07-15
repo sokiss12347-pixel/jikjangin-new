@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>국비지원 교육이란? — 직장인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:#F8FAFC;color:#1E293B;line-height:1.6;}
+
+header{background:#0B1120;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06);}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:62px;gap:32px;}
+.logo{text-decoration:none;}
+.logo-text{font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+.logo-blue{color:#005BFF;}
+.back-link{margin-left:auto;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;}
+.back-link:hover{color:#fff;}
+
+/* 히어로 */
+.hero{background:linear-gradient(135deg,#0B1120 0%,#0d1f3c 100%);padding:72px 24px;text-align:center;}
+.hero-tag{display:inline-block;background:#005BFF;color:#fff;font-size:11px;font-weight:900;letter-spacing:2px;padding:5px 16px;border-radius:100px;margin-bottom:20px;}
+.hero-title{font-size:42px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1.25;margin-bottom:16px;word-break:keep-all;}
+.hero-title em{color:#005BFF;font-style:normal;}
+.hero-sub{font-size:16px;color:rgba(255,255,255,0.55);line-height:1.8;max-width:580px;margin:0 auto 36px;word-break:keep-all;}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
+.hstat{text-align:center;}
+.hstat-num{font-size:32px;font-weight:900;color:#005BFF;}
+.hstat-label{font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px;}
+
+/* 목차 */
+.toc{background:#fff;border-bottom:1px solid #E2E8F0;position:sticky;top:62px;z-index:90;overflow-x:auto;}
+.toc-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;white-space:nowrap;}
+.toc-item{padding:14px 20px;font-size:13px;font-weight:700;color:#64748B;text-decoration:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .15s;flex-shrink:0;}
+.toc-item:hover,.toc-item.active{color:#005BFF;border-bottom-color:#005BFF;}
+
+/* 본문 */
+.content{max-width:900px;margin:0 auto;padding:56px 24px 80px;}
+.section{margin-bottom:72px;scroll-margin-top:120px;}
+.sec-label{font-size:11px;font-weight:900;letter-spacing:2px;color:#005BFF;margin-bottom:12px;}
+.sec-title{font-size:30px;font-weight:900;color:#1E293B;letter-spacing:-.5px;line-height:1.3;margin-bottom:12px;word-break:keep-all;}
+.sec-title em{color:#005BFF;font-style:normal;}
+.sec-desc{font-size:15px;color:#64748B;line-height:1.85;margin-bottom:32px;word-break:keep-all;}
+
+/* 정의 카드 */
+.def-box{background:#0B1120;border-radius:20px;padding:36px 40px;display:flex;align-items:flex-start;gap:24px;margin-bottom:32px;}
+.def-icon{font-size:48px;flex-shrink:0;}
+.def-content{}
+.def-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:10px;}
+.def-text{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.85;word-break:keep-all;}
+.def-text strong{color:#005BFF;}
+
+/* 핵심 수치 */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:40px;}
+.stat-card{background:#fff;border:1px solid #E2E8F0;border-radius:16px;padding:22px 18px;text-align:center;}
+.stat-card.blue{background:#005BFF;border-color:#005BFF;}
+.stat-num{font-size:26px;font-weight:900;color:#1E293B;}
+.stat-card.blue .stat-num{color:#fff;}
+.stat-label{font-size:12px;color:#94A3B8;margin-top:6px;line-height:1.4;}
+.stat-card.blue .stat-label{color:rgba(255,255,255,0.7);}
+
+/* 대상별 카드 */
+.target-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
+.target-card{background:#fff;border:1px solid #E2E8F0;border-radius:16px;padding:24px 20px;}
+.target-icon{font-size:32px;margin-bottom:14px;}
+.target-type{font-size:13px;font-weight:900;color:#005BFF;letter-spacing:.5px;margin-bottom:6px;}
+.target-title{font-size:16px;font-weight:900;color:#1E293B;margin-bottom:10px;}
+.target-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.target-list li{font-size:13px;color:#64748B;display:flex;gap:7px;line-height:1.6;word-break:keep-all;}
+.target-list li::before{content:'·';flex-shrink:0;font-weight:900;}
+
+/* 훈련 유형 */
+.type-list{display:flex;flex-direction:column;gap:16px;}
+.type-item{background:#fff;border:1px solid #E2E8F0;border-radius:16px;padding:22px 26px;display:flex;flex-direction:column;gap:12px;}
+  .type-header{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .type-meta{min-width:160px;}
+.type-badge{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;}
+.tbadge{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:900;letter-spacing:.5px;}
+.tbadge-blue{background:#EBF0FF;color:#005BFF;}
+.tbadge-green{background:#F0FDF4;color:#166534;}
+.tbadge-orange{background:#FFF7ED;color:#9A3412;}
+.tbadge-purple{background:#F3F0FF;color:#4C1D95;}
+.type-name{font-size:17px;font-weight:900;color:#1E293B;margin-bottom:4px;}
+.type-tag{font-size:12px;color:#94A3B8;margin-bottom:12px;}
+.type-desc{font-size:14px;color:#64748B;line-height:1.75;word-break:keep-all;}
+.type-support{background:#F8FAFC;border-radius:10px;padding:12px 14px;font-size:13px;margin-top:10px;}
+.ts-row{display:flex;gap:16px;flex-wrap:wrap;}
+.ts-item{display:flex;align-items:center;gap:6px;}
+.ts-label{font-size:12px;color:#94A3B8;font-weight:600;}
+.ts-val{font-size:13px;font-weight:900;color:#1E293B;}
+
+/* 지원 혜택 */
+.benefit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
+.ben-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:22px 18px;text-align:center;}
+.ben-icon{font-size:30px;margin-bottom:10px;}
+.ben-title{font-size:15px;font-weight:900;color:#1E293B;margin-bottom:6px;}
+.ben-desc{font-size:13px;color:#94A3B8;line-height:1.65;word-break:keep-all;}
+
+/* 신청 절차 */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:32px;position:relative;}
+.flow::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:2px;background:#E2E8F0;z-index:0;}
+.flow-item{text-align:center;position:relative;z-index:1;}
+.flow-num{width:56px;height:56px;background:#005BFF;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:18px;font-weight:900;color:#fff;}
+.flow-title{font-size:13px;font-weight:700;color:#1E293B;margin-bottom:4px;word-break:keep-all;}
+.flow-desc{font-size:11px;color:#94A3B8;word-break:keep-all;line-height:1.5;}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:12px;}
+.faq-item{background:#fff;border:1px solid #E2E8F0;border-radius:14px;overflow:hidden;}
+.faq-q{padding:18px 22px;font-size:15px;font-weight:700;color:#1E293B;cursor:pointer;display:flex;align-items:center;gap:12px;}
+.faq-q-icon{background:#EBF0FF;color:#005BFF;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;}
+.faq-q-arrow{margin-left:auto;font-size:17px;color:#94A3B8;transition:transform .2s;flex-shrink:0;}
+.faq-a{display:none;padding:0 22px 18px 62px;font-size:14px;color:#64748B;line-height:1.8;word-break:keep-all;}
+.faq-item.open .faq-a{display:block;}
+.faq-item.open .faq-q{color:#005BFF;}
+.faq-item.open .faq-q-arrow{transform:rotate(180deg);color:#005BFF;}
+
+/* 주의사항 */
+.notice-box{background:#FFF7ED;border:1px solid #FED7AA;border-radius:14px;padding:22px 24px;margin-top:28px;}
+.notice-title{font-size:14px;font-weight:900;color:#9A3412;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.notice-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.notice-list li{font-size:13px;color:#7C3009;display:flex;gap:8px;word-break:keep-all;line-height:1.65;}
+.notice-list li::before{content:'⚠';flex-shrink:0;}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,#0B1120,#0d1f3c);border-radius:24px;padding:52px 40px;text-align:center;margin-top:64px;}
+.cta-title{font-size:28px;font-weight:900;color:#fff;margin-bottom:12px;word-break:keep-all;}
+.cta-title em{color:#005BFF;font-style:normal;}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.5);margin-bottom:32px;word-break:keep-all;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:12px;font-size:15px;font-weight:900;text-decoration:none;transition:all .15s;}
+.cta-btn-blue{background:#005BFF;color:#fff;}
+.cta-btn-blue:hover{background:#0041CC;}
+.cta-btn-ghost{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.15);}
+.cta-btn-ghost:hover{background:rgba(255,255,255,0.15);}
+
+@media(max-width:640px){
+  .hero-title{font-size:28px;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+  .target-grid{grid-template-columns:1fr;}
+  .type-item{grid-template-columns:1fr;}
+  .benefit-grid{grid-template-columns:1fr 1fr;}
+  .flow{grid-template-columns:1fr 1fr;gap:16px;}
+  .flow::before{display:none;}
+}
+
+  /* ── 헤더 전용 CSS ── */
+  header{background:#0B1120;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .header-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:62px;gap:32px;}
+  .logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;}
+  .logo-text{font-family:'Noto Sans KR',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px;display:flex;align-items:center;gap:1px;line-height:1;}
+  .logo-blue{color:#005BFF;}
+  nav{display:flex;align-items:center;gap:4px;flex:1;}
+  .nav-link{color:rgba(255,255,255,0.75);text-decoration:none;font-size:14px;font-weight:500;padding:6px 14px;border-radius:6px;transition:all .18s;white-space:nowrap;}
+  .nav-link:hover{color:#fff;background:rgba(255,255,255,0.08);}
+  .nav-link.active{color:#005BFF !important;}
+  .header-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);padding:7px 16px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;text-decoration:none;white-space:nowrap;transition:all .18s;}
+  .btn-ghost:hover{border-color:rgba(255,255,255,0.5);color:#fff;}
+  .btn-amber{background:#005BFF;border:none;color:#fff;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;text-decoration:none;white-space:nowrap;transition:all .18s;}
+  .btn-amber:hover{background:#0041CC;}
+  .nav-dropdown{position:relative;}
+  .nav-dropdown>.nav-link{display:flex;align-items:center;gap:4px;}
+  .nav-dropdown>.nav-link::after{content:'▾';font-size:10px;opacity:.6;}
+  .dropdown-menu{display:none;position:absolute;top:calc(100% + 2px);left:50%;transform:translateX(-50%);background:#fff;border-radius:14px;border:1px solid #E2E8F0;box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px;min-width:180px;z-index:200;white-space:nowrap;}
+  .nav-dropdown::after{content:'';position:absolute;top:100%;left:0;right:0;height:10px;}
+  .nav-dropdown.active .dropdown-menu{display:block;}
+  @media (hover:hover){
+    .nav-dropdown:hover > .dropdown-menu{ display:block; }
+    .nav-dropdown:not(:hover) > .dropdown-menu{ display:none !important; }
+    .dropdown-menu::before{ content:""; position:absolute; top:-8px; left:0; right:0; height:8px; }
+  }
+  .dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:14px;font-weight:600;color:#1E293B;text-decoration:none;transition:background .12s;}
+  .dropdown-item:hover{background:#F8FAFC;color:#005BFF;}
+  .di-icon{font-size:16px;flex-shrink:0;}
+  .dropdown-divider{height:1px;background:#F1F5F9;margin:4px 0;}
+
+  
+
+  /* ─── FOOTER ─── */
+
+  footer {
+    background: #0B1120;
+    padding: 48px 24px 32px;
+    margin-top: 0;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .footer-brand .logo-text {
+    font-size: 20px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .footer-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.7;
+    max-width: 280px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 48px;
+  }
+
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 14px;
+    letter-spacing: 0.3px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .footer-col ul li a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.38);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-col ul li a:hover { color: rgba(255,255,255,0.75); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-biz {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    line-height: 1.8;
+  }
+
+  .footer-copyright {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  
+  .btn-kakao-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FEE500;
+    color: #191919;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    text-decoration: none;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+
+  .btn-kakao-sm:hover { background: #F0D800; }
+
+
+  .dropdown-group { position: relative; }
+  .dropdown-group-label {
+    display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    padding: 10px 14px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; color: #1E293B;
+    cursor: pointer; white-space: nowrap; text-decoration: none;
+  }
+  .dropdown-group-label .dg-arrow { font-size: 12px; color: #94A3B8; }
+  .dropdown-group:hover > .dropdown-group-label,
+  .dropdown-group.open > .dropdown-group-label { background: #F8FAFC; color: #005BFF; }
+  .dropdown-flyout {
+    display: none; position: absolute; top: -7px; left: 100%;
+    background: #fff; border: 1px solid #E8ECF0; border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(15,23,42,.14); padding: 6px; min-width: 168px; z-index: 210;
+  }
+  .dropdown-group:hover > .dropdown-flyout,
+  .dropdown-group.open > .dropdown-flyout { display: block; }
+
+  /* ===================================================== */
+  /* 모바일 햄버거 + 드로어 내비게이션 (모바일 반응형 수정) */
+  /* ===================================================== */
+  .nav-toggle{
+    display:none; flex-direction:column; justify-content:center; align-items:center;
+    gap:4px; width:44px; height:44px; margin-left:auto; flex-shrink:0;
+    background:transparent; border:none; cursor:pointer; padding:0;
+  }
+  .nav-toggle-bar{ display:block; width:22px; height:2px; background:#fff; border-radius:2px; }
+  .nav-close{ display:none; }
+  .nav-overlay{ display:none; }
+
+  @media (max-width: 768px){
+    .header-inner{ gap:12px; padding:0 16px; height:56px; flex-wrap:nowrap; }
+    .nav-toggle{ display:flex; order:3; }
+    .header-actions{ order:2; gap:6px; }
+    .header-actions a, .header-actions button{ padding:6px 10px; font-size:12px; }
+
+    header nav{
+      position:fixed; top:0; left:0; bottom:0; width:82%; max-width:320px;
+      background:#fff; flex-direction:column; align-items:stretch; gap:0;
+      padding:16px 0 24px; margin:0; overflow-y:auto; -webkit-overflow-scrolling:touch;
+      transform:translateX(-100%); transition:transform .28s ease;
+      z-index:300; box-shadow:2px 0 32px rgba(0,0,0,.2);
+    }
+    body.nav-open header nav{ transform:translateX(0); }
+    .nav-close{
+      display:flex; align-items:center; justify-content:center;
+      width:44px; height:44px; margin:0 8px 8px auto;
+      background:transparent; border:none; font-size:20px; color:#1E293B; cursor:pointer;
+    }
+    .nav-overlay{
+      display:block; position:fixed; inset:0; background:rgba(15,23,42,.45);
+      opacity:0; pointer-events:none; transition:opacity .22s ease; z-index:290;
+    }
+    body.nav-open .nav-overlay{ opacity:1; pointer-events:auto; }
+    body.nav-open{ overflow:hidden; }
+
+    .nav-link{
+      color:#1E293B; padding:14px 20px; font-size:15px; font-weight:600;
+      white-space:normal; border-radius:0; border-bottom:1px solid #F1F5F9;
+      min-height:48px; display:flex; align-items:center;
+    }
+    .nav-link:hover{ background:#F8FAFC; }
+    .nav-dropdown{ display:flex; flex-direction:column; }
+    .nav-dropdown > .nav-link{ justify-content:space-between; }
+    .nav-dropdown::after{ display:none; }
+    .dropdown-menu{
+      display:none; position:static; left:auto; top:auto; transform:none;
+      box-shadow:none; border:none; border-radius:0; background:#F8FAFC;
+      padding:4px 0; min-width:0; white-space:normal; max-width:none;
+    }
+    .nav-dropdown.active > .dropdown-menu{ display:block; }
+    .dropdown-item{ padding:12px 20px 12px 34px; font-size:14px; min-height:44px; }
+    .dropdown-group-label{ padding:12px 20px 12px 34px; min-height:44px; }
+  }
+
+  /* ===================================================== */
+  /* 모바일 푸터: 2열 그리드 + 세로 스택 (모바일 반응형 수정) */
+  /* ===================================================== */
+  @media (max-width: 768px){
+    .footer-top{ flex-direction:column; gap:28px; }
+    .footer-desc{ max-width:none; }
+    .footer-links{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px 16px; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; gap:8px; }
+    .footer-biz, .footer-copyright{ font-size:12px; line-height:1.6; }
+  }
+
+/* ===== 모바일 드로어 ===== */
+  .m-drawer{ display:none; }
+  .md-top{ display:flex; align-items:center; justify-content:space-between; padding:12px 12px 2px; }
+  .md-home{ display:inline-flex; align-items:center; color:#1E293B; text-decoration:none; padding:6px; }
+  .md-home svg{ width:19px; height:19px; }
+  .md-close{ background:none; border:none; font-size:17px; color:#1E293B; cursor:pointer; width:36px; height:36px; line-height:1; }
+  .md-user{ position:relative; display:flex; align-items:center; gap:10px; padding:6px 18px 13px; }
+  .md-avatar{ width:36px; height:36px; border-radius:50%; background:#EEF2F7; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#94A3B8; }
+  .md-avatar svg{ width:18px; height:18px; }
+  .md-uname{ font-size:14px; font-weight:800; color:#1E293B; }
+  .md-login-link{ font-size:12px; color:#005BFF; text-decoration:none; font-weight:700; }
+  .md-logout{ position:absolute; top:0; right:16px; font-size:11px; color:#94A3B8; text-decoration:none; display:none; }
+  .md-mypage{ display:block; margin:0 16px 14px; padding:11px; text-align:center; background:#005BFF; color:#fff; font-weight:700; font-size:13px; border-radius:10px; text-decoration:none; transition:background .15s, transform .1s; }
+  .md-mypage:hover{ background:#0041CC; }
+  .md-mypage:active{ transform:scale(.985); }
+  .md-cats{ border-top:8px solid #F1F5F9; }
+  .md-cat-label{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 18px; background:none; border:none; border-bottom:1px solid #F1F5F9; font-size:13px; font-weight:700; color:#1E293B; cursor:pointer; text-align:left; }
+  .md-chev{ transition:transform .2s; color:#94A3B8; font-size:12px; flex-shrink:0; }
+  .md-cat.open .md-chev{ transform:rotate(180deg); }
+  .md-cat-sub{ display:none; background:#F8FAFC; }
+  .md-cat.open .md-cat-sub{ display:block; }
+  .md-cat-sub a{ display:block; padding:9px 18px 9px 30px; font-size:12px; color:#475569; text-decoration:none; }
+  .md-cat-sub a:active{ background:#EEF2F7; }
+  .md-link{ display:flex; align-items:center; gap:9px; padding:12px 18px; font-size:13px; font-weight:700; color:#1E293B; text-decoration:none; border-bottom:1px solid #F1F5F9; }
+  .md-ic{ width:18px; height:18px; flex-shrink:0; }
+  .dg-l{ display:inline-flex; align-items:center; gap:9px; }
+  .md-cat-l{ display:inline-flex; align-items:center; gap:9px; min-width:0; }
+  @media (max-width: 768px){
+    header nav{ display:none !important; }
+    .header-actions{ display:none !important; }
+    .nav-toggle-bar{ width:22px !important; height:2px !important; border-radius:1px; }
+    .m-drawer{
+      display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0;
+      width:86%; max-width:340px; background:#fff; z-index:300; overflow-y:auto;
+      -webkit-overflow-scrolling:touch; transform:translateX(-100%); transition:transform .28s ease;
+      box-shadow:2px 0 32px rgba(0,0,0,.22); padding-bottom:28px;
+    }
+    body.nav-open .m-drawer{ transform:translateX(0); }
+  }
+
+  /* ===== footer 모바일 3열 통일 ===== */
+  @media (max-width:768px){
+    .footer-top{ flex-direction:column !important; gap:26px !important; align-items:flex-start; }
+    .footer-links{ display:flex !important; flex-direction:row !important; flex-wrap:nowrap !important; gap:18px !important; width:100%; }
+    .footer-col{ flex:1 1 0 !important; min-width:0; }
+    .footer-col h4{ white-space:nowrap; }
+  }
+
+  /* 하단(및 상단) 오버스크롤 흰색 방지: 캔버스 배경을 navy로 */
+  html{ background:#0B1120; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-text"><span class="logo-blue">직</span>장인</span>
+    </a>
+
+    <button type="button" class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" onclick="openMobileNav()">
+      <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+    </button>
+
+    <nav>
+      <button type="button" class="nav-close" aria-label="메뉴 닫기" onclick="closeMobileNav()">✕</button>
+      <a href="index.html" class="nav-link" data-page="home">홈</a>
+      <div class="nav-dropdown">
+        <a href="classes.html" class="nav-link" data-page="courses">직장인 클래스</a>
+        <div class="dropdown-menu">
+          <a href="classes.html" class="dropdown-item"><svg class="md-ic" style="color:#2563EB" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2" opacity=".45"/><rect x="3" y="13" width="8" height="8" rx="2.2" opacity=".45"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg>전체 클래스</a>
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=인테리어·건축·목공" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#F59E0B" viewBox="0 0 24 24" fill="currentColor"><path opacity=".45" d="M4 11.2V20a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8.8z"/><path d="M12 2.7 2.6 10.4a1 1 0 0 0 .6 1.8h17.6a1 1 0 0 0 .6-1.8z"/><rect x="10.1" y="14.5" width="3.8" height="6.5" rx=".5" fill="#fff"/></svg>인테리어·건축·목공</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=철거·원상복구" class="dropdown-item" data-field="철거·원상복구">철거·원상복구</a>
+              <a href="classes.html?field=인테리어·목공" class="dropdown-item" data-field="인테리어·목공">인테리어·목공</a>
+              <a href="classes.html?field=도배·도장" class="dropdown-item" data-field="도배·도장">도배·도장</a>
+              <a href="classes.html?field=타일·조적" class="dropdown-item" data-field="타일·조적">타일·조적</a>
+              <a href="classes.html?field=줄눈 시공" class="dropdown-item" data-field="줄눈 시공">줄눈 시공</a>
+              <a href="classes.html?field=누수·방수" class="dropdown-item" data-field="누수·방수">누수·방수</a>
+              <a href="classes.html?field=에어컨청소" class="dropdown-item" data-field="에어컨청소">에어컨청소</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=기계·전기" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#7C3AED" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".28"/><path d="M13.4 4.3a.5.5 0 0 0-.9-.2L6.9 12.2a.6.6 0 0 0 .5 1h3.4l-1 6.4a.5.5 0 0 0 .9.3l5.6-8.1a.6.6 0 0 0-.5-1h-3z"/></svg>기계·전기</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=전기·설비" class="dropdown-item" data-field="전기·설비">전기·설비</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=뷰티·패션" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#EC4899" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".28"/><path d="M12 5.6c.2 0 .4.1.4.4l1.2 3.4 3.4 1.2c.4.2.4.7 0 .8l-3.4 1.2-1.2 3.4c-.1.4-.6.4-.8 0l-1.2-3.4-3.4-1.2c-.4-.1-.4-.6 0-.8l3.4-1.2 1.2-3.4c0-.3.2-.4.4-.4z"/></svg>뷰티·패션</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=미용·헤어" class="dropdown-item" data-field="미용·헤어">미용·헤어</a>
+              <a href="classes.html?field=네일·속눈썹" class="dropdown-item" data-field="네일·속눈썹">네일·속눈썹</a>
+              <a href="classes.html?field=피부·에스테틱" class="dropdown-item" data-field="피부·에스테틱">피부·에스테틱</a>
+              <a href="classes.html?field=메이크업·반영구" class="dropdown-item" data-field="메이크업·반영구">메이크업·반영구</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=요리" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#F97316" viewBox="0 0 24 24" fill="currentColor"><path opacity=".45" d="M7 20.6h10a1 1 0 0 0 1-1v-4H6v4a1 1 0 0 0 1 1z"/><path d="M18 14.6a3.6 3.6 0 0 0 .3-7.1 3.6 3.6 0 0 0-6.3-1.4A3.6 3.6 0 0 0 5.7 7.5 3.6 3.6 0 0 0 6 14.6z"/></svg>요리</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=베이커리·제과" class="dropdown-item" data-field="베이커리·제과">베이커리·제과</a>
+              <a href="classes.html?field=바리스타·카페" class="dropdown-item" data-field="바리스타·카페">바리스타·카페</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=펫" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#B45309" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.6" cy="10.6" r="2" opacity=".5"/><circle cx="10.4" cy="7.2" r="2"/><circle cx="13.6" cy="7.2" r="2"/><circle cx="17.4" cy="10.6" r="2" opacity=".5"/><path d="M12 12.2c-2.5 0-4.4 2-4.4 4 0 1.7 2 2.7 4.4 2.7s4.4-1 4.4-2.7c0-2-1.9-4-4.4-4z"/></svg>펫</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=애견미용" class="dropdown-item" data-field="애견미용">애견미용</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=기타" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#14B8A6" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".26"/><path d="M11.8 5.7 6 11.5a1.9 1.9 0 0 0 0 2.7l4 4a1.9 1.9 0 0 0 2.7 0l5.8-5.8a1.7 1.7 0 0 0 .5-1.2V7.4a1.7 1.7 0 0 0-1.7-1.7h-4.3a1.7 1.7 0 0 0-1.2.5z"/><circle cx="15.6" cy="9.4" r="1.2" fill="#fff"/></svg>기타</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=기타" class="dropdown-item" data-field="기타">기타</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="gov_edu.html" class="nav-link" data-page="partners">국비지원 교육</a>
+        <div class="dropdown-menu">
+          <a href="gov_edu.html" class="dropdown-item"><span class="di-icon">📌</span>국비지원 교육이란?</a>
+          <a href="card_guide.html" class="dropdown-item"><span class="di-icon">💳</span>내일배움카드 발급가이드</a>
+          <a href="gov_courses.html" class="dropdown-item"><span class="di-icon">🔍</span>국비지원 교육보기</a>
+        </div>
+      </div>
+      <a href="about.html" class="nav-link" data-page="about">회사소개</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="signup.html" class="btn-ghost" style="text-decoration:none;" id="hdr-signup">회원가입</a>
+      <a href="login.html" class="btn-amber" style="text-decoration:none;color:#fff;" id="hdr-login">로그인</a>
+      <span style="color:rgba(255,255,255,0.7);font-size:13px;display:none;" id="hdr-name"></span>
+      <a href="mypage.html" class="btn-amber" style="text-decoration:none;color:#fff;display:none;" id="hdr-mypage">마이페이지</a>
+      <a href="#" onclick="doLogout();return false;" class="btn-ghost" style="display:none;text-decoration:none;" id="hdr-logout">로그아웃</a>
+    </div>
+    </div>
+</header>
+<div class="m-drawer" id="mDrawer">
+  <div class="md-top">
+    <a href="index.html" class="md-home" aria-label="홈"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.8V20h14V9.8"/></svg></a>
+    <button type="button" class="md-close" onclick="closeMobileNav()" aria-label="닫기">✕</button>
+  </div>
+  <div class="md-user">
+    <div class="md-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0" stroke-linecap="round"/></svg></div>
+    <div class="md-user-txt">
+      <div class="md-uname" id="md-greet">로그인을 해주세요</div>
+      <a href="login.html" class="md-login-link" id="md-login-link">로그인하기 ›</a>
+    </div>
+    <a href="#" onclick="doLogout();return false;" class="md-logout" id="md-logout">로그아웃</a>
+  </div>
+  <a href="mypage.html" class="md-mypage" id="md-mypage">마이페이지</a>
+  <div class="md-cats">
+    <a href="classes.html" class="md-link"><svg class="md-ic" style="color:#2563EB" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2" opacity=".45"/><rect x="3" y="13" width="8" height="8" rx="2.2" opacity=".45"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg>전체 클래스</a>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#F59E0B" viewBox="0 0 24 24" fill="currentColor"><path opacity=".45" d="M4 11.2V20a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8.8z"/><path d="M12 2.7 2.6 10.4a1 1 0 0 0 .6 1.8h17.6a1 1 0 0 0 .6-1.8z"/><rect x="10.1" y="14.5" width="3.8" height="6.5" rx=".5" fill="#fff"/></svg>인테리어·건축·목공</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub">
+        <a href="classes.html?field=철거·원상복구">철거·원상복구</a>
+        <a href="classes.html?field=인테리어·목공">인테리어·목공</a>
+        <a href="classes.html?field=도배·도장">도배·도장</a>
+        <a href="classes.html?field=타일·조적">타일·조적</a>
+        <a href="classes.html?field=줄눈 시공">줄눈 시공</a>
+        <a href="classes.html?field=누수·방수">누수·방수</a>
+        <a href="classes.html?field=에어컨청소">에어컨청소</a>
+      </div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#7C3AED" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".28"/><path d="M13.4 4.3a.5.5 0 0 0-.9-.2L6.9 12.2a.6.6 0 0 0 .5 1h3.4l-1 6.4a.5.5 0 0 0 .9.3l5.6-8.1a.6.6 0 0 0-.5-1h-3z"/></svg>기계·전기</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub"><a href="classes.html?field=전기·설비">전기·설비</a></div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#EC4899" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".28"/><path d="M12 5.6c.2 0 .4.1.4.4l1.2 3.4 3.4 1.2c.4.2.4.7 0 .8l-3.4 1.2-1.2 3.4c-.1.4-.6.4-.8 0l-1.2-3.4-3.4-1.2c-.4-.1-.4-.6 0-.8l3.4-1.2 1.2-3.4c0-.3.2-.4.4-.4z"/></svg>뷰티·패션</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub">
+        <a href="classes.html?field=미용·헤어">미용·헤어</a>
+        <a href="classes.html?field=네일·속눈썹">네일·속눈썹</a>
+        <a href="classes.html?field=피부·에스테틱">피부·에스테틱</a>
+        <a href="classes.html?field=메이크업·반영구">메이크업·반영구</a>
+      </div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#F97316" viewBox="0 0 24 24" fill="currentColor"><path opacity=".45" d="M7 20.6h10a1 1 0 0 0 1-1v-4H6v4a1 1 0 0 0 1 1z"/><path d="M18 14.6a3.6 3.6 0 0 0 .3-7.1 3.6 3.6 0 0 0-6.3-1.4A3.6 3.6 0 0 0 5.7 7.5 3.6 3.6 0 0 0 6 14.6z"/></svg>요리</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub">
+        <a href="classes.html?field=베이커리·제과">베이커리·제과</a>
+        <a href="classes.html?field=바리스타·카페">바리스타·카페</a>
+      </div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#B45309" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.6" cy="10.6" r="2" opacity=".5"/><circle cx="10.4" cy="7.2" r="2"/><circle cx="13.6" cy="7.2" r="2"/><circle cx="17.4" cy="10.6" r="2" opacity=".5"/><path d="M12 12.2c-2.5 0-4.4 2-4.4 4 0 1.7 2 2.7 4.4 2.7s4.4-1 4.4-2.7c0-2-1.9-4-4.4-4z"/></svg>펫</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub"><a href="classes.html?field=애견미용">애견미용</a></div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#14B8A6" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".26"/><path d="M11.8 5.7 6 11.5a1.9 1.9 0 0 0 0 2.7l4 4a1.9 1.9 0 0 0 2.7 0l5.8-5.8a1.7 1.7 0 0 0 .5-1.2V7.4a1.7 1.7 0 0 0-1.7-1.7h-4.3a1.7 1.7 0 0 0-1.2.5z"/><circle cx="15.6" cy="9.4" r="1.2" fill="#fff"/></svg>기타</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub"><a href="classes.html?field=기타">기타</a></div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#059669" viewBox="0 0 24 24" fill="currentColor"><path d="M11.7 4.4 3.2 8.5a.4.4 0 0 0 0 .8L12 13.5l8.8-4.2v3.9a.6.6 0 0 0 1.2 0V9.1a.4.4 0 0 0-.2-.4l-8.9-4.3a1 1 0 0 0-.8 0z"/><path opacity=".45" d="M7 11.6v2.6c0 1.4 2.4 2.5 5 2.5s5-1.1 5-2.5v-2.6l-4.6 2.2a1 1 0 0 1-.8 0z"/></svg>국비지원 교육</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub">
+        <a href="gov_edu.html">국비지원 교육이란?</a>
+        <a href="card_guide.html">내일배움카드 발급가이드</a>
+        <a href="gov_courses.html">국비지원 교육보기</a>
+      </div>
+    </div>
+  </div>
+  <a href="about.html" class="md-link"><svg class="md-ic" style="color:#64748B" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="14" height="18" rx="1.4" opacity=".5"/><g fill="#fff"><rect x="7.3" y="6" width="2.2" height="2.2" rx=".4"/><rect x="11" y="6" width="2.2" height="2.2" rx=".4"/><rect x="14.5" y="6" width="2.2" height="2.2" rx=".4"/><rect x="7.3" y="9.8" width="2.2" height="2.2" rx=".4"/><rect x="11" y="9.8" width="2.2" height="2.2" rx=".4"/><rect x="14.5" y="9.8" width="2.2" height="2.2" rx=".4"/></g><path d="M10.3 14.5h3.4a.5.5 0 0 1 .5.5v6h-4.4v-6a.5.5 0 0 1 .5-.5z"/></svg>회사소개</a>
+</div>
+<div class="nav-overlay" onclick="closeMobileNav()"></div>
+
+
+<!-- 히어로 -->
+<div class="hero">
+  <div class="hero-tag">국비지원 교육 가이드</div>
+  <h1 class="hero-title">국비지원 교육,<br><em>제대로 알고 활용하세요.</em></h1>
+  <p class="hero-sub">정부가 교육비를 대신 내주는 제도예요. 직장인·실업자·자영업자 누구나 신청 가능하고, 조건만 충족하면 사실상 무료로 기술을 배울 수 있어요.</p>
+  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:8px 18px;margin-bottom:24px;font-size:13px;color:rgba(255,255,255,0.55);word-break:keep-all;">
+    <span>📋</span>
+    정확한 지원 가능 여부 및 금액은 <a href="https://www.work24.go.kr" target="_blank" style="color:#005BFF;font-weight:700;text-decoration:none;">고용24</a> 또는 고용센터에서 확인하세요.
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num">300~500만원</div><div class="hstat-label">1인당 최대 지원 한도</div></div>
+    <div class="hstat"><div class="hstat-num">1,000+</div><div class="hstat-label">선택 가능한 교육 분야</div></div>
+    <div class="hstat"><div class="hstat-num">5년</div><div class="hstat-label">카드 유효기간</div></div>
+    <div class="hstat"><div class="hstat-num">연중 상시</div><div class="hstat-label">신청 가능 기간</div></div>
+  </div>
+</div>
+
+<!-- 목차 -->
+<div class="toc">
+  <div class="toc-inner">
+    <a class="toc-item active" onclick="goSec('what')">국비지원이란?</a>
+    <a class="toc-item" onclick="goSec('target')">신청 대상</a>
+    <a class="toc-item" onclick="goSec('types')">훈련 유형</a>
+    <a class="toc-item" onclick="goSec('benefit')">혜택 & 지원금</a>
+    <a class="toc-item" onclick="goSec('howto')">신청 방법</a>
+    <a class="toc-item" onclick="goSec('faq')">FAQ</a>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 1. 국비지원이란? -->
+  <div class="section" id="what">
+    <div class="sec-label">WHAT IS IT</div>
+    <h2 class="sec-title">국비지원 교육이란?</h2>
+    <p class="sec-desc">고용노동부가 운영하는 직업능력개발 제도예요. 훈련비 전액 또는 일부를 국가가 대신 부담해서, 국민 누구나 경제적 부담 없이 직업 기술을 배울 수 있게 지원하는 제도입니다.</p>
+
+    <div class="def-box">
+      <div class="def-icon">🎓</div>
+      <div class="def-content">
+        <div class="def-title">핵심 한 줄 요약</div>
+        <div class="def-text">
+          <strong>국가가 교육비를 대신 내준다</strong>는 게 핵심이에요.<br>
+          국민내일배움카드를 발급받아 승인된 훈련과정을 수강하면, 수강료의 45~100%를 정부가 대신 지불해요. 직장인, 실업자, 자영업자, 프리랜서 등 대부분의 국민이 대상이에요.
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card blue">
+        <div class="stat-num">300만원~</div>
+        <div class="stat-label">기본 훈련비 지원<br>(5년간)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">최대 500만원</div>
+        <div class="stat-label">취약계층 등<br>추가지원 시</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">45~100%</div>
+        <div class="stat-label">국비 지원 비율<br>(과정·대상별 상이)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">24개 대분류</div>
+        <div class="stat-label">NCS 기준<br>1,000+ 세부 분야</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 신청 대상 -->
+  <div class="section" id="target">
+    <div class="sec-label">WHO CAN APPLY</div>
+    <h2 class="sec-title">누가 신청할 수 <em>있나요?</em></h2>
+    <p class="sec-desc">만 15세 이상 75세 미만이면 대부분 신청 가능해요. 직장인이든 실업자든 자영업자든 상관없어요.</p>
+
+    <div class="target-grid">
+      <div class="target-card">
+        <div class="target-icon">👔</div>
+        <div class="target-type">EMPLOYED</div>
+        <div class="target-title">재직자</div>
+        <ul class="target-list">
+          <li>중소·중견기업 근로자</li>
+          <li>비정규직·파견·계약직</li>
+          <li>대기업 근로자 (45세 이상 또는 월급 300만원 미만)</li>
+          <li>육아휴직 중인 근로자</li>
+        </ul>
+      </div>
+      <div class="target-card">
+        <div class="target-icon">🔍</div>
+        <div class="target-type">UNEMPLOYED</div>
+        <div class="target-title">실업자·구직자</div>
+        <ul class="target-list">
+          <li>구직 신청 등록 후 취업 준비 중인 분</li>
+          <li>졸업예정자·졸업 후 미취업자</li>
+          <li>경력단절 후 재취업 준비 중인 분</li>
+          <li>이직 준비 중인 분</li>
+        </ul>
+      </div>
+      <div class="target-card">
+        <div class="target-icon">🏪</div>
+        <div class="target-type">SELF-EMPLOYED</div>
+        <div class="target-title">자영업자·프리랜서</div>
+        <ul class="target-list">
+          <li>연매출 4억원 미만 자영업자</li>
+          <li>보험설계사·학습지교사 등 특수형태 근로자</li>
+          <li>프리랜서·배달기사·퀵서비스 등</li>
+          <li>사업기간 1년 이상인 경우</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="notice-box">
+      <div class="notice-title">❌ 신청 제외 대상</div>
+      <ul class="notice-list">
+        <li>공무원·사립학교 교직원 / 군인연금 적용 현역</li>
+        <li>연매출 4억원 이상 자영업자 / 부동산 임대 연 4,800만원 이상</li>
+        <li>월급 300만원 이상 대기업 근로자 (만 45세 미만) / 월소득 500만원 이상 특수형태 근로자</li>
+        <li>졸업까지 수업연한 2년 초과 대학(원) 재학·휴학생 / 중·고등학교 재학생 (고3 제외)</li>
+        <li>만 75세 이상</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. 훈련 유형 -->
+  <div class="section" id="types">
+    <div class="sec-label">TRAINING TYPES</div>
+    <h2 class="sec-title">어떤 교육을 <em>받을 수 있나요?</em></h2>
+    <p class="sec-desc">국비지원 교육은 크게 4가지 유형으로 나뉘어요. 상황에 맞는 유형을 선택하면 혜택이 달라져요.</p>
+
+    <div class="type-list">
+      <div class="type-item">
+        <div class="type-header">
+          <div class="type-meta">
+            <div class="type-badge"><span class="tbadge tbadge-blue">일반훈련</span></div>
+            <div class="type-name">국민내일배움카드 일반과정</div>
+            <div class="type-tag">재직자·실업자·자영업자 공통</div>
+          </div>
+          <div class="type-support" style="flex:1;">
+            <div class="ts-row">
+              <div class="ts-item"><div class="ts-label">지원비율</div><div class="ts-val">45~85%</div></div>
+              <div class="ts-item"><div class="ts-label">지원한도</div><div class="ts-val">300만원 (5년)</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="type-desc">가장 일반적인 국비지원 과정이에요. IT·요리·미용·건설·사무 등 1,000개 이상 분야에서 선택 가능해요. 본인 부담금 15~55%가 발생하며, 취약계층은 자부담이 크게 줄어요.</div>
+      </div>
+
+      <div class="type-item">
+        <div class="type-header">
+          <div class="type-meta">
+            <div class="type-badge"><span class="tbadge tbadge-green">K-디지털</span></div>
+            <div class="type-name">K-Digital Training (KDT)</div>
+            <div class="type-tag">IT·디지털 특화 장기과정</div>
+          </div>
+          <div class="type-support" style="flex:1;">
+            <div class="ts-row">
+              <div class="ts-item"><div class="ts-label">지원비율</div><div class="ts-val">전액 무료</div></div>
+              <div class="ts-item"><div class="ts-label">기간</div><div class="ts-val">3~10개월</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="type-desc">AI, 빅데이터, 클라우드, SW개발 등 디지털 분야 집중 과정이에요. 훈련비 전액 무료에, 출석률 80% 이상 유지 시 월 최대 20만원 훈련장려금까지 받을 수 있어요. 취준생에게 가장 인기 있는 유형이에요.</div>
+      </div>
+
+      <div class="type-item">
+        <div class="type-header">
+          <div class="type-meta">
+            <div class="type-badge"><span class="tbadge tbadge-orange">국가기간·전략</span></div>
+            <div class="type-name">국가기간·전략산업 직종훈련</div>
+            <div class="type-tag">산업 수요 맞춤 특화과정</div>
+          </div>
+          <div class="type-support" style="flex:1;">
+            <div class="ts-row">
+              <div class="ts-item"><div class="ts-label">지원비율</div><div class="ts-val">전액 무료</div></div>
+              <div class="ts-item"><div class="ts-label">대상</div><div class="ts-val">구직자 중심</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="type-desc">용접, 설비, 전기, 기계, 건설 등 국가 핵심산업 분야 과정이에요. 구직자는 전액 무료 수강이 가능하며, 훈련장려금도 받을 수 있어요. 수료 후 취업 연계율이 높아요.</div>
+      </div>
+
+      <div class="type-item">
+        <div class="type-header">
+          <div class="type-meta">
+            <div class="type-badge"><span class="tbadge tbadge-purple">지자체 특화</span></div>
+            <div class="type-name">지자체 운영 직업교육 과정</div>
+            <div class="type-tag">서울새싹, 경기도 청년 등</div>
+          </div>
+          <div class="type-support" style="flex:1;">
+            <div class="ts-row">
+              <div class="ts-item"><div class="ts-label">지원비율</div><div class="ts-val">전액~대부분 무료</div></div>
+              <div class="ts-item"><div class="ts-label">신청</div><div class="ts-val">각 지자체</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="type-desc">지방자치단체에서 별도 운영하는 과정이에요. 서울시 새싹, 경기도 청년 IT 교육 등이 대표적이에요. 내일배움카드와 별도로 신청하며, 지역 거주자 우선이에요.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 혜택 & 지원금 -->
+  <div class="section" id="benefit">
+    <div class="sec-label">BENEFITS</div>
+    <h2 class="sec-title">받을 수 있는 <em>혜택들</em></h2>
+    <p class="sec-desc">훈련비만 지원받는 게 아니에요. 출석률 조건을 충족하면 생활비까지 받을 수 있어요.</p>
+
+    <div class="benefit-grid">
+      <div class="ben-card">
+        <div class="ben-icon">💰</div>
+        <div class="ben-title">훈련비 지원</div>
+        <div class="ben-desc">수강료의 45~100%를 국가가 대신 내줘요. 5년간 최대 300~500만원까지 사용 가능해요.</div>
+      </div>
+      <div class="ben-card">
+        <div class="ben-icon">🚌</div>
+        <div class="ben-title">훈련장려금</div>
+        <div class="ben-desc">출석률 80% 이상 충족 시 월 최대 20만원 지급 (2026년 인상, 실업자·140시간 이상 과정 해당)</div>
+      </div>
+      <div class="ben-card">
+        <div class="ben-icon">🏠</div>
+        <div class="ben-title">취약계층 우대</div>
+        <div class="ben-desc">기초수급자·차상위·장애인 등은 본인부담금 0% 또는 최소화, 추가 200만원 지원도 가능해요.</div>
+      </div>
+      <div class="ben-card">
+        <div class="ben-icon">📜</div>
+        <div class="ben-title">자격증 취득 지원</div>
+        <div class="ben-desc">국가기술자격증 취득과 연계된 과정이 많아요. 기능사부터 산업기사까지 다양하게 지원돼요.</div>
+      </div>
+      <div class="ben-card">
+        <div class="ben-icon">💼</div>
+        <div class="ben-title">취업 연계</div>
+        <div class="ben-desc">수료 후 연계 기업 취업 알선, 채용 설명회 참여 등 취업 지원 서비스도 함께 제공돼요.</div>
+      </div>
+      <div class="ben-card">
+        <div class="ben-icon">🖥️</div>
+        <div class="ben-title">온·오프라인 선택</div>
+        <div class="ben-desc">집에서 수강 가능한 온라인 과정도 다양해요. 직장 다니면서도 병행할 수 있어요.</div>
+      </div>
+    </div>
+
+    <div style="background:#EBF0FF;border-radius:16px;padding:24px 28px;border:1px solid #C7D7FF;">
+      <div style="font-size:14px;font-weight:900;color:#005BFF;margin-bottom:12px;">📊 대상별 지원 비율 한눈에 보기</div>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#005BFF;color:#fff;">
+            <th style="padding:11px 14px;font-size:13px;text-align:left;border-radius:8px 0 0 0;">대상</th>
+            <th style="padding:11px 14px;font-size:13px;text-align:center;">국비 지원</th>
+            <th style="padding:11px 14px;font-size:13px;text-align:center;">본인부담</th>
+            <th style="padding:11px 14px;font-size:13px;text-align:center;border-radius:0 8px 0 0;">최대 한도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#fff;">
+            <td style="padding:11px 14px;font-size:14px;border-bottom:1px solid #E2E8F0;">실업자·구직자</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;font-weight:700;color:#005BFF;">최대 85%</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;">15~45%</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;">300만원+</td>
+          </tr>
+          <tr style="background:#F8FAFC;">
+            <td style="padding:11px 14px;font-size:14px;border-bottom:1px solid #E2E8F0;">재직자</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;font-weight:700;color:#005BFF;">최대 80%</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;">20~55%</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;">300만원</td>
+          </tr>
+          <tr style="background:#fff;">
+            <td style="padding:11px 14px;font-size:14px;border-bottom:1px solid #E2E8F0;">자영업자</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;font-weight:700;color:#005BFF;">최대 80%</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;">20~55%</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;border-bottom:1px solid #E2E8F0;">300만원</td>
+          </tr>
+          <tr style="background:#F0FDF4;">
+            <td style="padding:11px 14px;font-size:14px;">기초수급자 등 취약계층</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;font-weight:700;color:#166534;">100%</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;">0%</td>
+            <td style="padding:11px 14px;font-size:14px;text-align:center;font-weight:700;color:#166534;">최대 500만원</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 5. 신청 방법 -->
+  <div class="section" id="howto">
+    <div class="sec-label">HOW TO APPLY</div>
+    <h2 class="sec-title">신청 방법 <em>5단계</em></h2>
+    <p class="sec-desc">고용24에서 온라인으로 간단하게 신청할 수 있어요. 방문 신청도 가능해요.</p>
+
+    <div class="flow">
+      <div class="flow-item">
+        <div class="flow-num">1</div>
+        <div class="flow-title">고용24 접속</div>
+        <div class="flow-desc">work24.go.kr 접속 후 로그인</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">2</div>
+        <div class="flow-title">구직신청</div>
+        <div class="flow-desc">실업자만 해당 (재직자·자영업자 건너뜀)</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">3</div>
+        <div class="flow-title">카드 발급 신청</div>
+        <div class="flow-desc">직업능력개발 → 국민내일배움카드</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">4</div>
+        <div class="flow-title">심사 완료</div>
+        <div class="flow-desc">3~5 영업일 내 문자 발송</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">5</div>
+        <div class="flow-title">과정 신청</div>
+        <div class="flow-desc">원하는 훈련과정 검색 후 수강 신청</div>
+      </div>
+    </div>
+
+    <div style="background:#F8FAFC;border-radius:14px;padding:20px 24px;border:1px solid #E2E8F0;display:flex;gap:16px;align-items:flex-start;">
+      <div style="font-size:24px;">💡</div>
+      <div>
+        <div style="font-size:14px;font-weight:900;color:#1E293B;margin-bottom:6px;">내일배움카드 발급이 먼저예요!</div>
+        <div style="font-size:14px;color:#64748B;line-height:1.75;word-break:keep-all;">국비지원 교육을 받으려면 국민내일배움카드가 있어야 해요. 카드 발급부터 수강 신청까지 상세한 안내는 아래 발급 가이드에서 확인하세요.</div>
+        <a href="card_guide.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:#005BFF;font-size:14px;font-weight:700;text-decoration:none;">💳 내일배움카드 발급 가이드 보기 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. FAQ -->
+  <div class="section" id="faq">
+    <div class="sec-label">FAQ</div>
+    <h2 class="sec-title">자주 묻는 질문</h2>
+
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><div class="faq-q-icon">Q</div>국비지원 교육은 완전 무료인가요?<span class="faq-q-arrow">∨</span></div>
+        <div class="faq-a">과정에 따라 달라요. K-Digital Training, 국가기간·전략산업 직종훈련은 전액 무료예요. 일반 과정은 훈련비의 15~55%를 본인이 부담해야 해요. 단, 기초생활수급자·차상위계층 등 취약계층은 자부담이 0%이거나 매우 낮을 수 있어요.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><div class="faq-q-icon">Q</div>직장 다니면서도 신청할 수 있나요?<span class="faq-q-arrow">∨</span></div>
+        <div class="faq-a">네, 재직자도 신청 가능해요. 내일배움카드를 발급받아 온라인 과정이나 저녁·주말 과정을 활용하면 직장을 다니면서도 수강할 수 있어요. 단, 재직자는 일부 과정 선택이 제한될 수 있어요.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><div class="faq-q-icon">Q</div>배울 수 있는 분야가 얼마나 다양한가요?<span class="faq-q-arrow">∨</span></div>
+        <div class="faq-a">국가직무능력표준(NCS) 기준으로 24개 대분류, 1,000개 이상의 세부 분야가 있어요. IT·코딩, 디자인, 요리, 미용·뷰티, 건설·기계, 회계·사무, 서비스업 등 거의 모든 직종을 커버해요.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><div class="faq-q-icon">Q</div>훈련장려금은 얼마나 받을 수 있나요?<span class="faq-q-arrow">∨</span></div>
+        <div class="faq-a">2026년 기준 월 최대 20만원으로 인상됐어요 (기존 11만 6천원). 실업자 대상, 140시간 이상 과정에서 출석률 80% 이상을 유지할 때 지급돼요. 재직자는 일부 과정에서만 해당돼요.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><div class="faq-q-icon">Q</div>수강 도중 그만두면 어떻게 되나요?<span class="faq-q-arrow">∨</span></div>
+        <div class="faq-a">중도 포기 시 이미 사용한 훈련비 일부를 본인이 환급해야 할 수 있어요. 또한 훈련장려금도 환수될 수 있어요. 일정 기간 내 재신청도 제한될 수 있으니 신중하게 결정하는 게 중요해요.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><div class="faq-q-icon">Q</div>카드 유효기간이 지나면 어떻게 되나요?<span class="faq-q-arrow">∨</span></div>
+        <div class="faq-a">발급일로부터 5년이 지나면 잔액이 모두 소멸해요. 이후에도 훈련이 필요하다면 다시 카드를 발급받아야 해요. 잔액이 남아있더라도 기간이 지나면 사라지니 유효기간 내 활용하는 게 중요해요.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-title">지금 바로 시작할 수 있어요,<br><em>먼저 카드부터 발급받으세요.</em></div>
+    <p class="cta-sub">국비지원 교육의 첫 단계는 내일배움카드 발급이에요. 10분이면 신청 완료!</p>
+    <div class="cta-btns">
+      <a href="card_guide.html" class="cta-btn cta-btn-blue">💳 내일배움카드 발급 가이드</a>
+      <a href="https://www.work24.go.kr" target="_blank" class="cta-btn cta-btn-ghost">🖥️ 고용24 바로가기</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var sections = ['what','target','types','benefit','howto','faq'];
+
+function goSec(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('active');});
+  event.target.classList.add('active');
+}
+
+window.addEventListener('scroll', function() {
+  var current = '';
+  sections.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 140) current = id;
+  });
+  document.querySelectorAll('.toc-item').forEach(function(t, i) {
+    t.classList.toggle('active', sections[i] === current);
+  });
+});
+
+function toggleFaq(item) {
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(el) {
+    el.classList.remove('open');
+  });
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+<script>
+document.querySelectorAll('.nav-dropdown').forEach(function(dd){var t;dd.addEventListener('mouseenter',function(){clearTimeout(t);document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('active');});dd.classList.add('active');});dd.addEventListener('mouseleave',function(){t=setTimeout(function(){dd.classList.remove('active');},150);});});
+document.addEventListener('click',function(e){if(!e.target.closest('.nav-dropdown'))document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('active');});});
+document.addEventListener('DOMContentLoaded',function(){var path=window.location.pathname.split('/').pop()||'index.html';var map={'index.html':'home','':'home','chulgeo.html':'courses','chulgeo':'courses','interior.html':'courses','tile.html':'courses','leak.html':'courses','aircon.html':'courses','about.html':'about','about':'about','gov_edu.html':'partners','gov_edu':'partners','card_guide.html':'partners','card_guide':'partners','gov_courses.html':'partners','gov_courses':'partners'};var cur=map[path];document.querySelectorAll('.nav-link').forEach(function(el){el.classList.remove('active');});if(cur)document.querySelectorAll('.nav-link[data-page="'+cur+'"]').forEach(function(el){el.classList.add('active');});});
+</script>
+
+
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo-text"><span class="logo-blue">직</span>장인</span>
+        <p class="footer-desc">월급 말고, 내 기술로 직접 버는 삶.<br>'직장'인에서 '직'장인으로 시작하세요.</p>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+          <a href="http://pf.kakao.com/_xexbgxin/chat" target="_blank" class="btn-kakao-sm">💬 카카오 문의</a>
+          <a href="tel:1866-0379" style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none;">📞 1866-0379</a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>클래스</h4>
+          <ul>
+            <li><a href="chulgeo.html">클래스 전체보기</a></li>
+            <li><a href="index.html#popular">인기있는 클래스</a></li>
+            <li><a href="index.html#newclass">신규 클래스</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>플랫폼</h4>
+          <ul>
+            <li><a href="instructor_apply.html" onclick="checkInstructorAccess(event)">직장인 강사 신청</a></li>
+            <li><a href="gov_edu.html">국비지원 교육</a></li>
+            <li><a href="about.html">회사 소개</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>고객 지원</h4>
+          <ul>
+            <li><a href="privacy.html">개인정보 처리방침</a></li>
+            <li><a href="terms.html">이용약관</a></li>
+            <li><a href="index.html#faq">자주 묻는 질문</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-biz">
+        서울특별시 가산디지털2로 143 이번워크2 · 대표: 임채인<br>
+        사업자등록번호 000-00-00000 · 통신판매업 신고 예정
+      </div>
+      <div class="footer-copyright">ⓒ 2025 직장인. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  var loggedIn = localStorage.getItem('jikjangin_logged_in');
+  var userStr  = localStorage.getItem('jikjangin_user');
+  var signup   = document.getElementById('hdr-signup');
+  var login    = document.getElementById('hdr-login');
+  var name     = document.getElementById('hdr-name');
+  var mypage   = document.getElementById('hdr-mypage');
+  var logout   = document.getElementById('hdr-logout');
+  if (loggedIn && userStr) {
+    if (signup) signup.style.display = 'none';
+    if (login)  login.style.display  = 'none';
+    if (mypage) mypage.style.display = '';
+    if (logout) logout.style.display = '';
+    if (name) {
+      name.style.display = '';
+      try { name.textContent = JSON.parse(userStr).name + '님'; } catch(e) {}
+    }
+  }
+})();
+function doLogout() {
+  localStorage.removeItem('jikjangin_user');
+  localStorage.removeItem('jikjangin_logged_in');
+  window.location.href = 'index.html';
+}
+</script>
+
+<script>
+function openMobileNav(){ document.body.classList.add('nav-open'); var t=document.querySelector('.nav-toggle'); if(t) t.setAttribute('aria-expanded','true'); }
+function closeMobileNav(){ document.body.classList.remove('nav-open'); var t=document.querySelector('.nav-toggle'); if(t) t.setAttribute('aria-expanded','false');
+  document.querySelectorAll('.nav-dropdown.active').forEach(function(d){ d.classList.remove('active'); });
+  document.querySelectorAll('.dropdown-group.open').forEach(function(g){ g.classList.remove('open'); });
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMobileNav(); });
+</script>
+<script>
+function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggle('open'); }
+(function(){ try{ var li=localStorage.getItem('jikjangin_logged_in'), us=localStorage.getItem('jikjangin_user'); if(li&&us){ var u=JSON.parse(us); var g=document.getElementById('md-greet'); if(g) g.textContent=(u.name||'')+'님'; var ll=document.getElementById('md-login-link'); if(ll) ll.style.display='none'; var lo=document.getElementById('md-logout'); if(lo) lo.style.display='inline'; } }catch(e){} })();
+</script>
+</body>
+</html>

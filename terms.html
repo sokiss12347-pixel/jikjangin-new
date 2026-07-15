@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이용약관 — 직장인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: #F8FAFC; color: #1E293B; -webkit-font-smoothing: antialiased; }
+  header {
+    background: #0B1120;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    height: 62px;
+    gap: 32px;
+  }
+  nav { display: flex; align-items: center; gap: 4px; flex: 1; }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    line-height: 1;
+  }
+  .logo-blue { color: #005BFF; }
+  .nav-link { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 14px; border-radius: 6px; transition: all 0.18s; white-space: nowrap; }
+  .nav-link:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .nav-link.active { color: #005BFF !important; }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.18s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+  .btn-amber {
+    background: #005BFF;
+    border: none;
+    color: #ffffff;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.18s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+  /* ─── FOOTER ─── */
+  footer {
+    background: #0B1120;
+    padding: 48px 24px 32px;
+    margin-top: 0;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .footer-brand .logo-text {
+    font-size: 20px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .footer-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.7;
+    max-width: 280px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 48px;
+  }
+
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 14px;
+    letter-spacing: 0.3px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .footer-col ul li a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.38);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-col ul li a:hover { color: rgba(255,255,255,0.75); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-biz {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    line-height: 1.8;
+  }
+
+  .footer-copyright {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+  }
+  .btn-kakao-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FEE500;
+    color: #191919;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    text-decoration: none;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+  
+  /* 콘텐츠 스타일 */
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+  .doc-header { margin-bottom: 36px; padding-bottom: 24px; border-bottom: 2px solid #005BFF; }
+  .doc-title { font-size: 28px; font-weight: 900; color: #1E293B; letter-spacing: -.5px; margin-bottom: 8px; }
+  .doc-date { font-size: 13px; color: #94A3B8; }
+  .wrap h2 { font-size: 17px; font-weight: 900; color: #1E293B; margin: 32px 0 12px; padding-left: 12px; border-left: 3px solid #005BFF; }
+  .wrap p, .wrap li { font-size: 14px; color: #475569; line-height: 1.9; margin-bottom: 8px; }
+  .wrap ul { padding-left: 20px; margin-bottom: 12px; }
+  .box { background: #EBF0FF; border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+  .box p { color: #003099; font-weight: 600; margin: 0; }
+
+
+  /* ── 드롭다운 메뉴 ── */
+  .nav-dropdown { position: relative; }
+  .nav-dropdown > .nav-link { display: flex; align-items: center; gap: 4px; }
+  .nav-dropdown > .nav-link::after { content: '▾'; font-size: 10px; opacity: .6; }
+  .nav-dropdown::after { content:''; position:absolute; top:100%; left:0; right:0; height:10px; }
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    padding: 8px;
+    min-width: 180px;
+    z-index: 200;
+    white-space: nowrap;
+  }
+  .nav-dropdown.active .dropdown-menu { display: block; }
+  /* 데스크탑: 드롭다운 위에 있으면 유지, 벗어나면 즉시 닫힘 (틈은 투명 브릿지로 연결) */
+  @media (hover:hover){
+    .nav-dropdown:hover > .dropdown-menu{ display:block; }
+    .nav-dropdown:not(:hover) > .dropdown-menu{ display:none !important; }
+    .dropdown-menu::before{ content:""; position:absolute; top:-8px; left:0; right:0; height:8px; }
+  }
+  .dropdown-group { position: relative; }
+  .dropdown-group-label {
+    display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    padding: 10px 14px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; color: #1E293B;
+    cursor: pointer; white-space: nowrap; text-decoration: none;
+  }
+  .dropdown-group-label .dg-arrow { font-size: 12px; color: #94A3B8; }
+  .dropdown-group:hover > .dropdown-group-label,
+  .dropdown-group.open > .dropdown-group-label { background: #F8FAFC; color: #005BFF; }
+  .dropdown-flyout {
+    display: none; position: absolute; top: -7px; left: 100%;
+    background: #fff; border: 1px solid #E8ECF0; border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(15,23,42,.14); padding: 6px; min-width: 168px; z-index: 210;
+  }
+  .dropdown-group:hover > .dropdown-flyout,
+  .dropdown-group.open > .dropdown-flyout { display: block; }
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1E293B;
+    text-decoration: none;
+    transition: background .12s;
+  }
+  .dropdown-item:hover { background: #F8FAFC; color: #005BFF; }
+  .dropdown-item .di-icon { font-size: 16px; flex-shrink: 0; }
+  .dropdown-divider { height: 1px; background: #F1F5F9; margin: 4px 0; }
+
+
+  /* ===================================================== */
+  /* 모바일 햄버거 + 드로어 내비게이션 (모바일 반응형 수정) */
+  /* ===================================================== */
+  .nav-toggle{
+    display:none; flex-direction:column; justify-content:center; align-items:center;
+    gap:4px; width:44px; height:44px; margin-left:auto; flex-shrink:0;
+    background:transparent; border:none; cursor:pointer; padding:0;
+  }
+  .nav-toggle-bar{ display:block; width:22px; height:2px; background:#fff; border-radius:2px; }
+  .nav-close{ display:none; }
+  .nav-overlay{ display:none; }
+
+  @media (max-width: 768px){
+    .header-inner{ gap:12px; padding:0 16px; height:56px; flex-wrap:nowrap; }
+    .nav-toggle{ display:flex; order:3; }
+    .header-actions{ order:2; gap:6px; }
+    .header-actions a, .header-actions button{ padding:6px 10px; font-size:12px; }
+
+    header nav{
+      position:fixed; top:0; left:0; bottom:0; width:82%; max-width:320px;
+      background:#fff; flex-direction:column; align-items:stretch; gap:0;
+      padding:16px 0 24px; margin:0; overflow-y:auto; -webkit-overflow-scrolling:touch;
+      transform:translateX(-100%); transition:transform .28s ease;
+      z-index:300; box-shadow:2px 0 32px rgba(0,0,0,.2);
+    }
+    body.nav-open header nav{ transform:translateX(0); }
+    .nav-close{
+      display:flex; align-items:center; justify-content:center;
+      width:44px; height:44px; margin:0 8px 8px auto;
+      background:transparent; border:none; font-size:20px; color:#1E293B; cursor:pointer;
+    }
+    .nav-overlay{
+      display:block; position:fixed; inset:0; background:rgba(15,23,42,.45);
+      opacity:0; pointer-events:none; transition:opacity .22s ease; z-index:290;
+    }
+    body.nav-open .nav-overlay{ opacity:1; pointer-events:auto; }
+    body.nav-open{ overflow:hidden; }
+
+    .nav-link{
+      color:#1E293B; padding:14px 20px; font-size:15px; font-weight:600;
+      white-space:normal; border-radius:0; border-bottom:1px solid #F1F5F9;
+      min-height:48px; display:flex; align-items:center;
+    }
+    .nav-link:hover{ background:#F8FAFC; }
+    .nav-dropdown{ display:flex; flex-direction:column; }
+    .nav-dropdown > .nav-link{ justify-content:space-between; }
+    .nav-dropdown::after{ display:none; }
+    .dropdown-menu{
+      display:none; position:static; left:auto; top:auto; transform:none;
+      box-shadow:none; border:none; border-radius:0; background:#F8FAFC;
+      padding:4px 0; min-width:0; white-space:normal; max-width:none;
+    }
+    .nav-dropdown.active > .dropdown-menu{ display:block; }
+    .dropdown-item{ padding:12px 20px 12px 34px; font-size:14px; min-height:44px; }
+    .dropdown-group-label{ padding:12px 20px 12px 34px; min-height:44px; }
+  }
+
+  /* ===================================================== */
+  /* 모바일 푸터: 2열 그리드 + 세로 스택 (모바일 반응형 수정) */
+  /* ===================================================== */
+  @media (max-width: 768px){
+    .footer-top{ flex-direction:column; gap:28px; }
+    .footer-desc{ max-width:none; }
+    .footer-links{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px 16px; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; gap:8px; }
+    .footer-biz, .footer-copyright{ font-size:12px; line-height:1.6; }
+  }
+
+/* ===== 모바일 드로어 ===== */
+  .m-drawer{ display:none; }
+  .md-top{ display:flex; align-items:center; justify-content:space-between; padding:12px 12px 2px; }
+  .md-home{ display:inline-flex; align-items:center; color:#1E293B; text-decoration:none; padding:6px; }
+  .md-home svg{ width:19px; height:19px; }
+  .md-close{ background:none; border:none; font-size:17px; color:#1E293B; cursor:pointer; width:36px; height:36px; line-height:1; }
+  .md-user{ position:relative; display:flex; align-items:center; gap:10px; padding:6px 18px 13px; }
+  .md-avatar{ width:36px; height:36px; border-radius:50%; background:#EEF2F7; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#94A3B8; }
+  .md-avatar svg{ width:18px; height:18px; }
+  .md-uname{ font-size:14px; font-weight:800; color:#1E293B; }
+  .md-login-link{ font-size:12px; color:#005BFF; text-decoration:none; font-weight:700; }
+  .md-logout{ position:absolute; top:0; right:16px; font-size:11px; color:#94A3B8; text-decoration:none; display:none; }
+  .md-mypage{ display:block; margin:0 16px 14px; padding:11px; text-align:center; background:#005BFF; color:#fff; font-weight:700; font-size:13px; border-radius:10px; text-decoration:none; transition:background .15s, transform .1s; }
+  .md-mypage:hover{ background:#0041CC; }
+  .md-mypage:active{ transform:scale(.985); }
+  .md-cats{ border-top:8px solid #F1F5F9; }
+  .md-cat-label{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 18px; background:none; border:none; border-bottom:1px solid #F1F5F9; font-size:13px; font-weight:700; color:#1E293B; cursor:pointer; text-align:left; }
+  .md-chev{ transition:transform .2s; color:#94A3B8; font-size:12px; flex-shrink:0; }
+  .md-cat.open .md-chev{ transform:rotate(180deg); }
+  .md-cat-sub{ display:none; background:#F8FAFC; }
+  .md-cat.open .md-cat-sub{ display:block; }
+  .md-cat-sub a{ display:block; padding:9px 18px 9px 30px; font-size:12px; color:#475569; text-decoration:none; }
+  .md-cat-sub a:active{ background:#EEF2F7; }
+  .md-link{ display:flex; align-items:center; gap:9px; padding:12px 18px; font-size:13px; font-weight:700; color:#1E293B; text-decoration:none; border-bottom:1px solid #F1F5F9; }
+  .md-ic{ width:18px; height:18px; flex-shrink:0; }
+  .dg-l{ display:inline-flex; align-items:center; gap:9px; }
+  .md-cat-l{ display:inline-flex; align-items:center; gap:9px; min-width:0; }
+  @media (max-width: 768px){
+    header nav{ display:none !important; }
+    .header-actions{ display:none !important; }
+    .nav-toggle-bar{ width:22px !important; height:2px !important; border-radius:1px; }
+    .m-drawer{
+      display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0;
+      width:86%; max-width:340px; background:#fff; z-index:300; overflow-y:auto;
+      -webkit-overflow-scrolling:touch; transform:translateX(-100%); transition:transform .28s ease;
+      box-shadow:2px 0 32px rgba(0,0,0,.22); padding-bottom:28px;
+    }
+    body.nav-open .m-drawer{ transform:translateX(0); }
+  }
+
+  /* ===== footer 모바일 3열 통일 ===== */
+  @media (max-width:768px){
+    .footer-top{ flex-direction:column !important; gap:26px !important; align-items:flex-start; }
+    .footer-links{ display:flex !important; flex-direction:row !important; flex-wrap:nowrap !important; gap:18px !important; width:100%; }
+    .footer-col{ flex:1 1 0 !important; min-width:0; }
+    .footer-col h4{ white-space:nowrap; }
+  }
+
+  /* 하단(및 상단) 오버스크롤 흰색 방지: 캔버스 배경을 navy로 */
+  html{ background:#0B1120; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-text"><span class="logo-blue">직</span>장인</span>
+    </a>
+
+    <button type="button" class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" onclick="openMobileNav()">
+      <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+    </button>
+
+    <nav>
+      <button type="button" class="nav-close" aria-label="메뉴 닫기" onclick="closeMobileNav()">✕</button>
+      <a href="index.html" class="nav-link" data-page="home">홈</a>
+      <div class="nav-dropdown">
+        <a href="classes.html" class="nav-link" data-page="courses">직장인 클래스</a>
+        <div class="dropdown-menu">
+          <a href="classes.html" class="dropdown-item"><svg class="md-ic" style="color:#2563EB" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2" opacity=".45"/><rect x="3" y="13" width="8" height="8" rx="2.2" opacity=".45"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg>전체 클래스</a>
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=인테리어·건축·목공" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#F59E0B" viewBox="0 0 24 24" fill="currentColor"><path opacity=".45" d="M4 11.2V20a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8.8z"/><path d="M12 2.7 2.6 10.4a1 1 0 0 0 .6 1.8h17.6a1 1 0 0 0 .6-1.8z"/><rect x="10.1" y="14.5" width="3.8" height="6.5" rx=".5" fill="#fff"/></svg>인테리어·건축·목공</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=철거·원상복구" class="dropdown-item" data-field="철거·원상복구">철거·원상복구</a>
+              <a href="classes.html?field=인테리어·목공" class="dropdown-item" data-field="인테리어·목공">인테리어·목공</a>
+              <a href="classes.html?field=도배·도장" class="dropdown-item" data-field="도배·도장">도배·도장</a>
+              <a href="classes.html?field=타일·조적" class="dropdown-item" data-field="타일·조적">타일·조적</a>
+              <a href="classes.html?field=줄눈 시공" class="dropdown-item" data-field="줄눈 시공">줄눈 시공</a>
+              <a href="classes.html?field=누수·방수" class="dropdown-item" data-field="누수·방수">누수·방수</a>
+              <a href="classes.html?field=에어컨청소" class="dropdown-item" data-field="에어컨청소">에어컨청소</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=기계·전기" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#7C3AED" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".28"/><path d="M13.4 4.3a.5.5 0 0 0-.9-.2L6.9 12.2a.6.6 0 0 0 .5 1h3.4l-1 6.4a.5.5 0 0 0 .9.3l5.6-8.1a.6.6 0 0 0-.5-1h-3z"/></svg>기계·전기</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=전기·설비" class="dropdown-item" data-field="전기·설비">전기·설비</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=뷰티·패션" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#EC4899" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".28"/><path d="M12 5.6c.2 0 .4.1.4.4l1.2 3.4 3.4 1.2c.4.2.4.7 0 .8l-3.4 1.2-1.2 3.4c-.1.4-.6.4-.8 0l-1.2-3.4-3.4-1.2c-.4-.1-.4-.6 0-.8l3.4-1.2 1.2-3.4c0-.3.2-.4.4-.4z"/></svg>뷰티·패션</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=미용·헤어" class="dropdown-item" data-field="미용·헤어">미용·헤어</a>
+              <a href="classes.html?field=네일·속눈썹" class="dropdown-item" data-field="네일·속눈썹">네일·속눈썹</a>
+              <a href="classes.html?field=피부·에스테틱" class="dropdown-item" data-field="피부·에스테틱">피부·에스테틱</a>
+              <a href="classes.html?field=메이크업·반영구" class="dropdown-item" data-field="메이크업·반영구">메이크업·반영구</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=요리" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#F97316" viewBox="0 0 24 24" fill="currentColor"><path opacity=".45" d="M7 20.6h10a1 1 0 0 0 1-1v-4H6v4a1 1 0 0 0 1 1z"/><path d="M18 14.6a3.6 3.6 0 0 0 .3-7.1 3.6 3.6 0 0 0-6.3-1.4A3.6 3.6 0 0 0 5.7 7.5 3.6 3.6 0 0 0 6 14.6z"/></svg>요리</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=베이커리·제과" class="dropdown-item" data-field="베이커리·제과">베이커리·제과</a>
+              <a href="classes.html?field=바리스타·카페" class="dropdown-item" data-field="바리스타·카페">바리스타·카페</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=펫" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#B45309" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.6" cy="10.6" r="2" opacity=".5"/><circle cx="10.4" cy="7.2" r="2"/><circle cx="13.6" cy="7.2" r="2"/><circle cx="17.4" cy="10.6" r="2" opacity=".5"/><path d="M12 12.2c-2.5 0-4.4 2-4.4 4 0 1.7 2 2.7 4.4 2.7s4.4-1 4.4-2.7c0-2-1.9-4-4.4-4z"/></svg>펫</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=애견미용" class="dropdown-item" data-field="애견미용">애견미용</a>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <a href="classes.html?cat=기타" class="dropdown-group-label"><span class="dg-l"><svg class="md-ic" style="color:#14B8A6" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".26"/><path d="M11.8 5.7 6 11.5a1.9 1.9 0 0 0 0 2.7l4 4a1.9 1.9 0 0 0 2.7 0l5.8-5.8a1.7 1.7 0 0 0 .5-1.2V7.4a1.7 1.7 0 0 0-1.7-1.7h-4.3a1.7 1.7 0 0 0-1.2.5z"/><circle cx="15.6" cy="9.4" r="1.2" fill="#fff"/></svg>기타</span> <span class="dg-arrow">›</span></a>
+            <div class="dropdown-flyout">
+              <a href="classes.html?field=기타" class="dropdown-item" data-field="기타">기타</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="gov_edu.html" class="nav-link" data-page="partners">국비지원 교육</a>
+        <div class="dropdown-menu">
+          <a href="gov_edu.html" class="dropdown-item"><span class="di-icon">📌</span>국비지원 교육이란?</a>
+          <a href="card_guide.html" class="dropdown-item"><span class="di-icon">💳</span>내일배움카드 발급가이드</a>
+          <a href="gov_courses.html" class="dropdown-item"><span class="di-icon">🔍</span>국비지원 교육보기</a>
+        </div>
+      </div>
+      <a href="about.html" class="nav-link" data-page="about">회사소개</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="signup.html" class="btn-ghost" style="text-decoration:none;" id="hdr-signup">회원가입</a>
+      <a href="login.html" class="btn-amber" style="text-decoration:none;color:#fff;" id="hdr-login">로그인</a>
+      <span style="color:rgba(255,255,255,0.7);font-size:13px;display:none;" id="hdr-name"></span>
+      <a href="mypage.html" class="btn-amber" style="text-decoration:none;color:#fff;display:none;" id="hdr-mypage">마이페이지</a>
+      <a href="#" onclick="doLogout();return false;" class="btn-ghost" style="display:none;text-decoration:none;" id="hdr-logout">로그아웃</a>
+    </div>
+    </div>
+</header>
+<div class="m-drawer" id="mDrawer">
+  <div class="md-top">
+    <a href="index.html" class="md-home" aria-label="홈"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.8V20h14V9.8"/></svg></a>
+    <button type="button" class="md-close" onclick="closeMobileNav()" aria-label="닫기">✕</button>
+  </div>
+  <div class="md-user">
+    <div class="md-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0" stroke-linecap="round"/></svg></div>
+    <div class="md-user-txt">
+      <div class="md-uname" id="md-greet">로그인을 해주세요</div>
+      <a href="login.html" class="md-login-link" id="md-login-link">로그인하기 ›</a>
+    </div>
+    <a href="#" onclick="doLogout();return false;" class="md-logout" id="md-logout">로그아웃</a>
+  </div>
+  <a href="mypage.html" class="md-mypage" id="md-mypage">마이페이지</a>
+  <div class="md-cats">
+    <a href="classes.html" class="md-link"><svg class="md-ic" style="color:#2563EB" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2" opacity=".45"/><rect x="3" y="13" width="8" height="8" rx="2.2" opacity=".45"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg>전체 클래스</a>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#F59E0B" viewBox="0 0 24 24" fill="currentColor"><path opacity=".45" d="M4 11.2V20a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8.8z"/><path d="M12 2.7 2.6 10.4a1 1 0 0 0 .6 1.8h17.6a1 1 0 0 0 .6-1.8z"/><rect x="10.1" y="14.5" width="3.8" height="6.5" rx=".5" fill="#fff"/></svg>인테리어·건축·목공</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub">
+        <a href="classes.html?field=철거·원상복구">철거·원상복구</a>
+        <a href="classes.html?field=인테리어·목공">인테리어·목공</a>
+        <a href="classes.html?field=도배·도장">도배·도장</a>
+        <a href="classes.html?field=타일·조적">타일·조적</a>
+        <a href="classes.html?field=줄눈 시공">줄눈 시공</a>
+        <a href="classes.html?field=누수·방수">누수·방수</a>
+        <a href="classes.html?field=에어컨청소">에어컨청소</a>
+      </div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#7C3AED" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".28"/><path d="M13.4 4.3a.5.5 0 0 0-.9-.2L6.9 12.2a.6.6 0 0 0 .5 1h3.4l-1 6.4a.5.5 0 0 0 .9.3l5.6-8.1a.6.6 0 0 0-.5-1h-3z"/></svg>기계·전기</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub"><a href="classes.html?field=전기·설비">전기·설비</a></div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#EC4899" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".28"/><path d="M12 5.6c.2 0 .4.1.4.4l1.2 3.4 3.4 1.2c.4.2.4.7 0 .8l-3.4 1.2-1.2 3.4c-.1.4-.6.4-.8 0l-1.2-3.4-3.4-1.2c-.4-.1-.4-.6 0-.8l3.4-1.2 1.2-3.4c0-.3.2-.4.4-.4z"/></svg>뷰티·패션</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub">
+        <a href="classes.html?field=미용·헤어">미용·헤어</a>
+        <a href="classes.html?field=네일·속눈썹">네일·속눈썹</a>
+        <a href="classes.html?field=피부·에스테틱">피부·에스테틱</a>
+        <a href="classes.html?field=메이크업·반영구">메이크업·반영구</a>
+      </div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#F97316" viewBox="0 0 24 24" fill="currentColor"><path opacity=".45" d="M7 20.6h10a1 1 0 0 0 1-1v-4H6v4a1 1 0 0 0 1 1z"/><path d="M18 14.6a3.6 3.6 0 0 0 .3-7.1 3.6 3.6 0 0 0-6.3-1.4A3.6 3.6 0 0 0 5.7 7.5 3.6 3.6 0 0 0 6 14.6z"/></svg>요리</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub">
+        <a href="classes.html?field=베이커리·제과">베이커리·제과</a>
+        <a href="classes.html?field=바리스타·카페">바리스타·카페</a>
+      </div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#B45309" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.6" cy="10.6" r="2" opacity=".5"/><circle cx="10.4" cy="7.2" r="2"/><circle cx="13.6" cy="7.2" r="2"/><circle cx="17.4" cy="10.6" r="2" opacity=".5"/><path d="M12 12.2c-2.5 0-4.4 2-4.4 4 0 1.7 2 2.7 4.4 2.7s4.4-1 4.4-2.7c0-2-1.9-4-4.4-4z"/></svg>펫</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub"><a href="classes.html?field=애견미용">애견미용</a></div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#14B8A6" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".26"/><path d="M11.8 5.7 6 11.5a1.9 1.9 0 0 0 0 2.7l4 4a1.9 1.9 0 0 0 2.7 0l5.8-5.8a1.7 1.7 0 0 0 .5-1.2V7.4a1.7 1.7 0 0 0-1.7-1.7h-4.3a1.7 1.7 0 0 0-1.2.5z"/><circle cx="15.6" cy="9.4" r="1.2" fill="#fff"/></svg>기타</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub"><a href="classes.html?field=기타">기타</a></div>
+    </div>
+    <div class="md-cat">
+      <button type="button" class="md-cat-label" onclick="mdToggleCat(this)"><span class="md-cat-l"><svg class="md-ic" style="color:#059669" viewBox="0 0 24 24" fill="currentColor"><path d="M11.7 4.4 3.2 8.5a.4.4 0 0 0 0 .8L12 13.5l8.8-4.2v3.9a.6.6 0 0 0 1.2 0V9.1a.4.4 0 0 0-.2-.4l-8.9-4.3a1 1 0 0 0-.8 0z"/><path opacity=".45" d="M7 11.6v2.6c0 1.4 2.4 2.5 5 2.5s5-1.1 5-2.5v-2.6l-4.6 2.2a1 1 0 0 1-.8 0z"/></svg>국비지원 교육</span> <span class="md-chev">⌄</span></button>
+      <div class="md-cat-sub">
+        <a href="gov_edu.html">국비지원 교육이란?</a>
+        <a href="card_guide.html">내일배움카드 발급가이드</a>
+        <a href="gov_courses.html">국비지원 교육보기</a>
+      </div>
+    </div>
+  </div>
+  <a href="about.html" class="md-link"><svg class="md-ic" style="color:#64748B" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="14" height="18" rx="1.4" opacity=".5"/><g fill="#fff"><rect x="7.3" y="6" width="2.2" height="2.2" rx=".4"/><rect x="11" y="6" width="2.2" height="2.2" rx=".4"/><rect x="14.5" y="6" width="2.2" height="2.2" rx=".4"/><rect x="7.3" y="9.8" width="2.2" height="2.2" rx=".4"/><rect x="11" y="9.8" width="2.2" height="2.2" rx=".4"/><rect x="14.5" y="9.8" width="2.2" height="2.2" rx=".4"/></g><path d="M10.3 14.5h3.4a.5.5 0 0 1 .5.5v6h-4.4v-6a.5.5 0 0 1 .5-.5z"/></svg>회사소개</a>
+</div>
+<div class="nav-overlay" onclick="closeMobileNav()"></div>
+
+
+
+<div class="wrap">
+  <div class="doc-header">
+    <div class="doc-title">이용약관</div>
+    <div class="doc-date">시행일: 2025년 1월 1일 | 최종 수정일: 2025년 5월 20일</div>
+  </div>
+
+  <div class="box"><p>본 약관은 직장인(이하 "회사")이 제공하는 기술직 창업 교육 플랫폼 서비스의 이용 조건 및 절차에 관한 사항을 규정합니다.</p></div>
+
+  <h2>제1조 (목적)</h2>
+  <p>본 약관은 회사가 운영하는 직장인 플랫폼(이하 "서비스")의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다.</p>
+
+  <h2>제2조 (정의)</h2>
+  <ul><li>"서비스"란 직장인 플랫폼을 통해 제공되는 기술직 창업 교육 연결 및 관련 부가 서비스를 의미합니다.</li><li>"이용자"란 본 약관에 동의하고 서비스를 이용하는 모든 자를 의미합니다.</li><li>"클래스"이란 플랫폼에 등록된 기술직 창업 교육 클래스을 의미합니다.</li></ul>
+
+  <h2>제3조 (약관의 효력 및 변경)</h2>
+  <p>본 약관은 서비스 화면에 게시하거나 이용자에게 공지함으로써 효력이 발생합니다. 회사는 합리적인 사유가 있을 경우 약관을 변경할 수 있으며, 변경 시 7일 전 공지합니다.</p>
+
+  <h2>제4조 (서비스 이용)</h2>
+  <ul><li>서비스는 연중무휴 24시간 제공을 원칙으로 하나, 시스템 점검 등으로 일시 중단될 수 있습니다.</li><li>회사는 서비스 내용을 사전 공지 후 변경할 수 있습니다.</li></ul>
+
+  <h2>제5조 (수강 신청 및 취소)</h2>
+  <ul><li>수강 신청은 담당자와의 상담을 통해 확정됩니다.</li><li>교육 시작 전 취소 및 환불은 담당자와 협의하여 진행합니다.</li><li>교육 시작 후 중도 포기에 따른 환불은 별도 규정에 따릅니다.</li></ul>
+
+  <h2>제6조 (이용자의 의무)</h2>
+  <ul><li>이용자는 허위 정보를 제공하거나 타인의 정보를 도용해서는 안 됩니다.</li><li>서비스를 통해 취득한 교육 콘텐츠를 무단으로 복제·배포해서는 안 됩니다.</li><li>교육 현장에서의 안전 수칙을 준수해야 합니다.</li></ul>
+
+  <h2>제7조 (회사의 의무)</h2>
+  <ul><li>회사는 안정적인 서비스 제공을 위해 최선을 다합니다.</li><li>이용자의 개인정보를 개인정보 처리방침에 따라 안전하게 관리합니다.</li><li>이용자의 불만 및 의견을 신속하게 처리합니다.</li></ul>
+
+  <h2>제8조 (면책 조항)</h2>
+  <ul><li>천재지변, 불가항력적 사유로 인한 서비스 중단에 대해 책임을 지지 않습니다.</li><li>이용자가 제공한 정보의 부정확으로 인한 손해에 대해 책임을 지지 않습니다.</li></ul>
+
+  <h2>제9조 (분쟁 해결)</h2>
+  <p>서비스 이용으로 발생한 분쟁은 회사와 이용자 간 협의를 통해 해결하며, 합의가 이루어지지 않을 경우 관련 법령에 따릅니다.</p>
+
+  <h2>문의</h2>
+  <ul><li>이메일: ybdemolish@naver.com</li><li>전화: 1866-0379</li><li>주소: 서울특별시 가산디지털2로 143 이번워크2</li></ul>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo-text"><span class="logo-blue">직</span>장인</span>
+        <p class="footer-desc">월급 말고, 내 기술로 직접 버는 삶.<br>'직장'인에서 '직'장인으로 시작하세요.</p>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+          <a href="http://pf.kakao.com/_xexbgxin/chat" target="_blank" class="btn-kakao-sm">💬 카카오 문의</a>
+          <a href="tel:1866-0379" style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none;">📞 1866-0379</a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>클래스</h4>
+          <ul>
+            <li><a href="chulgeo.html">클래스 전체보기</a></li>
+            <li><a href="index.html#popular">인기있는 클래스</a></li>
+            <li><a href="index.html#newclass">신규 클래스</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>플랫폼</h4>
+          <ul>
+            <li><a href="instructor_apply.html" onclick="checkInstructorAccess(event)">직장인 강사 신청</a></li>
+            <li><a href="gov_edu.html">국비지원 교육</a></li>
+            <li><a href="about.html">회사 소개</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>고객 지원</h4>
+          <ul>
+            <li><a href="privacy.html">개인정보 처리방침</a></li>
+            <li><a href="terms.html">이용약관</a></li>
+            <li><a href="index.html#faq">자주 묻는 질문</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-biz">
+        서울특별시 가산디지털2로 143 이번워크2 · 대표: 임채인<br>
+        사업자등록번호 000-00-00000 · 통신판매업 신고 예정
+      </div>
+      <div class="footer-copyright">ⓒ 2025 직장인. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  (function() {
+    var loggedIn = localStorage.getItem('jikjangin_logged_in');
+    var userStr  = localStorage.getItem('jikjangin_user');
+    if (loggedIn && userStr) {
+      var s = document.getElementById('hdr-signup');
+      var l = document.getElementById('hdr-login');
+      var m = document.getElementById('hdr-mypage');
+      if (s) s.style.display = 'none';
+      if (l) l.style.display = 'none';
+      if (m) {
+        m.style.display = '';
+        try { var user = JSON.parse(userStr); m.textContent = '마이페이지'; } catch(e) {}
+      }
+    }
+  })();
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.nav-link').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var href = link.getAttribute('href');
+        if (!href || href === '#') {
+          e.preventDefault();
+          document.querySelectorAll('.nav-link').forEach(function(l){ l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+/* 로그인 상태 헤더 버튼 전환 */
+(function() {
+  function applyLoginState() {
+    var loggedIn = localStorage.getItem('jikjangin_logged_in');
+    var userStr  = localStorage.getItem('jikjangin_user');
+    var s = document.getElementById('hdr-signup');
+    var l = document.getElementById('hdr-login');
+    var m = document.getElementById('hdr-mypage');
+    if (!s || !l || !m) return;
+    if (loggedIn && userStr) {
+      s.style.display = 'none';
+      l.style.display = 'none';
+      m.style.display = 'inline-flex';
+      try {
+        var user = JSON.parse(userStr);
+        m.textContent = '마이페이지';
+      } catch(e) { m.textContent = '마이페이지'; }
+    } else {
+      s.style.display = 'inline-flex';
+      l.style.display = 'inline-flex';
+      m.style.display = 'none';
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyLoginState);
+  } else {
+    applyLoginState();
+  }
+})();
+</script>
+<script>
+function checkInstructorAccess(e) {
+  var loggedIn = localStorage.getItem('jikjangin_logged_in');
+  if (!loggedIn) {
+    e.preventDefault();
+    alert('로그인 후 이용 가능합니다.');
+    window.location.href = 'login.html';
+    return;
+  }
+  var userStr = localStorage.getItem('jikjangin_user');
+  if (userStr) {
+    var user = JSON.parse(userStr);
+    if (user.role === 'student') {
+      e.preventDefault();
+      alert('강사 지원은 강사 계정으로만 가능합니다.\n강사로 회원가입 후 이용해주세요.');
+      return;
+    }
+  }
+}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  if (!path || path === '/') path = 'index.html';
+  var map = {
+    'index.html': 'home', 'index': 'home', '': 'home',
+    'chulgeo.html': 'courses', 'chulgeo': 'courses',
+    'interior.html': 'courses', 'interior': 'courses',
+    'tile.html': 'courses', 'tile': 'courses',
+    'leak.html': 'courses', 'leak': 'courses',
+    'aircon.html': 'courses', 'aircon': 'courses',
+    'courses_all.html': 'courses', 'courses_all': 'courses',
+    'chulgeo_detail.html': 'courses', 'chulgeo_detail': 'courses',
+    'interior_detail.html': 'courses', 'interior_detail': 'courses',
+    'tile_detail.html': 'courses', 'tile_detail': 'courses',
+    'leak_detail.html': 'courses', 'leak_detail': 'courses',
+    'aircon_detail.html': 'courses', 'aircon_detail': 'courses',
+    'about.html': 'about', 'about': 'about',
+  };
+  var current = map[path];
+  document.querySelectorAll('.nav-link').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  if (current) {
+    document.querySelectorAll('.nav-link[data-page="' + current + '"]').forEach(function(el) {
+      el.classList.add('active');
+    });
+  }
+});
+</script>
+
+<script>
+// 드롭다운 hover 지연 처리
+document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+  var timer;
+  dd.addEventListener('mouseenter', function() {
+    clearTimeout(timer);
+    document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('active'); });
+    dd.classList.add('active');
+  });
+  dd.addEventListener('mouseleave', function() {
+    timer = setTimeout(function() {
+      dd.classList.remove('active');
+    }, 150);
+  });
+});
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-dropdown')) {
+    document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('active'); });
+  }
+});
+</script>
+
+<script>
+(function() {
+  var loggedIn = localStorage.getItem('jikjangin_logged_in');
+  var userStr  = localStorage.getItem('jikjangin_user');
+  var signup   = document.getElementById('hdr-signup');
+  var login    = document.getElementById('hdr-login');
+  var name     = document.getElementById('hdr-name');
+  var mypage   = document.getElementById('hdr-mypage');
+  var logout   = document.getElementById('hdr-logout');
+  if (loggedIn && userStr) {
+    if (signup) signup.style.display = 'none';
+    if (login)  login.style.display  = 'none';
+    if (mypage) mypage.style.display = '';
+    if (logout) logout.style.display = '';
+    if (name) {
+      name.style.display = '';
+      try { name.textContent = JSON.parse(userStr).name + '님'; } catch(e) {}
+    }
+  }
+})();
+function doLogout() {
+  localStorage.removeItem('jikjangin_user');
+  localStorage.removeItem('jikjangin_logged_in');
+  window.location.href = 'index.html';
+}
+</script>
+
+<script>
+function openMobileNav(){ document.body.classList.add('nav-open'); var t=document.querySelector('.nav-toggle'); if(t) t.setAttribute('aria-expanded','true'); }
+function closeMobileNav(){ document.body.classList.remove('nav-open'); var t=document.querySelector('.nav-toggle'); if(t) t.setAttribute('aria-expanded','false');
+  document.querySelectorAll('.nav-dropdown.active').forEach(function(d){ d.classList.remove('active'); });
+  document.querySelectorAll('.dropdown-group.open').forEach(function(g){ g.classList.remove('open'); });
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMobileNav(); });
+</script>
+<script>
+function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggle('open'); }
+(function(){ try{ var li=localStorage.getItem('jikjangin_logged_in'), us=localStorage.getItem('jikjangin_user'); if(li&&us){ var u=JSON.parse(us); var g=document.getElementById('md-greet'); if(g) g.textContent=(u.name||'')+'님'; var ll=document.getElementById('md-login-link'); if(ll) ll.style.display='none'; var lo=document.getElementById('md-logout'); if(lo) lo.style.display='inline'; } }catch(e){} })();
+</script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>추가 정보 입력 — 직장인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR',sans-serif;background:#F8FAFC;color:#1E293B;min-height:100vh;display:flex;flex-direction:column;overflow-y:scroll;}
+  header{background:#0B1120;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .header-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:62px;}
+  .logo{text-decoration:none;}
+  .logo-text{font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+  .logo-blue{color:#005BFF;}
+  .wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px;}
+  .card{background:#fff;border-radius:20px;border:1px solid #E2E8F0;padding:48px 40px;width:100%;max-width:460px;box-shadow:0 4px 24px rgba(0,0,0,.07);}
+  .card-title{font-size:24px;font-weight:900;color:#1E293B;letter-spacing:-.5px;margin-bottom:6px;}
+  .card-sub{font-size:14px;color:#94A3B8;margin-bottom:32px;}
+
+  /* 역할 선택 */
+  .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+  .role-card{border:2px solid #E2E8F0;border-radius:14px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .15s;}
+  .role-card:hover{border-color:#005BFF;background:#F0F5FF;}
+  .role-card.selected{border-color:#005BFF;background:#EBF0FF;}
+  .role-icon{font-size:28px;margin-bottom:8px;}
+  .role-name{font-size:14px;font-weight:900;color:#1E293B;}
+  .role-desc{font-size:12px;color:#94A3B8;margin-top:3px;}
+
+  .form-group{margin-bottom:18px;}
+  label{display:block;font-size:13px;font-weight:700;color:#475569;margin-bottom:6px;}
+  input,select{width:100%;height:48px;border:1.5px solid #E2E8F0;border-radius:10px;padding:0 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:#1E293B;outline:none;transition:border-color .15s;background:#fff;}
+  input:focus,select:focus{border-color:#005BFF;}
+  .user-info-box{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:16px 18px;margin-bottom:24px;}
+  .user-info-box .info-label{font-size:11px;color:#94A3B8;font-weight:700;margin-bottom:4px;}
+  .user-info-box .info-val{font-size:15px;font-weight:700;color:#1E293B;}
+  .submit-btn{width:100%;height:50px;background:#005BFF;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:900;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .15s;margin-top:8px;}
+  .submit-btn:hover{background:#0041CC;}
+  .submit-btn:disabled{background:#94A3B8;cursor:not-allowed;}
+  .error-msg{font-size:13px;color:#EF4444;margin-top:12px;text-align:center;visibility:hidden;min-height:20px;}
+  .error-msg.show{visibility:visible;}
+
+  @media (max-width: 480px){
+    .header-inner{ height:auto; min-height:56px; padding:10px 16px; flex-wrap:wrap; row-gap:6px; }
+    .right-link, .back-btn, .back-link{ font-size:12px; margin-left:0; }
+    .wrap{ padding:32px 16px; }
+    .card{ padding:32px 20px; border-radius:16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-text"><span class="logo-blue">직</span>장인</span>
+    </a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <div class="card-title">추가 정보 입력</div>
+    <div class="card-sub">카카오 계정으로 가입이 거의 완료됐어요! 아래 정보만 입력해주세요.</div>
+
+    <!-- 카카오에서 가져온 정보 표시 -->
+    <div class="user-info-box">
+      <div class="info-label">카카오 계정</div>
+      <div class="info-val" id="kakao-info">불러오는 중...</div>
+    </div>
+
+    <!-- 역할 선택 -->
+    <div style="font-size:13px;font-weight:700;color:#475569;margin-bottom:10px;">어떤 분으로 가입하시겠어요?</div>
+    <div class="role-grid">
+      <div class="role-card selected" onclick="selectRole('student', this)">
+        <div class="role-icon">🎓</div>
+        <div class="role-name">교육생</div>
+        <div class="role-desc">기술을 배우고 싶어요</div>
+      </div>
+      <div class="role-card" onclick="selectRole('instructor', this)">
+        <div class="role-icon">👨‍🏫</div>
+        <div class="role-name">강사</div>
+        <div class="role-desc">교육을 제공하고 싶어요</div>
+      </div>
+    </div>
+
+    <!-- 연락처 -->
+    <div class="form-group">
+      <label>연락처</label>
+      <input type="tel" id="phone" placeholder="010-0000-0000" maxlength="13" oninput="autoHyphen(this)">
+    </div>
+
+    <!-- 관심 교육 과정 (교육생만) -->
+    <div class="form-group" id="interest-group">
+      <label>관심 교육 과정</label>
+      <select id="interest">
+        <option value="">선택해주세요</option>
+        <option>철거·원상복구</option>
+        <option>인테리어·목공</option>
+        <option>줄눈 시공</option>
+        <option>누수·방수</option>
+        <option>에어컨청소</option>
+        <option>도배·도장</option>
+        <option>타일·조적</option>
+        <option>전기·설비</option>
+        <option>미용·헤어</option>
+        <option>네일·속눈썹</option>
+        <option>피부·에스테틱</option>
+        <option>메이크업·반영구</option>
+        <option>베이커리·제과</option>
+        <option>바리스타·카페</option>
+        <option>애견미용</option>
+        <option>기타</option>
+      </select>
+    </div>
+
+    <!-- 전문 분야 (강사만) -->
+    <div class="form-group" id="specialty-group" style="display:none;">
+      <label>전문 분야</label>
+      <select id="specialty">
+        <option value="">선택해주세요</option>
+        <option>철거·원상복구</option>
+        <option>인테리어·목공</option>
+        <option>줄눈 시공</option>
+        <option>누수·방수</option>
+        <option>에어컨청소</option>
+        <option>도배·도장</option>
+        <option>타일·조적</option>
+        <option>전기·설비</option>
+        <option>미용·헤어</option>
+        <option>네일·속눈썹</option>
+        <option>피부·에스테틱</option>
+        <option>메이크업·반영구</option>
+        <option>베이커리·제과</option>
+        <option>바리스타·카페</option>
+        <option>애견미용</option>
+        <option>기타</option>
+      </select>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="doSubmit()">가입 완료하기</button>
+    <div class="error-msg" id="error-msg"></div>
+    <div id="complete-box" style="display:none;margin-top:20px;background:#F0FDF4;border:1px solid #86EFAC;border-radius:14px;padding:20px 18px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">🎉</div>
+      <div style="font-size:15px;font-weight:900;color:#166534;margin-bottom:4px;">가입이 완료됐어요!</div>
+      <div style="font-size:13px;color:#16a34a;margin-bottom:16px;">로그인 후 클래스를 구경해보세요</div>
+      <a href="login.html" style="display:inline-flex;align-items:center;gap:6px;padding:11px 24px;background:#005BFF;color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;">로그인하러 가기 →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fgllsqgzgshneforfkoy.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbGxzcWd6Z3NobmVmb3Jma295Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NjU3NTMsImV4cCI6MjA5NTM0MTc1M30.aBaEUieQCiih3J0uv79TdhFU2cv2UWbeNZ7C9xvs54g';
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+var currentRole = 'student';
+var currentUser = null;
+
+// 페이지 로드 시 세션 확인
+window.addEventListener('load', async function() {
+  var { data: { session } } = await sbClient.auth.getSession();
+  if (!session || !session.user) {
+    alert('잘못된 접근입니다.');
+    window.location.href = 'signup.html';
+    return;
+  }
+
+  currentUser = session.user;
+  var meta = currentUser.user_metadata || {};
+  var name  = meta.name || meta.full_name || meta.user_name || '';
+  var email = currentUser.email || '';
+
+  // phone까지 입력 완료한 유저면 마이페이지로
+  var { data: profile } = await sbClient.from('profiles').select('id,phone').eq('id', currentUser.id).single();
+  if (profile && profile.phone) {
+    window.location.href = 'mypage.html';
+    return;
+  }
+
+  document.getElementById('kakao-info').textContent = (name ? name + ' · ' : '') + (email || '이메일 없음');
+});
+
+function selectRole(role, el) {
+  currentRole = role;
+  document.querySelectorAll('.role-card').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('interest-group').style.display  = role === 'student'     ? 'block' : 'none';
+  document.getElementById('specialty-group').style.display = role === 'instructor'  ? 'block' : 'none';
+}
+
+function showError(msg) {
+  var el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+async function doSubmit() {
+  // ── 1. 모든 유효성 검사 먼저 완료 ──────────────────
+  var phone = document.getElementById('phone').value.trim();
+  if (!phone) { showError('연락처를 입력해주세요.'); return; }
+  if (phone.replace(/[^0-9]/g,'').length < 10) { showError('올바른 연락처를 입력해주세요.'); return; }
+
+  var interest  = currentRole === 'student'    ? document.getElementById('interest').value  : '';
+  var specialty = currentRole === 'instructor' ? document.getElementById('specialty').value : '';
+
+  if (currentRole === 'student' && !interest) { showError('관심 교육 과정을 선택해주세요.'); return; }
+  if (currentRole === 'instructor' && !specialty) { showError('전문 분야를 선택해주세요.'); return; }
+
+  if (!currentUser) { showError('세션이 만료됐습니다. 다시 로그인해주세요.'); return; }
+
+  var meta  = currentUser.user_metadata || {};
+  var name  = meta.name || meta.full_name || meta.user_name || '카카오 사용자';
+  var email = currentUser.email || '';
+
+  if (!name || !email) { showError('카카오 계정 정보를 불러오지 못했습니다. 다시 시도해주세요.'); return; }
+
+  // ── 2. 모든 검사 통과 후 버튼 비활성화 ────────────
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '처리 중...';
+  document.getElementById('error-msg').classList.remove('show');
+
+  // ── 3. Supabase에 저장 ────────────────────────────
+  var { error } = await sbClient.from('profiles').upsert({
+    id:       currentUser.id,
+    name:     name,
+    email:    email,
+    phone:    phone,
+    role:     currentRole,
+    interest: interest || specialty || ''
+  });
+
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = '가입 완료하기';
+    showError('오류가 발생했습니다. 다시 시도해주세요.');
+    return;
+  }
+
+  // ── 4. 저장 완료 후 localStorage 세팅 및 이동 ────
+  localStorage.setItem('jikjangin_user', JSON.stringify({ name:name, email:email, phone:phone, role:currentRole, interest:interest||specialty }));
+  localStorage.setItem('jikjangin_logged_in', 'true');
+  // 가입 완료 후 Supabase 세션 종료 후 로그인 페이지로
+  await sbClient.auth.signOut();
+  localStorage.removeItem('jikjangin_user');
+  localStorage.removeItem('jikjangin_logged_in');
+
+  // 가입 완료 메시지 + 로그인하러가기 버튼 표시
+  btn.textContent = '가입 완료! 🎉';
+  btn.style.background = '#22C55E';
+  document.getElementById('complete-box').style.display = 'block';
+}
+
+function autoHyphen(input) {
+  var val = input.value.replace(/[^0-9]/g, '');
+  if (val.length <= 3) {
+    input.value = val;
+  } else if (val.length <= 7) {
+    input.value = val.slice(0,3) + '-' + val.slice(3);
+  } else {
+    input.value = val.slice(0,3) + '-' + val.slice(3,7) + '-' + val.slice(7,11);
+  }
+}
+</script>
+</body>
+</html>

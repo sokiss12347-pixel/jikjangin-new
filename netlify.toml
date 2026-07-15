@@ -1,0 +1,11 @@
+# 직장인(職匠人) 국비지원 교육 - Netlify 설정
+#
+# 브라우저가 https 사이트에서 http 프록시 서버를 직접 부르면 "혼합 콘텐츠"로 차단됩니다.
+# 그래서 같은 도메인의 /api/* 요청을 Netlify가 뒤에서 프록시 서버로 대신 연결하도록 설정합니다.
+# (브라우저 → Netlify: https / Netlify → 프록시 서버: http, 서버끼리라 차단 없음)
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://101.79.21.81:3000/api/:splat"
+  status = 200
+  force = true

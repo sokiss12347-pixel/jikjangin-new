@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로그인 — 직장인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
+function showForgot() {
+  document.getElementById('forgot-modal').style.display = 'flex';
+  var loginEmail = document.getElementById('email').value;
+  if (loginEmail) document.getElementById('forgot-email').value = loginEmail;
+}
+
+function closeForgot() {
+  document.getElementById('forgot-modal').style.display = 'none';
+  document.getElementById('forgot-msg').style.display = 'none';
+}
+
+async function sendReset() {
+  var email = document.getElementById('forgot-email').value.trim();
+  var msgEl = document.getElementById('forgot-msg');
+  if (!email) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#EF4444';
+    msgEl.textContent = '이메일을 입력해주세요.';
+    return;
+  }
+  var btn = document.getElementById('reset-btn');
+  btn.disabled = true;
+  btn.textContent = '전송 중...';
+
+  var { error } = await sbClient.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/change_password.html'
+  });
+
+  msgEl.style.display = 'block';
+  btn.disabled = false;
+  btn.textContent = '재설정 링크 보내기';
+
+  if (error) {
+    msgEl.style.color = '#EF4444';
+    msgEl.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+  } else {
+    msgEl.style.color = '#22C55E';
+    msgEl.textContent = '✓ 재설정 링크를 이메일로 보냈습니다. 메일함을 확인해주세요!';
+    btn.style.display = 'none';
+  }
+}
+
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: #F8FAFC; color: #1E293B; min-height: 100vh; display: flex; flex-direction: column; overflow-y: scroll; }
+  .right-link { font-size: 13px; color: rgba(255,255,255,.5); text-decoration: none; margin-left: auto; }
+  .right-link:hover { color: #fff; }
+  .right-link b { color: #005BFF; }
+  .wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
+  .card { background: #fff; border-radius: 20px; border: 1px solid #E2E8F0; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 4px 24px rgba(0,0,0,.07); }
+  .card-title { font-size: 24px; font-weight: 900; color: #1E293B; letter-spacing: -.5px; margin-bottom: 6px; }
+  .card-sub { font-size: 14px; color: #94A3B8; margin-bottom: 32px; }
+  .form-group { margin-bottom: 18px; }
+  label { display: block; font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 6px; }
+  input { width: 100%; height: 48px; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 0 14px; font-size: 14px; font-family: 'Noto Sans KR', sans-serif; color: #1E293B; outline: none; transition: border-color .15s; background: #fff; }
+  input:focus { border-color: #005BFF; }
+  .forgot { font-size: 12px; color: #94A3B8; text-align: right; display: block; margin-top: -10px; margin-bottom: 18px; text-decoration: none; }
+  .submit-btn { width: 100%; height: 50px; background: #005BFF; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; transition: background .15s; }
+  .submit-btn:hover { background: #0041CC; }
+  .submit-btn:disabled { background: #94A3B8; cursor: not-allowed; }
+  .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #E2E8F0; }
+  .divider span { font-size: 12px; color: #94A3B8; }
+  .kakao-btn { width: 100%; height: 50px; background: #FEE500; color: #191919; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .15s; }
+  .kakao-btn:hover { background: #F0D800; }
+  .bottom-txt { font-size: 13px; color: #94A3B8; text-align: center; margin-top: 20px; line-height: 1.7; }
+  .bottom-txt a { color: #005BFF; text-decoration: none; font-weight: 700; }
+  .error-msg { font-size: 13px; color: #EF4444; margin-top: 12px; text-align: center; display: none; }
+  .error-msg.show { display: block; }
+  /* 헤더 */
+  header { background: #0B1120; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; height: 62px; gap: 32px; }
+  .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
+  .logo-text { font-family: 'Noto Sans KR', sans-serif; font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; display: flex; align-items: center; gap: 1px; line-height: 1; }
+  .logo-blue { color: #005BFF; }
+
+  @media (max-width: 480px){
+    .header-inner{ height:auto; min-height:56px; padding:10px 16px; flex-wrap:wrap; row-gap:6px; }
+    .right-link, .back-btn, .back-link{ font-size:12px; margin-left:0; }
+    .wrap{ padding:32px 16px; }
+    .card{ padding:32px 20px; border-radius:16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-text"><span class="logo-blue">직</span>장인</span>
+    </a>
+    <a href="signup.html" class="right-link">계정이 없으신가요? <b>회원가입</b></a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <div class="card-title">로그인</div>
+    <div class="card-sub">직장인에 오신 것을 환영합니다 👋</div>
+    <div class="form-group">
+      <label>이메일</label>
+      <input type="email" id="email" placeholder="example@email.com">
+    </div>
+    <div class="form-group">
+      <label>비밀번호</label>
+      <input type="password" id="password" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <a href="#" class="forgot" onclick="showForgot();return false;">비밀번호를 잊으셨나요?</a>
+    <button class="submit-btn" id="login-btn" onclick="doLogin()">로그인</button>
+    <div class="error-msg" id="error-msg"></div>
+    <div class="divider"><span>또는</span></div>
+    <button class="kakao-btn" onclick="doKakaoLogin()">💬 카카오로 로그인</button>
+    <p class="bottom-txt">아직 계정이 없으신가요? <a href="signup.html">회원가입</a></p>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fgllsqgzgshneforfkoy.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbGxzcWd6Z3NobmVmb3Jma295Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NjU3NTMsImV4cCI6MjA5NTM0MTc1M30.aBaEUieQCiih3J0uv79TdhFU2cv2UWbeNZ7C9xvs54g';
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function showError(msg) {
+  var el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+async function doLogin() {
+  var email = document.getElementById('email').value.trim();
+  var pw = document.getElementById('password').value;
+
+  if (!email || !pw) { showError('이메일과 비밀번호를 입력해주세요.'); return; }
+
+  var btn = document.getElementById('login-btn');
+  btn.disabled = true;
+  btn.textContent = '로그인 중...';
+  document.getElementById('error-msg').classList.remove('show');
+
+  var { data, error } = await sbClient.auth.signInWithPassword({
+    email: email,
+    password: pw
+  });
+
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = '로그인';
+    showError('이메일 또는 비밀번호가 올바르지 않습니다.');
+    return;
+  }
+
+  // profiles 테이블에서 추가 정보 가져오기
+  var { data: profile } = await sbClient
+    .from('profiles')
+    .select('*')
+    .eq('id', data.user.id)
+    .single();
+
+  if (profile) {
+    localStorage.setItem('jikjangin_user', JSON.stringify({
+      name: profile.name,
+      email: profile.email,
+      phone: profile.phone,
+      role: profile.role
+    }));
+  }
+  localStorage.setItem('jikjangin_logged_in', 'true');
+
+  window.location.href = 'mypage.html';
+}
+
+function showForgot() {
+  document.getElementById('forgot-modal').style.display = 'flex';
+  var loginEmail = document.getElementById('email').value;
+  if (loginEmail) document.getElementById('forgot-email').value = loginEmail;
+}
+
+function closeForgot() {
+  document.getElementById('forgot-modal').style.display = 'none';
+  document.getElementById('forgot-msg').style.display = 'none';
+}
+
+async function sendReset() {
+  var email = document.getElementById('forgot-email').value.trim();
+  var msgEl = document.getElementById('forgot-msg');
+  if (!email) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#EF4444';
+    msgEl.textContent = '이메일을 입력해주세요.';
+    return;
+  }
+  var btn = document.getElementById('reset-btn');
+  btn.disabled = true;
+  btn.textContent = '전송 중...';
+
+  var { error } = await sbClient.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/change_password.html'
+  });
+
+  msgEl.style.display = 'block';
+  btn.disabled = false;
+  btn.textContent = '재설정 링크 보내기';
+
+  if (error) {
+    msgEl.style.color = '#EF4444';
+    msgEl.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+  } else {
+    msgEl.style.color = '#22C55E';
+    msgEl.textContent = '✓ 재설정 링크를 이메일로 보냈습니다. 메일함을 확인해주세요!';
+    btn.style.display = 'none';
+  }
+}
+
+async function doKakaoLogin() {
+  var { error } = await sbClient.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: {
+      redirectTo: window.location.origin + '/kakao_register.html',
+      queryParams: { prompt: 'select_account' }
+    }
+  });
+  if (error) showError('카카오 로그인 중 오류가 발생했습니다.');
+}
+
+
+</script>
+
+<!-- 비밀번호 찾기 모달 -->
+<div id="forgot-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:40px;width:100%;max-width:400px;margin:0 24px;box-shadow:0 8px 32px rgba(0,0,0,0.15);">
+    <div style="font-size:20px;font-weight:900;color:#1E293B;margin-bottom:8px;">비밀번호 재설정</div>
+    <div style="font-size:14px;color:#94A3B8;margin-bottom:24px;">가입한 이메일로 재설정 링크를 보내드려요.</div>
+    <input type="email" id="forgot-email" placeholder="가입한 이메일 입력" style="width:100%;height:48px;border:1.5px solid #E2E8F0;border-radius:10px;padding:0 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;outline:none;margin-bottom:16px;">
+    <div id="forgot-msg" style="font-size:13px;margin-bottom:12px;display:none;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeForgot()" style="flex:1;height:46px;background:#F1F5F9;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">취소</button>
+      <button onclick="sendReset()" id="reset-btn" style="flex:2;height:46px;background:#005BFF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">재설정 링크 보내기</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
