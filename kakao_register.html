@@ -47,6 +47,22 @@
     .wrap{ padding:32px 16px; }
     .card{ padding:32px 20px; border-radius:16px; }
   }
+
+  /* 휴대폰 인증 */
+  .phone-row{ display:flex; gap:8px; }
+  .phone-row input{ flex:1; min-width:0; }
+  .btn-verify{ flex:0 0 auto; padding:0 14px; height:46px; border:1px solid #005BFF; background:#fff; color:#005BFF;
+               border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; font-family:inherit; }
+  .btn-verify:hover:not(:disabled){ background:#005BFF; color:#fff; }
+  .btn-verify:disabled{ opacity:.45; cursor:not-allowed; }
+  .code-row{ display:none; gap:8px; margin-top:8px; align-items:center; position:relative; }
+  .code-row.show{ display:flex; }
+  .code-row input{ flex:1; min-width:0; padding-right:52px; }
+  .code-timer{ position:absolute; left:50%; transform:translateX(-50%); font-size:12.5px; font-weight:700; color:#EF4444; pointer-events:none; }
+  .verify-msg{ font-size:12.5px; margin-top:7px; display:none; }
+  .verify-msg.show{ display:block; }
+  .verify-msg.ok{ color:#10B981; }
+  .verify-msg.err{ color:#EF4444; }
 </style>
 </head>
 <body>
@@ -88,7 +104,16 @@
     <!-- 연락처 -->
     <div class="form-group">
       <label>연락처</label>
-      <input type="tel" id="phone" placeholder="010-0000-0000" maxlength="13" oninput="autoHyphen(this)">
+      <div class="phone-row">
+        <input type="tel" id="phone" placeholder="010-0000-0000" maxlength="13" oninput="autoHyphen(this); onPhoneChange();">
+        <button type="button" class="btn-verify" id="btn-send-code" onclick="sendCode()">인증번호 받기</button>
+      </div>
+      <div class="code-row" id="code-row">
+        <input type="tel" id="code" placeholder="인증번호 6자리" maxlength="6" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        <span class="code-timer" id="code-timer"></span>
+        <button type="button" class="btn-verify" id="btn-check-code" onclick="checkCode()">확인</button>
+      </div>
+      <div class="verify-msg" id="verify-msg"></div>
     </div>
 
     <!-- 관심 교육 과정 (교육생만) -->
@@ -196,11 +221,106 @@ function showError(msg) {
   el.classList.add('show');
 }
 
+
+/* ===== 휴대폰 인증 ===== */
+var phoneVerified = false;
+var verifiedPhone = '';
+var codeTimer = null;
+
+function onPhoneChange(){
+  var p = document.getElementById('phone').value.replace(/[^0-9]/g,'');
+  if (phoneVerified && p !== verifiedPhone) {
+    phoneVerified = false;
+    document.getElementById('btn-send-code').disabled = false;
+    document.getElementById('btn-send-code').textContent = '인증번호 받기';
+    document.getElementById('code-row').classList.remove('show');
+    setVerifyMsg('', '');
+  }
+}
+function setVerifyMsg(msg, type){
+  var el = document.getElementById('verify-msg');
+  el.textContent = msg || '';
+  el.className = 'verify-msg' + (msg ? ' show ' + type : '');
+}
+function startTimer(sec){
+  clearInterval(codeTimer);
+  var el = document.getElementById('code-timer');
+  var left = sec;
+  function tick(){
+    if (left <= 0) { clearInterval(codeTimer); el.textContent = '만료됨'; return; }
+    var m = Math.floor(left/60), s2 = left % 60;
+    el.textContent = m + ':' + (s2 < 10 ? '0' : '') + s2;
+    left--;
+  }
+  tick();
+  codeTimer = setInterval(tick, 1000);
+}
+async function sendCode(){
+  var phone = document.getElementById('phone').value.trim();
+  if (!/^01[016789]-?[0-9]{3,4}-?[0-9]{4}$/.test(phone)) {
+    setVerifyMsg('올바른 휴대폰 번호를 입력해주세요.', 'err'); return;
+  }
+  var btn = document.getElementById('btn-send-code');
+  btn.disabled = true; btn.textContent = '발송 중...'; setVerifyMsg('', '');
+  try {
+    var res = await fetch('/.netlify/functions/send-verification', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: phone })
+    });
+    var data = await res.json();
+    if (!data.ok) {
+      btn.disabled = false; btn.textContent = '인증번호 받기';
+      setVerifyMsg(data.error || '발송에 실패했습니다.', 'err'); return;
+    }
+    document.getElementById('code-row').classList.add('show');
+    document.getElementById('code').value = '';
+    document.getElementById('code').focus();
+    btn.textContent = '재발송'; btn.disabled = false;
+    startTimer(data.ttl || 180);
+    setVerifyMsg('인증번호를 발송했습니다. 문자를 확인해주세요.', 'ok');
+  } catch (e) {
+    btn.disabled = false; btn.textContent = '인증번호 받기';
+    setVerifyMsg('네트워크 오류가 발생했습니다.', 'err');
+  }
+}
+async function checkCode(){
+  var phone = document.getElementById('phone').value.trim();
+  var code  = document.getElementById('code').value.trim();
+  if (code.length !== 6) { setVerifyMsg('인증번호 6자리를 입력해주세요.', 'err'); return; }
+  var btn = document.getElementById('btn-check-code');
+  btn.disabled = true; btn.textContent = '확인 중...';
+  try {
+    var res = await fetch('/.netlify/functions/verify-code', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: phone, code: code })
+    });
+    var data = await res.json();
+    btn.disabled = false; btn.textContent = '확인';
+    if (!data.ok) { setVerifyMsg(data.error || '인증에 실패했습니다.', 'err'); return; }
+    phoneVerified = true;
+    verifiedPhone = phone.replace(/[^0-9]/g,'');
+    clearInterval(codeTimer);
+    document.getElementById('code-timer').textContent = '';
+    document.getElementById('code').disabled = true;
+    btn.disabled = true;
+    document.getElementById('btn-send-code').disabled = true;
+    document.getElementById('btn-send-code').textContent = '인증완료';
+    setVerifyMsg('휴대폰 인증이 완료되었습니다.', 'ok');
+  } catch (e) {
+    btn.disabled = false; btn.textContent = '확인';
+    setVerifyMsg('네트워크 오류가 발생했습니다.', 'err');
+  }
+}
+
 async function doSubmit() {
   // ── 1. 모든 유효성 검사 먼저 완료 ──────────────────
   var phone = document.getElementById('phone').value.trim();
   if (!phone) { showError('연락처를 입력해주세요.'); return; }
   if (phone.replace(/[^0-9]/g,'').length < 10) { showError('올바른 연락처를 입력해주세요.'); return; }
+  if (!phoneVerified || phone.replace(/[^0-9]/g,'') !== verifiedPhone) {
+    showError('휴대폰 인증을 완료해주세요.');
+    return;
+  }
 
   var interest  = currentRole === 'student'    ? document.getElementById('interest').value  : '';
   var specialty = currentRole === 'instructor' ? document.getElementById('specialty').value : '';
