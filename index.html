@@ -3840,5 +3840,104 @@ function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggl
   window.addEventListener('resize', setup);
 })();
 </script>
+
+<script>
+/* ===================== 클래스 카드 (Supabase 연동) =====================
+   admin > 클래스 카드 탭에서 등록한 내용으로 카드를 그립니다.
+   등록된 카드가 없으면 HTML에 있는 기본 카드를 그대로 둡니다.
+===================================================================== */
+(function(){
+  var CC_URL='https://fgllsqgzgshneforfkoy.supabase.co';
+  var CC_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbGxzcWd6Z3NobmVmb3Jma295Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NjU3NTMsImV4cCI6MjA5NTM0MTc1M30.aBaEUieQCiih3J0uv79TdhFU2cv2UWbeNZ7C9xvs54g';
+
+  function esc(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function hl(t){ return esc(t).replace(/\{([^}]*)\}/g, '<span class="hl">$1</span>'); }
+
+  function buildCard(c, extraCls, cornerHtml){
+    var badges='';
+    if(c.is_hot)  badges+='<span class="kb kb-hot">HOT</span>';
+    if(c.is_best) badges+='<span class="kb kb-best">BEST</span>';
+    if(c.is_new)  badges+='<span class="kb kb-new">NEW</span>';
+
+    var photoStyle = c.thumbnail_url
+      ? 'background-image:url(\''+c.thumbnail_url+'\');background-position:'+(c.photo_position||'20% 30%')+';'
+      : 'background-position:'+(c.photo_position||'20% 30%')+';';
+
+    var hook = hl(c.hook_line1||'');
+    if(c.hook_line2) hook += '<br>' + hl(c.hook_line2);
+
+    var foot = '';
+    if(c.expert_name) foot = '<div class="bfoot">'+esc(c.expert_label||'')+' <b>'+esc(c.expert_name)+'</b></div>';
+
+    return '<a href="'+esc(c.link_url||'chulgeo_detail.html')+'" class="'+extraCls+' kard" onclick="ncTrackView(\''+esc(c.link_url||'chulgeo_detail.html')+'\')">'
+      + '<div class="bthumb"><div class="bphoto" style="'+photoStyle+'"></div><div class="bgrad"></div>'
+      + (cornerHtml||'')
+      + '<span class="blogo"><span class="lb">직</span>장인</span>'
+      + '<div class="btext">'
+      +   (c.small_text ? '<div class="bsmall">'+esc(c.small_text)+'</div>' : '')
+      +   '<div class="bbig">'+hook+'</div>'
+      +   (c.bar_text ? '<div class="bbar">'+esc(c.bar_text)+'</div>' : '')
+      + '</div>'
+      + foot
+      + '</div>'
+      + '<div class="kbadges">'+badges+'</div>'
+      + '<div class="ktitle">['+esc(c.category||'')+'] '+esc(c.title||'')+'</div>'
+      + '</a>';
+  }
+
+  async function loadScript(src){
+    return new Promise(function(res, rej){
+      var sc=document.createElement('script'); sc.src=src; sc.onload=res; sc.onerror=rej;
+      document.head.appendChild(sc);
+    });
+  }
+
+  async function initCards(){
+    try{
+      if(!window.supabase || !window.supabase.createClient){
+        await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');
+      }
+      var cli=window.supabase.createClient(CC_URL, CC_KEY);
+      var r=await cli.from('class_cards').select('*').eq('is_active', true).order('sort_order',{ascending:true});
+      if(r.error || !r.data || !r.data.length) return;   // 없으면 기본 카드 유지
+
+      var by={featured:[], popular:[], new:[]};
+      r.data.forEach(function(c){ if(by[c.section]) by[c.section].push(c); });
+
+      /* 현재 모집중 */
+      if(by.featured.length){
+        var track=document.getElementById('carousel-track');
+        if(track){
+          track.innerHTML = by.featured.map(function(c,i){
+            return '<div class="carousel-slide">'+buildCard(c, 'featured-card featured-card--linked'+(i===0?'" id="card-chulgeo':''), '')+'</div>';
+          }).join('');
+          var tot=document.getElementById('carousel-total');
+          if(tot) tot.textContent = by.featured.length;
+        }
+      }
+
+      /* 요즘 인기있는 */
+      if(by.popular.length){
+        var pt=document.querySelector('#popular .nc-track');
+        if(pt) pt.innerHTML = by.popular.map(function(c,i){
+          return buildCard(c, 'nc-card', i===0 ? '<span class="ucorner u-hot">🔥 인기</span>' : '');
+        }).join('');
+      }
+
+      /* 신규 */
+      if(by.new.length){
+        var nt=document.querySelector('#newclass .auto-row');
+        if(nt) nt.innerHTML = by.new.map(function(c){
+          return buildCard(c, 'auto-card', '');
+        }).join('');
+      }
+    }catch(e){ /* 실패 시 기본 카드 유지 */ }
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initCards);
+  else initCards();
+})();
+</script>
+
 </body>
 </html>

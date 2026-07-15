@@ -100,6 +100,7 @@
     <button class="tab" data-tab="notify" onclick="switchTab('notify')">다음 기수 알림</button>
     <button class="tab" data-tab="photos" onclick="switchTab('photos')">사진 관리</button>
     <button class="tab" data-tab="banners" onclick="switchTab('banners')">배너 관리</button>
+    <button class="tab" data-tab="cards" onclick="switchTab('cards')">클래스 카드</button>
   </div>
 
   <div id="tab-apps">
@@ -307,6 +308,113 @@
     </div>
   </div>
 
+
+  <div id="tab-cards" style="display:none;">
+    <div class="card">
+      <h2>클래스 카드 등록</h2>
+      <div style="font-size:13px;color:#64748B;margin-bottom:14px;">
+        메인/인기/신규 섹션에 노출되는 배너형 카드를 등록합니다.
+        강조하고 싶은 단어는 <b>{중괄호}</b>로 감싸면 파란색으로 표시됩니다. (예: 월 <b>{2,000만 원}</b> 버는)
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label>노출 위치</label>
+          <select id="c-section">
+            <option value="featured">현재 모집중 (메인 상단)</option>
+            <option value="popular">요즘 인기있는 클래스</option>
+            <option value="new">신규 클래스</option>
+          </select>
+        </div>
+        <div>
+          <label>연결 링크</label>
+          <input id="c-link" placeholder="chulgeo_detail.html">
+        </div>
+      </div>
+
+      <label style="margin-top:12px;">썸네일 이미지 (권장 840×560, 인물이 오른쪽에 오도록)</label>
+      <input id="c-file" type="file" accept="image/*" style="display:block;margin-top:6px;font-size:14px;">
+      <div id="c-preview" style="display:none;margin-top:10px;">
+        <img id="c-preview-img" style="max-width:420px;width:100%;border-radius:12px;border:1px solid #E2E8F0;">
+      </div>
+
+      <div class="grid2" style="margin-top:12px;">
+        <div>
+          <label>사진 위치 (가로%)</label>
+          <input id="c-posx" placeholder="20" value="20">
+          <div style="font-size:12px;color:#94A3B8;margin-top:4px;">숫자가 작을수록 인물이 오른쪽으로 이동</div>
+        </div>
+        <div>
+          <label>사진 위치 (세로%)</label>
+          <input id="c-posy" placeholder="30" value="30">
+        </div>
+      </div>
+
+      <h3 style="margin:20px 0 10px;font-size:15px;">썸네일 안 문구</h3>
+      <label>상단 안내문</label>
+      <input id="c-small" placeholder="무경험 OK · 철거 기술 완전 정복">
+
+      <div class="grid2" style="margin-top:12px;">
+        <div>
+          <label>후킹 문구 1줄</label>
+          <input id="c-hook1" placeholder="직장 때려치고,">
+        </div>
+        <div>
+          <label>후킹 문구 2줄 ({} 안이 파란 강조)</label>
+          <input id="c-hook2" placeholder="월 {2,000만 원} 버는">
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:12px;">
+        <div>
+          <label>파란 바 문구</label>
+          <input id="c-bar" placeholder="철거 사장님!">
+        </div>
+        <div>
+          <label>하단 전문가</label>
+          <div style="display:flex;gap:8px;">
+            <input id="c-elabel" placeholder="철거 기술 전문가" style="flex:2;">
+            <input id="c-ename" placeholder="정우진" style="flex:1;">
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:20px 0 10px;font-size:15px;">카드 아래 표시</h3>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;">
+        <label style="display:flex;align-items:center;gap:6px;font-weight:600;"><input type="checkbox" id="c-hot" style="width:auto;"> HOT</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:600;"><input type="checkbox" id="c-best" style="width:auto;"> BEST</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:600;"><input type="checkbox" id="c-new" style="width:auto;"> NEW</label>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label>카테고리 (대괄호 안에 표시)</label>
+          <input id="c-cat" placeholder="철거·원상복구">
+        </div>
+        <div>
+          <label>제목</label>
+          <input id="c-title" placeholder="요즘 2030 사이에서 뜨고있는 철거 기술">
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:12px;">
+        <div>
+          <label>정렬 순서 (작을수록 먼저)</label>
+          <input id="c-sort" type="number" value="0">
+        </div>
+        <div></div>
+      </div>
+
+      <button id="c-add-btn" class="btn" style="margin-top:16px;" onclick="addCard()">카드 등록</button>
+      <div id="c-msg" style="margin-top:10px;font-size:13px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>등록된 카드 <span class="muted" id="c-count"></span></h2>
+      <div id="c-list"><div class="empty">불러오는 중…</div></div>
+    </div>
+  </div>
+
   <div id="tab-photos" style="display:none;">
     <div class="card">
       <h2>사진 관리</h2>
@@ -414,6 +522,8 @@ function switchTab(name){
   document.getElementById('tab-notify').style.display = (name==='notify') ? 'block' : 'none';
   document.getElementById('tab-banners').style.display = (name==='banners') ? 'block' : 'none';
   document.getElementById('tab-photos').style.display = (name==='photos') ? 'block' : 'none';
+  document.getElementById('tab-cards').style.display = (name==='cards') ? 'block' : 'none';
+  if(name==='cards'){ loadCards(); }
   if(name==='members' && !membersLoaded){ membersLoaded = true; loadMembers(); }
   if(name==='instr' && !instrLoaded){ instrLoaded = true; loadInstructors(); }
   if(name==='programs' && !programsLoaded){ programsLoaded = true; loadPrograms(); }
@@ -1277,6 +1387,137 @@ async function phMove(id, dir){
   phReload();
 }
 (function(){ var fi=document.getElementById('ph-file'); if(fi) fi.addEventListener('change', phUpload); })();
+
+/* ===================== 클래스 카드 관리 ===================== */
+function cMsg(t, ok){
+  var el=document.getElementById('c-msg');
+  el.textContent=t||''; el.style.color = ok ? '#10B981' : '#EF4444';
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var fe=document.getElementById('c-file');
+  if(fe) fe.addEventListener('change', function(){
+    var f=this.files && this.files[0];
+    var box=document.getElementById('c-preview'), img=document.getElementById('c-preview-img');
+    if(!f){ box.style.display='none'; return; }
+    img.src=URL.createObjectURL(f); box.style.display='block';
+  });
+});
+
+/* {강조} → <span class="hl"> 로 변환 */
+function hlText(t){
+  if(!t) return '';
+  var esc = t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return esc.replace(/\{([^}]*)\}/g, '<span class="hl">$1</span>');
+}
+
+async function addCard(){
+  var btn=document.getElementById('c-add-btn');
+  var section=document.getElementById('c-section').value;
+  var cat=document.getElementById('c-cat').value.trim();
+  var title=document.getElementById('c-title').value.trim();
+  var fileEl=document.getElementById('c-file');
+  var f=fileEl.files && fileEl.files[0];
+
+  if(!cat || !title){ cMsg('카테고리와 제목을 입력해주세요.'); return; }
+
+  btn.disabled=true; btn.textContent='등록 중…'; cMsg('');
+  var path=null, url=null;
+
+  try{
+    if(f){
+      path='card_'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'.'+(f.name.split('.').pop()||'jpg');
+      var up=await sb.storage.from('class-cards').upload(path, f, { cacheControl:'3600', upsert:false, contentType:f.type||undefined });
+      if(up.error){ cMsg('이미지 업로드 실패: '+up.error.message); btn.disabled=false; btn.textContent='카드 등록'; return; }
+      url=sb.storage.from('class-cards').getPublicUrl(path).data.publicUrl;
+    }
+
+    var rec={
+      section: section,
+      thumbnail_url: url,
+      photo_position: (document.getElementById('c-posx').value.trim()||'20')+'% '+(document.getElementById('c-posy').value.trim()||'30')+'%',
+      small_text: document.getElementById('c-small').value.trim(),
+      hook_line1: document.getElementById('c-hook1').value.trim(),
+      hook_line2: document.getElementById('c-hook2').value.trim(),
+      bar_text: document.getElementById('c-bar').value.trim(),
+      expert_label: document.getElementById('c-elabel').value.trim(),
+      expert_name: document.getElementById('c-ename').value.trim(),
+      is_hot: document.getElementById('c-hot').checked,
+      is_best: document.getElementById('c-best').checked,
+      is_new: document.getElementById('c-new').checked,
+      category: cat,
+      title: title,
+      link_url: document.getElementById('c-link').value.trim() || 'chulgeo_detail.html',
+      sort_order: parseInt(document.getElementById('c-sort').value||'0',10),
+      is_active: true
+    };
+
+    var ins=await sb.from('class_cards').insert(rec);
+    if(ins.error){
+      if(path) await sb.storage.from('class-cards').remove([path]);
+      cMsg('등록 실패: '+ins.error.message);
+    }else{
+      cMsg('카드가 등록되었습니다.', true);
+      ['c-small','c-hook1','c-hook2','c-bar','c-ename','c-cat','c-title'].forEach(function(id){ document.getElementById(id).value=''; });
+      fileEl.value=''; document.getElementById('c-preview').style.display='none';
+      document.getElementById('c-hot').checked=false;
+      document.getElementById('c-best').checked=false;
+      document.getElementById('c-new').checked=false;
+      loadCards();
+    }
+  }catch(e){
+    cMsg('오류: '+(e.message||e));
+  }
+  btn.disabled=false; btn.textContent='카드 등록';
+}
+
+var SECTION_LABEL={ featured:'현재 모집중', popular:'요즘 인기있는', new:'신규' };
+
+async function loadCards(){
+  var box=document.getElementById('c-list');
+  box.innerHTML='<div class="empty">불러오는 중…</div>';
+  var r=await sb.from('class_cards').select('*').order('section',{ascending:true}).order('sort_order',{ascending:true});
+  if(r.error){ box.innerHTML='<div class="empty">불러오기 실패: '+r.error.message+'</div>'; return; }
+  var rows=r.data||[];
+  document.getElementById('c-count').textContent='('+rows.length+'개)';
+  if(!rows.length){ box.innerHTML='<div class="empty">등록된 카드가 없습니다.</div>'; return; }
+
+  box.innerHTML=rows.map(function(c){
+    var badges=[];
+    if(c.is_hot) badges.push('<span style="border:1.4px solid #F0300C;color:#F0300C;background:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;">HOT</span>');
+    if(c.is_best) badges.push('<span style="background:#C4161C;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;">BEST</span>');
+    if(c.is_new) badges.push('<span style="background:#005BFF;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;">NEW</span>');
+    var thumb=c.thumbnail_url
+      ? '<img src="'+c.thumbnail_url+'" style="width:110px;height:74px;object-fit:cover;border-radius:8px;flex:0 0 auto;">'
+      : '<div style="width:110px;height:74px;background:#0B1120;border-radius:8px;flex:0 0 auto;"></div>';
+    return '<div style="display:flex;gap:12px;align-items:center;padding:12px;border:1px solid #E2E8F0;border-radius:10px;margin-bottom:10px;'+(c.is_active?'':'opacity:.5;')+'">'
+      + thumb
+      + '<div style="flex:1;min-width:0;">'
+      +   '<div style="font-size:12px;color:#005BFF;font-weight:700;">'+(SECTION_LABEL[c.section]||c.section)+' · 순서 '+c.sort_order+'</div>'
+      +   '<div style="font-weight:700;margin:3px 0;">['+(c.category||'')+'] '+(c.title||'')+'</div>'
+      +   '<div style="display:flex;gap:5px;margin-top:5px;">'+badges.join('')+'</div>'
+      + '</div>'
+      + '<div style="display:flex;gap:6px;flex:0 0 auto;">'
+      +   '<button class="btn-sm" onclick="toggleCard('+c.id+','+(!c.is_active)+')">'+(c.is_active?'숨기기':'노출')+'</button>'
+      +   '<button class="btn-sm" style="color:#EF4444;border-color:#FCA5A5;" onclick="delCard('+c.id+')">삭제</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+async function toggleCard(id, to){
+  var r=await sb.from('class_cards').update({ is_active: to }).eq('id', id);
+  if(r.error) alert('실패: '+r.error.message);
+  loadCards();
+}
+
+async function delCard(id){
+  if(!confirm('이 카드를 삭제할까요?')) return;
+  var r=await sb.from('class_cards').delete().eq('id', id);
+  if(r.error) alert('실패: '+r.error.message);
+  loadCards();
+}
+
 </script>
 </body>
 </html>
