@@ -2019,17 +2019,17 @@
   }
 
   /* ===== 메인 배너 v2 (강사 프로필 카드형) ===== */
-  .hero-v2{ text-align:left; padding:46px 24px; }
+  .hero-v2{ text-align:left; padding:24px 24px; }
   .hv2-inner{ max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:40px; }
   .hv2-left{ flex:1; min-width:0; padding-left:44px; }
   .hero-v2 .hero-badge{ margin-left:0; }
-  .hv2-left h1{ text-align:left; font-size:37px; line-height:1.32; letter-spacing:-1px; word-break:keep-all; margin-bottom:14px; }
+  .hv2-left h1{ text-align:left; font-size:31px; line-height:1.34; letter-spacing:-1px; word-break:keep-all; margin-bottom:12px; }
   .hv2-left .hero-sub{ text-align:left; margin-left:0; margin-right:0; font-size:15.5px; line-height:1.75; word-break:keep-all; }
-  .hv2-cta{ margin-top:32px; }
-  .btn-see-classes{ display:inline-flex; align-items:center; gap:8px; background:var(--blue); color:#fff; font-weight:800; font-size:16px; padding:15px 30px; border-radius:12px; text-decoration:none; box-shadow:0 10px 26px rgba(0,91,255,.35); transition:all .15s; }
+  .hv2-cta{ margin-top:24px; }
+  .btn-see-classes{ display:inline-flex; align-items:center; gap:7px; background:var(--blue); color:#fff; font-weight:800; font-size:14px; padding:12px 24px; border-radius:11px; text-decoration:none; box-shadow:0 10px 26px rgba(0,91,255,.35); transition:all .15s; }
   .btn-see-classes:hover{ background:var(--blue-dark); transform:translateY(-2px); }
   .hv2-right{ flex:1.05; position:relative; }
-  .hv2-cards{ position:relative; width:100%; max-width:540px; height:440px; margin-left:auto; }
+  .hv2-cards{ position:relative; width:100%; max-width:580px; height:262px; margin-left:auto; transform:scale(.66); transform-origin:top right; }
   .ppl-card{ position:absolute; width:150px; background:var(--navy-light); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:16px 12px 14px; text-align:center; box-shadow:0 14px 34px rgba(0,0,0,.42); opacity:0; animation:pplRise .7s cubic-bezier(.2,.75,.25,1) var(--d,0s) forwards; }
   .ppl-inner{ animation:pplFloat 4.6s ease-in-out var(--fd,1.4s) infinite; }
   .ppl-photo{ width:72px; height:72px; border-radius:50%; margin:0 auto 10px; background:linear-gradient(140deg,#2a3a5e,#17203a); display:flex; align-items:center; justify-content:center; font-size:30px; overflow:hidden; }
@@ -2046,12 +2046,12 @@
   .ppl-sm .ppl-tags span{ font-size:9.5px; padding:2px 7px; }
   @keyframes pplRise{ from{ opacity:0; transform:translateY(38px) scale(.95); } to{ opacity:1; transform:translateY(0) scale(1); } }
   @keyframes pplFloat{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-9px); } }
-  .ppl-1{ top:0px; left:0px; }
-  .ppl-2{ top:18px; left:322px; }
-  .ppl-3{ top:160px; left:128px; }
-  .ppl-4{ top:122px; left:352px; }
-  .ppl-5{ top:266px; left:14px; }
-  .ppl-6{ top:280px; left:276px; }
+  .ppl-1{ top:0px; left:20px; }
+  .ppl-2{ top:8px; left:250px; }
+  .ppl-3{ top:152px; left:196px; }
+  .ppl-4{ top:74px; left:404px; }
+  .ppl-5{ top:250px; left:0px; }
+  .ppl-6{ top:238px; left:372px; }
   @media (max-width: 960px){
     .hero-v2{ text-align:center; padding:48px 20px 40px; }
     .hv2-inner{ flex-direction:column; gap:28px; }
