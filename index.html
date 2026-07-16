@@ -1358,11 +1358,13 @@
 
   .carousel-track {
     display: flex;
+    gap: 16px;                                 /* 인기 섹션과 동일: 카드 나란히 */
     transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .carousel-slide {
-    min-width: 100%;
+    flex: 0 0 420px;                           /* 인기 카드와 동일 폭 → 여러 장 나란히 노출 */
+    max-width: 420px;
   }
 
   /* slide coming-soon state */
@@ -1887,19 +1889,13 @@
     .featured-card .curriculum-steps{ display:none; }
     .featured-img{ min-height:200px; height:auto; }
 
-    /* 인기·신규 클래스: 모바일은 가로 스크롤, 한 번에 카드 1장 (화살표·도트는 숨김) */
-    #popular .nc-viewport, #newclass .nc-viewport{
-      overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch;
-      scrollbar-width:none; scroll-snap-type:x mandatory;
-    }
-    #popular .nc-viewport::-webkit-scrollbar, #newclass .nc-viewport::-webkit-scrollbar{ display:none; }
-    #popular .nc-track, #newclass .nc-track{ transform:none !important; transition:none; }
-    #popular .nc-card, #newclass .nc-card{ flex:0 0 260px; scroll-snap-align:start; }
-    #popular .nc-thumb, #newclass .nc-thumb{ height:140px; }
-    #popular .nc-thumb-emoji, #newclass .nc-thumb-emoji{ font-size:44px; }
-    #popular .nc-tags, #newclass .nc-tags{ display:none; }   /* 신규 카드와 크기 통일 */
-    #popular .nc-btn, #popular .nc-dots,
-    #newclass .nc-btn, #newclass .nc-dots{ display:none !important; }
+    /* 모바일: 세 섹션 모두 데스크톱과 동일하게 화살표·드래그로 카드 1장씩 넘김.
+       카드 폭은 컨테이너 기준 88%(vw가 아니라 %라 패딩 넘침·유령 스크롤 없음) */
+    .carousel-slide{ flex:0 0 88% !important; max-width:none; }
+    #popular .nc-track > .nc-card, #newclass .nc-track > .nc-card{ flex:0 0 88% !important; max-width:none; }
+    /* 화살표를 카드 위 가장자리에 딱 붙여 손가락으로 누르기 쉽게 */
+    .nc-btn.nc-prev{ left:2px; }
+    .nc-btn.nc-next{ right:2px; }
 
     /* 섹션 헤더: 제목 줄바꿈("스" 내려감) + AD/전체보기 겹침 방지 */
     .new-sec-head{ align-items:flex-start; gap:10px; }
@@ -2085,7 +2081,7 @@
     .cat-grid .nc-tag, .cat-slider .nc-tag{ font-size:9px; padding:2px 6px; }
     .cat-grid .nc-price, .cat-slider .nc-price{ font-size:11px; }
     .personal-box{ padding-left:12px !important; padding-right:12px !important; }
-    .ps-card-wrap{ flex:0 0 47% !important; }
+    .ps-card-wrap{ flex:0 0 88% !important; max-width:none; }   /* 모바일: 찌그러뜨리지 말고 카드 1장 전체 폭(컨테이너 기준) 유지 */
     .ps-card-wrap .card-thumb{ height:118px; }
     .ps-card-wrap .card-body{ padding:10px 12px 12px; gap:6px; }
     .ps-card-wrap .card-desc{ display:none; }
@@ -2835,35 +2831,49 @@
 
   let current = 0;
   let total = track.querySelectorAll('.carousel-slide').length || 1;
+  let featMax = 0, featStep = 0, featMaxTranslate = 0;   // 다중 카드 캐러셀 상태
   totalEl.textContent = total;
 
   /* 카드가 다시 그려지면 개수/네비 갱신 (Supabase 렌더 후 호출됨) */
   window.refreshFeaturedCarousel = function(){
     total = track.querySelectorAll('.carousel-slide').length || 1;
     totalEl.textContent = total;
-    const single = total <= 1;
-    if (prevBtn) prevBtn.style.display = single ? 'none' : '';
-    if (nextBtn) nextBtn.style.display = single ? 'none' : '';
-    const dv = document.querySelector('.carousel-divider');
-    const ct = document.querySelector('.carousel-counter');
-    if (dv) dv.style.display = single ? 'none' : '';
-    if (ct) ct.style.display = single ? 'none' : '';
-    if (current >= total) current = 0;
-    /* 도트를 실제 슬라이드 수에 맞춰 재생성 (1개면 숨김 — 고정 5개 도트 버그 제거) */
+    /* 인기 섹션과 동일: 카드 여러 장을 나란히 띄우고, 한 장씩 밀되 끝에 딱 맞춤 */
+    var vp = track.parentElement;                          // .carousel-wrap (overflow hidden = 뷰포트)
+    var vw = vp ? vp.clientWidth : 0;
+    var first = track.querySelector('.carousel-slide');
+    var cw = first ? first.getBoundingClientRect().width : 0;
+    featStep = cw + 16;                                    // 카드 1장 + 간격
+    var contentW = track.scrollWidth;
+    featMaxTranslate = Math.max(0, contentW - vw);         // 콘텐츠 끝을 넘지 않도록
+    featMax = (featStep > 0) ? Math.ceil(featMaxTranslate / featStep) : 0;
+    if (current > featMax) current = featMax;
+
+    var scrollable = featMax > 0;
+    if (prevBtn) prevBtn.style.display = scrollable ? '' : 'none';
+    if (nextBtn) nextBtn.style.display = scrollable ? '' : 'none';
+    /* 카운터(1/2)·디바이더는 다중 카드에선 의미가 없으니 숨김 (인기 섹션처럼 깔끔하게) */
+    var dv = document.querySelector('.carousel-divider');
+    var ct = document.querySelector('.carousel-counter');
+    if (dv) dv.style.display = 'none';
+    if (ct) ct.style.display = 'none';
+    /* 도트 = 넘길 수 있는 페이지 수 (넘길 게 없으면 숨김 → 빈 탭 없음) */
     if (carouselDots) {
-      if (single) {
-        carouselDots.innerHTML = '';
-      } else {
+      if (scrollable) {
         var _h = '';
-        for (var _i = 0; _i < total; _i++) {
+        for (var _i = 0; _i <= featMax; _i++) {
           _h += '<button class="dot' + (_i === current ? ' active' : '') + '" data-idx="' + _i + '"></button>';
         }
         carouselDots.innerHTML = _h;
+        carouselDots.style.display = '';
         carouselDots.querySelectorAll('.dot').forEach(function(d){
           d.addEventListener('click', function(){ goTo(+d.dataset.idx); });
         });
+      } else {
+        carouselDots.innerHTML = '';
       }
     }
+    statusLabel.innerHTML = RECRUIT_LABEL;
     goTo(current);
   };
 
@@ -2873,12 +2883,12 @@
   const RECRUIT_LABEL = '<span style="display:inline-flex;align-items:center;gap:5px;background:#E9F0FF;color:#005BFF;font-size:12px;font-weight:800;padding:4px 11px;border-radius:100px;"><span style="width:6px;height:6px;border-radius:50%;background:#005BFF;"></span>현재 모집중</span>';
 
   function goTo(idx) {
-    current = Math.max(0, Math.min(idx, total - 1));
-    track.style.transform = `translateX(-${current * 100}%)`;
-    curEl.textContent = current + 1;
+    current = Math.max(0, Math.min(idx, featMax));
+    var tx = Math.min(current * featStep, featMaxTranslate);   // 마지막은 콘텐츠 끝에 딱 맞춤(빈 공간 0)
+    track.style.transform = `translateX(-${tx}px)`;
     statusLabel.innerHTML = RECRUIT_LABEL;
-    prevBtn.disabled = current === 0;
-    nextBtn.disabled = current === total - 1;
+    if (prevBtn) prevBtn.disabled = current === 0;
+    if (nextBtn) nextBtn.disabled = current === featMax;
     document.querySelectorAll('#carousel-dots .dot').forEach((d, i) => d.classList.toggle('active', i === current));
   }
 
@@ -2891,12 +2901,23 @@
     if (e.key === 'ArrowLeft')  goTo(current - 1);
     if (e.key === 'ArrowRight') goTo(current + 1);
   });
-  let touchStartX = 0;
-  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  /* 손가락 스와이프 + 마우스 드래그로 넘김 (드래그 중엔 카드 링크 클릭 억제) */
+  let touchStartX = 0, featDragging = false, featMoved = false;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; featMoved = false; }, { passive: true });
+  track.addEventListener('touchmove', e => { if (Math.abs(e.touches[0].clientX - touchStartX) > 10) featMoved = true; }, { passive: true });
   track.addEventListener('touchend', e => {
     const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   }, { passive: true });
+  track.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') return; touchStartX = e.clientX; featDragging = true; featMoved = false; });
+  window.addEventListener('pointermove', e => { if (featDragging && Math.abs(e.clientX - touchStartX) > 10) featMoved = true; });
+  window.addEventListener('pointerup', e => {
+    if (!featDragging) return;
+    featDragging = false;
+    const diff = touchStartX - e.clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+  });
+  track.addEventListener('click', e => { if (featMoved) { e.preventDefault(); e.stopPropagation(); featMoved = false; } }, true);
 
   /* ─────────────────────────────────────────
      썸네일 그리드 렌더링
@@ -3119,6 +3140,13 @@
   current = 0;
   window.refreshFeaturedCarousel();
 
+  /* 창 크기 변경 시 페이지 수 재계산 (다중 카드) */
+  var _featRz = null;
+  window.addEventListener('resize', function(){
+    if (_featRz) clearTimeout(_featRz);
+    _featRz = setTimeout(function(){ if (window.refreshFeaturedCarousel) window.refreshFeaturedCarousel(); }, 150);
+  });
+
 
   /* ══════════════════════════════════════
      신규 섹션 JS
@@ -3145,6 +3173,41 @@
     _carousels[key] = { idx: 0, max: 0, step: 0, maxTranslate: 0,
       trackId: trackId, dotsId: dotsId, prevId: prevId, nextId: nextId, gap: 16 };
     refreshCarousel(key);
+    attachSwipe(track.parentElement, key);   // 손가락 스와이프 + 마우스 드래그로도 넘기기
+  }
+
+  /* 뷰포트에서 좌우로 끌면(터치·마우스) 카드 한 장씩 넘김. 드래그 중엔 링크 클릭 억제 */
+  function attachSwipe(el, key) {
+    if (!el || el._swipeBound) return;
+    el._swipeBound = true;
+    var x0 = null, dragging = false, moved = false;
+    el.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; moved = false; }, { passive: true });
+    el.addEventListener('touchmove', function(e){
+      if (x0 != null && Math.abs(e.touches[0].clientX - x0) > 10) moved = true;
+    }, { passive: true });
+    el.addEventListener('touchend', function(e){
+      if (x0 == null) return;
+      var dx = x0 - e.changedTouches[0].clientX; x0 = null;
+      if (Math.abs(dx) > 40) moveCarousel(key, dx > 0 ? 1 : -1);
+    }, { passive: true });
+    el.addEventListener('pointerdown', function(e){
+      if (e.pointerType === 'touch') return;      // 터치는 위 핸들러가 처리
+      x0 = e.clientX; dragging = true; moved = false;
+    });
+    window.addEventListener('pointermove', function(e){
+      if (dragging && x0 != null && Math.abs(e.clientX - x0) > 10) moved = true;
+    });
+    window.addEventListener('pointerup', function(e){
+      if (!dragging) return;
+      dragging = false;
+      if (x0 == null) return;
+      var dx = x0 - e.clientX; x0 = null;
+      if (Math.abs(dx) > 40) moveCarousel(key, dx > 0 ? 1 : -1);
+    });
+    /* 끌었을 때(카드가 링크라도) 클릭 이동 방지 */
+    el.addEventListener('click', function(e){
+      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+    }, true);
   }
 
   function refreshCarousel(key) {
@@ -3290,10 +3353,6 @@
         }
       });
 
-      var psMax = Math.max(0, shown.length - 3);
-      window._psIdx = 0;
-      window._psMax = psMax;
-
       box.innerHTML =
         '<div class="ps-head">'
         + '<div><div class="personal-title"><em>' + user.name + '</em>님이 관심있게 보신 클래스</div>'
@@ -3301,45 +3360,19 @@
         + '<span class="ps-tag">&#128336; 최근 본 순</span>'
         + '</div>'
         + '<div class="nc-carousel-wrap">'
-        + '<button class="nc-btn nc-prev" id="ps-prev" onclick="psMov(-1)">&#9664;</button>'
+        + '<button class="nc-btn nc-prev" id="ps-prev" onclick="moveCarousel(\'ps\',-1)">&#9664;</button>'
         + '<div class="nc-viewport"><div class="nc-track" id="ps-track">' + cards + '</div></div>'
-        + '<button class="nc-btn nc-next" id="ps-next" onclick="psMov(1)">&#9654;</button>'
+        + '<button class="nc-btn nc-next" id="ps-next" onclick="moveCarousel(\'ps\',1)">&#9654;</button>'
         + '</div>'
         + '<div class="nc-dots" id="ps-dots"></div>';
 
-      /* 도트 */
-      var dotsEl = document.getElementById('ps-dots');
-      for (var i = 0; i <= psMax; i++) {
-        (function(ii) {
-          var d = document.createElement('button');
-          d.className = 'nc-dot' + (ii === 0 ? ' active' : '');
-          d.onclick = function() { psGoto(ii); };
-          dotsEl.appendChild(d);
-        })(i);
-      }
-      var pp = document.getElementById('ps-prev');
-      var pn = document.getElementById('ps-next');
-      if (pp) pp.disabled = true;
-      if (pn) pn.disabled = (psMax === 0);
+      /* 다른 섹션과 동일한 공용 로직: 카드 실제 개수에 맞춰 도트·화살표 (빈 페이지 제거) */
+      buildCarousel('ps', 'ps-track', 'ps-dots', 'ps-prev', 'ps-next');
 
     } catch(e) { console.error('renderPersonalBox error:', e); }
   }
 
-  function psGoto(idx) {
-    window._psIdx = Math.max(0, Math.min(idx, window._psMax));
-    var track = document.getElementById('ps-track');
-    if (!track || !track.children[0]) return;
-    var w = track.children[0].offsetWidth + 16;
-    track.style.transform = 'translateX(-' + (window._psIdx * w) + 'px)';
-    var pp = document.getElementById('ps-prev');
-    var pn = document.getElementById('ps-next');
-    if (pp) pp.disabled = window._psIdx === 0;
-    if (pn) pn.disabled = window._psIdx === window._psMax;
-    document.querySelectorAll('#ps-dots .nc-dot').forEach(function(d, i) {
-      d.classList.toggle('active', i === window._psIdx);
-    });
-  }
-  function psMov(dir) { psGoto(window._psIdx + dir); }
+  function psMov(dir) { moveCarousel('ps', dir); }   /* 하위호환 별칭 */
 
   /* 초기 실행 */
   function ncInit() {
