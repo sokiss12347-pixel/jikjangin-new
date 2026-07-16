@@ -3897,11 +3897,18 @@ function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggl
         await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');
       }
       var cli=window.supabase.createClient(CC_URL, CC_KEY);
-      var r=await cli.from('class_cards').select('*').eq('is_active', true).order('sort_order',{ascending:true});
+      var r=await cli.from('class_cards').select('*').eq('is_active', true);
       if(r.error || !r.data || !r.data.length) return;   // 없으면 기본 카드 유지
 
-      var by={featured:[], popular:[], new:[]};
-      r.data.forEach(function(c){ if(by[c.section]) by[c.section].push(c); });
+      function pick(showCol, sortCol){
+        return r.data.filter(function(c){ return c[showCol]; })
+                     .sort(function(a,b){ return (a[sortCol]||0)-(b[sortCol]||0); });
+      }
+      var by={
+        featured: pick('show_featured','sort_featured'),
+        popular:  pick('show_popular','sort_popular'),
+        new:      pick('show_new','sort_new')
+      };
 
       /* 현재 모집중 */
       if(by.featured.length){

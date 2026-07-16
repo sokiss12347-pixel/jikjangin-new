@@ -319,12 +319,12 @@
 
       <div class="grid2">
         <div>
-          <label>노출 위치</label>
-          <select id="c-section">
-            <option value="featured">현재 모집중 (메인 상단)</option>
-            <option value="popular">요즘 인기있는 클래스</option>
-            <option value="new">신규 클래스</option>
-          </select>
+          <label>노출 위치 (중복 선택 가능)</label>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;padding:11px 0;">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:600;"><input type="checkbox" id="c-sec-featured" style="width:auto;"> 현재 모집중</label>
+            <label style="display:flex;align-items:center;gap:6px;font-weight:600;"><input type="checkbox" id="c-sec-popular" style="width:auto;"> 요즘 인기있는</label>
+            <label style="display:flex;align-items:center;gap:6px;font-weight:600;"><input type="checkbox" id="c-sec-new" style="width:auto;"> 신규</label>
+          </div>
         </div>
         <div>
           <label>연결 링크</label>
@@ -1453,13 +1453,16 @@ function hlText(t){
 
 async function addCard(){
   var btn=document.getElementById('c-add-btn');
-  var section=document.getElementById('c-section').value;
+  var showF=document.getElementById('c-sec-featured').checked;
+  var showP=document.getElementById('c-sec-popular').checked;
+  var showN=document.getElementById('c-sec-new').checked;
   var grp=document.getElementById('c-group').value;
   var cat=document.getElementById('c-cat').value.trim();
   var title=document.getElementById('c-title').value.trim();
   var fileEl=document.getElementById('c-file');
   var f=fileEl.files && fileEl.files[0];
 
+  if(!showF && !showP && !showN){ cMsg('노출 위치를 하나 이상 선택해주세요.'); return; }
   if(!grp || !cat){ cMsg('대분류와 세부분류를 선택해주세요.'); return; }
   if(!title){ cMsg('제목을 입력해주세요.'); return; }
 
@@ -1475,7 +1478,12 @@ async function addCard(){
     }
 
     var rec={
-      section: section,
+      show_featured: showF,
+      show_popular: showP,
+      show_new: showN,
+      sort_featured: showF ? await nextSortOrder('featured') : 0,
+      sort_popular:  showP ? await nextSortOrder('popular')  : 0,
+      sort_new:      showN ? await nextSortOrder('new')      : 0,
       thumbnail_url: url,
       photo_position: (document.getElementById('c-posx').value.trim()||'20')+'% '+(document.getElementById('c-posy').value.trim()||'30')+'%',
       small_text: document.getElementById('c-small').value.trim(),
@@ -1491,7 +1499,6 @@ async function addCard(){
       category: cat,
       title: title,
       link_url: document.getElementById('c-link').value.trim() || 'chulgeo_detail.html',
-      sort_order: await nextSortOrder(section),
       is_active: true
     };
 
@@ -1506,6 +1513,9 @@ async function addCard(){
       document.getElementById('c-hot').checked=false;
       document.getElementById('c-best').checked=false;
       document.getElementById('c-new').checked=false;
+      document.getElementById('c-sec-featured').checked=false;
+      document.getElementById('c-sec-popular').checked=false;
+      document.getElementById('c-sec-new').checked=false;
       loadCards();
     }
   }catch(e){
@@ -1515,6 +1525,8 @@ async function addCard(){
 }
 
 var SECTION_LABEL={ featured:'현재 모집중', popular:'요즘 인기있는', new:'신규' };
+var SHOW_COL={ featured:'show_featured', popular:'show_popular', new:'show_new' };
+var SORT_COL={ featured:'sort_featured', popular:'sort_popular', new:'sort_new' };
 var cardTab='featured';
 var allCards=[];
 
@@ -1526,16 +1538,17 @@ function switchCardTab(name){
 
 /* 해당 섹션의 다음 순서값 (맨 뒤) */
 async function nextSortOrder(section){
-  var r=await sb.from('class_cards').select('sort_order').eq('section', section).order('sort_order',{ascending:false}).limit(1);
+  var r=await sb.from('class_cards').select(SORT_COL[section]).eq(SHOW_COL[section], true)
+        .order(SORT_COL[section],{ascending:false}).limit(1);
   if(r.error || !r.data || !r.data.length) return 0;
-  return (r.data[0].sort_order||0) + 1;
+  return (r.data[0][SORT_COL[section]]||0) + 1;
 }
 
 async function loadCards(){
   initCatSelects();
   var box=document.getElementById('c-list');
   box.innerHTML='<div class="empty">불러오는 중…</div>';
-  var r=await sb.from('class_cards').select('*').order('sort_order',{ascending:true});
+  var r=await sb.from('class_cards').select('*');
   if(r.error){ box.innerHTML='<div class="empty">불러오기 실패: '+r.error.message+'</div>'; return; }
   allCards=r.data||[];
   document.getElementById('c-count').textContent='(전체 '+allCards.length+'개)';
@@ -1544,17 +1557,27 @@ async function loadCards(){
 
 function renderCardList(){
   var box=document.getElementById('c-list');
-  var rows=allCards.filter(function(c){ return c.section===cardTab; });
-  if(!rows.length){ box.innerHTML='<div class="empty">이 섹션에 등록된 카드가 없습니다.</div>'; return; }
+  var showCol=SHOW_COL[cardTab], sortCol=SORT_COL[cardTab];
+  var rows=allCards.filter(function(c){ return c[showCol]; })
+                   .sort(function(a,b){ return (a[sortCol]||0)-(b[sortCol]||0); });
+  if(!rows.length){ box.innerHTML='<div class="empty">이 섹션에 노출되는 카드가 없습니다.</div>'; return; }
 
   box.innerHTML=rows.map(function(c, idx){
     var badges=[];
     if(c.is_hot) badges.push('<span style="border:1.4px solid #F0300C;color:#F0300C;background:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;">HOT</span>');
     if(c.is_best) badges.push('<span style="background:#C4161C;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;">BEST</span>');
     if(c.is_new) badges.push('<span style="background:#005BFF;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;">NEW</span>');
+
+    /* 이 카드가 노출되는 다른 섹션 표시 */
+    var secs=[];
+    if(c.show_featured) secs.push('현재 모집중');
+    if(c.show_popular)  secs.push('인기');
+    if(c.show_new)      secs.push('신규');
+
     var thumb=c.thumbnail_url
       ? '<img src="'+c.thumbnail_url+'" style="width:110px;height:74px;object-fit:cover;border-radius:8px;flex:0 0 auto;">'
       : '<div style="width:110px;height:74px;background:#0B1120;border-radius:8px;flex:0 0 auto;"></div>';
+
     return '<div style="display:flex;gap:12px;align-items:center;padding:12px;border:1px solid #E2E8F0;border-radius:10px;margin-bottom:10px;'+(c.is_active?'':'opacity:.5;')+'">'
       + '<div style="display:flex;flex-direction:column;gap:3px;flex:0 0 auto;">'
       +   '<button class="btn-sm" style="padding:2px 8px;" onclick="moveCard('+c.id+',-1)"'+(idx===0?' disabled':'')+'>▲</button>'
@@ -1563,7 +1586,7 @@ function renderCardList(){
       + '<div style="font-size:13px;font-weight:800;color:#94A3B8;flex:0 0 auto;width:20px;text-align:center;">'+(idx+1)+'</div>'
       + thumb
       + '<div style="flex:1;min-width:0;">'
-      +   '<div style="font-size:12px;color:#005BFF;font-weight:700;">'+(c.group_name||'-')+'</div>'
+      +   '<div style="font-size:12px;color:#005BFF;font-weight:700;">'+(c.group_name||'-')+' · 노출: '+secs.join(', ')+'</div>'
       +   '<div style="font-weight:700;margin:3px 0;">['+(c.category||'')+'] '+(c.title||'')+'</div>'
       +   '<div style="display:flex;gap:5px;margin-top:5px;">'+badges.join('')+'</div>'
       + '</div>'
@@ -1575,19 +1598,23 @@ function renderCardList(){
   }).join('');
 }
 
-/* 위/아래 이동 - 같은 섹션 안에서 sort_order 교환 */
+/* 위/아래 이동 - 현재 탭 섹션의 순서만 교환 */
 async function moveCard(id, dir){
-  var rows=allCards.filter(function(c){ return c.section===cardTab; });
+  var showCol=SHOW_COL[cardTab], sortCol=SORT_COL[cardTab];
+  var rows=allCards.filter(function(c){ return c[showCol]; })
+                   .sort(function(a,b){ return (a[sortCol]||0)-(b[sortCol]||0); });
   var i=rows.findIndex(function(c){ return c.id===id; });
   var j=i+dir;
   if(i<0 || j<0 || j>=rows.length) return;
 
   var a=rows[i], b=rows[j];
-  var ao=a.sort_order, bo=b.sort_order;
-  if(ao===bo){ bo = ao + dir; }   /* 값이 같으면 강제로 벌림 */
+  var ao=a[sortCol]||0, bo=b[sortCol]||0;
+  if(ao===bo){ bo = ao + dir; }
 
-  var r1=await sb.from('class_cards').update({ sort_order: bo }).eq('id', a.id);
-  var r2=await sb.from('class_cards').update({ sort_order: ao }).eq('id', b.id);
+  var u1={}, u2={};
+  u1[sortCol]=bo; u2[sortCol]=ao;
+  var r1=await sb.from('class_cards').update(u1).eq('id', a.id);
+  var r2=await sb.from('class_cards').update(u2).eq('id', b.id);
   if(r1.error || r2.error){ alert('순서 변경 실패: '+((r1.error||r2.error).message)); }
   loadCards();
 }
