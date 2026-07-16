@@ -1887,21 +1887,19 @@
     .featured-card .curriculum-steps{ display:none; }
     .featured-img{ min-height:200px; height:auto; }
 
-    /* 인기 클래스: 가로 스와이프, 한 번에 카드 1장(신규처럼) */
-    #popular .nc-viewport{
+    /* 인기·신규 클래스: 모바일은 가로 스크롤, 한 번에 카드 1장 (화살표·도트는 숨김) */
+    #popular .nc-viewport, #newclass .nc-viewport{
       overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch;
       scrollbar-width:none; scroll-snap-type:x mandatory;
     }
-    #popular .nc-viewport::-webkit-scrollbar{ display:none; }
-    #popular .nc-track{ transform:none !important; transition:none; }
-    #popular .nc-card{ flex:0 0 260px; scroll-snap-align:start; }
-    #popular .nc-thumb{ height:140px; }
-    #popular .nc-thumb-emoji{ font-size:44px; }
-    #popular .nc-tags{ display:none; }   /* 신규 카드와 크기 통일 */
-    #popular .nc-btn, #popular .nc-dots{ display:none; }
-
-    /* 신규 클래스: 데스크톱과 동일하게 무한 자동 롤링 유지 (스와이프로 끊기지 않게) */
-    #newclass .auto-wrap{ overflow: hidden; }
+    #popular .nc-viewport::-webkit-scrollbar, #newclass .nc-viewport::-webkit-scrollbar{ display:none; }
+    #popular .nc-track, #newclass .nc-track{ transform:none !important; transition:none; }
+    #popular .nc-card, #newclass .nc-card{ flex:0 0 260px; scroll-snap-align:start; }
+    #popular .nc-thumb, #newclass .nc-thumb{ height:140px; }
+    #popular .nc-thumb-emoji, #newclass .nc-thumb-emoji{ font-size:44px; }
+    #popular .nc-tags, #newclass .nc-tags{ display:none; }   /* 신규 카드와 크기 통일 */
+    #popular .nc-btn, #popular .nc-dots,
+    #newclass .nc-btn, #newclass .nc-dots{ display:none !important; }
 
     /* 섹션 헤더: 제목 줄바꿈("스" 내려감) + AD/전체보기 겹침 방지 */
     .new-sec-head{ align-items:flex-start; gap:10px; }
@@ -2494,7 +2492,7 @@
       <a href="chulgeo.html" class="new-view-all">전체보기 →</a>
     </div>
     <div class="nc-carousel-wrap">
-      <button class="nc-btn nc-prev" id="pop-prev" onclick="ncMove('pop',-1)">◀</button>
+      <button class="nc-btn nc-prev" id="pop-prev" onclick="moveCarousel('pop',-1)">◀</button>
       <div class="nc-viewport"><div class="nc-track" id="pop-track">
         <a href="chulgeo_detail.html" class="nc-card kard" onclick="ncTrackView('chulgeo_detail.html')"><div class="bthumb"><div class="bphoto"></div><div class="bgrad"></div><span class="blogo"><span class="lb">직</span>장인</span><div class="btext"><div class="bsmall">무경험 OK · 철거 기술 완전 정복</div><div class="bbig">직장 때려치고,<br>월 <span class="hl">2,000만 원</span> 버는</div><div class="bbar">철거 사장님!</div></div><div class="bfoot">철거 기술 전문가 <b>정우진</b></div></div><div class="kbadges"><span class="kb kb-hot">HOT</span><span class="kb kb-best">BEST</span></div><div class="ktitle">[철거·원상복구] 요즘 2030 사이에서 뜨고있는 철거 기술</div></a>
 
@@ -2502,7 +2500,7 @@
 
 
       </div></div>
-      <button class="nc-btn nc-next" id="pop-next" onclick="ncMove('pop',1)">▶</button>
+      <button class="nc-btn nc-next" id="pop-next" onclick="moveCarousel('pop',1)">▶</button>
     </div>
     <div class="nc-dots" id="pop-dots"></div>
   </div>
@@ -2516,21 +2514,14 @@
       </div>
       <a href="chulgeo.html" class="new-view-all">전체보기 →</a>
     </div>
-    <div class="auto-wrap">
-      <div class="auto-row" id="auto-row">
-        <a href="chulgeo_detail.html" class="auto-card kard" onclick="ncTrackView('chulgeo_detail.html')"><div class="bthumb"><div class="bphoto"></div><div class="bgrad"></div><span class="blogo"><span class="lb">직</span>장인</span><div class="btext"><div class="bsmall">무경험 OK · 철거 기술 완전 정복</div><div class="bbig">직장 때려치고,<br>월 <span class="hl">2,000만 원</span> 버는</div><div class="bbar">철거 사장님!</div></div><div class="bfoot">철거 기술 전문가 <b>정우진</b></div></div><div class="kbadges"><span class="kb kb-new">NEW</span></div><div class="ktitle">[철거·원상복구] 요즘 2030 사이에서 뜨고있는 철거 기술</div></a>
-
-
-
-
-
-
-
-
-
-
-      </div>
+    <div class="nc-carousel-wrap">
+      <button class="nc-btn nc-prev" id="new-prev" onclick="moveCarousel('new',-1)">◀</button>
+      <div class="nc-viewport"><div class="nc-track" id="new-track">
+        <a href="chulgeo_detail.html" class="nc-card kard" onclick="ncTrackView('chulgeo_detail.html')"><div class="bthumb"><div class="bphoto"></div><div class="bgrad"></div><span class="blogo"><span class="lb">직</span>장인</span><div class="btext"><div class="bsmall">무경험 OK · 철거 기술 완전 정복</div><div class="bbig">직장 때려치고,<br>월 <span class="hl">2,000만 원</span> 버는</div><div class="bbar">철거 사장님!</div></div><div class="bfoot">철거 기술 전문가 <b>정우진</b></div></div><div class="kbadges"><span class="kb kb-new">NEW</span></div><div class="ktitle">[철거·원상복구] 요즘 2030 사이에서 뜨고있는 철거 기술</div></a>
+      </div></div>
+      <button class="nc-btn nc-next" id="new-next" onclick="moveCarousel('new',1)">▶</button>
     </div>
+    <div class="nc-dots" id="new-dots"></div>
   </div>
 
   <!-- ── 신규 섹션 3: 맞춤 추천 ── -->
@@ -2850,7 +2841,6 @@
   window.refreshFeaturedCarousel = function(){
     total = track.querySelectorAll('.carousel-slide').length || 1;
     totalEl.textContent = total;
-    const wrap = document.querySelector('.carousel-header');
     const single = total <= 1;
     if (prevBtn) prevBtn.style.display = single ? 'none' : '';
     if (nextBtn) nextBtn.style.display = single ? 'none' : '';
@@ -2859,6 +2849,21 @@
     if (dv) dv.style.display = single ? 'none' : '';
     if (ct) ct.style.display = single ? 'none' : '';
     if (current >= total) current = 0;
+    /* 도트를 실제 슬라이드 수에 맞춰 재생성 (1개면 숨김 — 고정 5개 도트 버그 제거) */
+    if (carouselDots) {
+      if (single) {
+        carouselDots.innerHTML = '';
+      } else {
+        var _h = '';
+        for (var _i = 0; _i < total; _i++) {
+          _h += '<button class="dot' + (_i === current ? ' active' : '') + '" data-idx="' + _i + '"></button>';
+        }
+        carouselDots.innerHTML = _h;
+        carouselDots.querySelectorAll('.dot').forEach(function(d){
+          d.addEventListener('click', function(){ goTo(+d.dataset.idx); });
+        });
+      }
+    }
     goTo(current);
   };
 
@@ -3110,8 +3115,9 @@
     }, 100);
   }
 
-  /* 초기 상태 */
-  goTo(0);
+  /* 초기 상태 — 도트/화살표를 실제 슬라이드 수(폴백 1개)에 맞춰 정리 */
+  current = 0;
+  window.refreshFeaturedCarousel();
 
 
   /* ══════════════════════════════════════
@@ -3125,42 +3131,99 @@
     {href:'tile_detail.html',emoji:'\uD83D\uDD32',cat:'줄눈',name:'줄눈 ALL-IN-ONE 클래스',price:'추후 공개',bg:'linear-gradient(135deg,#1a2e1a,#2d4a2d)'},
   ];
 
-  /* 인기 클래스 캐러셀 */
-  var ncPopIdx = 0;
-  var ncPopMax = 2;
+  /* ─────────────────────────────────────────
+     공용 카드 캐러셀 (인기·신규 공통)
+     - 넘길 수 있는 페이지 수 = 카드 실제 개수 - 한 화면에 보이는 개수
+     - 카드가 한 화면에 다 들어오면 화살표·도트 자동 숨김 (빈 탭 없음)
+     - Supabase 렌더 후 refreshCarousel(key)로 재계산
+  ───────────────────────────────────────── */
+  var _carousels = {};
 
-  function ncBuildDots() {
-    var el = document.getElementById('pop-dots');
-    if (!el) return;
-    el.innerHTML = '';
-    for (var i = 0; i <= ncPopMax; i++) {
-      (function(ii) {
-        var d = document.createElement('button');
-        d.className = 'nc-dot' + (ii === 0 ? ' active' : '');
-        d.onclick = function() { ncGoto(ii); };
-        el.appendChild(d);
-      })(i);
-    }
-    var prevBtn = document.getElementById('pop-prev');
-    if (prevBtn) prevBtn.disabled = true;
+  function buildCarousel(key, trackId, dotsId, prevId, nextId) {
+    var track = document.getElementById(trackId);
+    if (!track) return;
+    _carousels[key] = { idx: 0, max: 0, step: 0, maxTranslate: 0,
+      trackId: trackId, dotsId: dotsId, prevId: prevId, nextId: nextId, gap: 16 };
+    refreshCarousel(key);
   }
 
-  function ncGoto(idx) {
-    ncPopIdx = Math.max(0, Math.min(idx, ncPopMax));
-    var track = document.getElementById('pop-track');
+  function refreshCarousel(key) {
+    var st = _carousels[key];
+    if (!st) return;
+    var track = document.getElementById(st.trackId);
+    if (!track || !track.children.length) return;
+    var vp = track.parentElement;                                // .nc-viewport
+    var vw = vp ? vp.clientWidth : 0;
+    var cw = track.children[0].getBoundingClientRect().width;    // 카드 1장 폭 (균일)
+    st.step = cw + st.gap;                                       // 한 번에 카드 1장 이동
+    var contentW = track.scrollWidth;                           // 카드+간격 전체 폭
+    st.maxTranslate = Math.max(0, contentW - vw);               // 콘텐츠 끝을 넘어가지 않도록 클램프
+    /* 넘길 수 있는 칸(=도트) 수: 한 장씩 이동하되 마지막은 끝에 딱 맞춤 */
+    st.max = (st.step > 0) ? Math.ceil(st.maxTranslate / st.step) : 0;
+    if (st.idx > st.max) st.idx = st.max;
+
+    /* 도트: 넘길 게 있을 때만 실제 칸 수만큼 생성 (없으면 숨김 → 빈 탭 제거) */
+    var dotsEl = document.getElementById(st.dotsId);
+    if (dotsEl) {
+      if (st.max > 0) {
+        dotsEl.innerHTML = '';
+        for (var i = 0; i <= st.max; i++) {
+          (function(ii) {
+            var d = document.createElement('button');
+            d.className = 'nc-dot' + (ii === st.idx ? ' active' : '');
+            d.onclick = function() { gotoCarousel(key, ii); };
+            dotsEl.appendChild(d);
+          })(i);
+        }
+        dotsEl.style.display = '';
+      } else {
+        dotsEl.innerHTML = '';
+        dotsEl.style.display = 'none';
+      }
+    }
+
+    /* 화살표: 넘길 게 없으면 숨김 */
+    var prev = document.getElementById(st.prevId);
+    var next = document.getElementById(st.nextId);
+    var show = st.max > 0;
+    if (prev) prev.style.display = show ? '' : 'none';
+    if (next) next.style.display = show ? '' : 'none';
+
+    gotoCarousel(key, st.idx);
+  }
+
+  function gotoCarousel(key, idx) {
+    var st = _carousels[key];
+    if (!st) return;
+    var track = document.getElementById(st.trackId);
     if (!track || !track.children[0]) return;
-    var w = track.children[0].offsetWidth + 16;
-    track.style.transform = 'translateX(-' + (ncPopIdx * w) + 'px)';
-    var prev = document.getElementById('pop-prev');
-    var next = document.getElementById('pop-next');
-    if (prev) prev.disabled = ncPopIdx === 0;
-    if (next) next.disabled = ncPopIdx === ncPopMax;
-    document.querySelectorAll('#pop-dots .nc-dot').forEach(function(d, i) {
-      d.classList.toggle('active', i === ncPopIdx);
+    st.idx = Math.max(0, Math.min(idx, st.max));
+    var tx = Math.min(st.idx * st.step, st.maxTranslate);       // 마지막 칸은 콘텐츠 끝에 딱 맞춤(빈 공간 0)
+    track.style.transform = 'translateX(-' + tx + 'px)';
+    var prev = document.getElementById(st.prevId);
+    var next = document.getElementById(st.nextId);
+    if (prev) prev.disabled = st.idx === 0;
+    if (next) next.disabled = st.idx === st.max;
+    var dotsEl = document.getElementById(st.dotsId);
+    if (dotsEl) dotsEl.querySelectorAll('.nc-dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === st.idx);
     });
   }
 
-  function ncMove(id, dir) { ncGoto(ncPopIdx + dir); }
+  function moveCarousel(key, dir) {
+    var st = _carousels[key];
+    if (st) gotoCarousel(key, st.idx + dir);
+  }
+  window.refreshCarousel = refreshCarousel;
+
+  /* 창 크기 변경 시 페이지 수 재계산 (빈 탭 방지) */
+  var _rzTimer = null;
+  window.addEventListener('resize', function() {
+    if (_rzTimer) clearTimeout(_rzTimer);
+    _rzTimer = setTimeout(function() {
+      for (var k in _carousels) { if (_carousels.hasOwnProperty(k)) refreshCarousel(k); }
+    }, 150);
+  });
 
   function getViewedKey() {
     try {
@@ -3280,7 +3343,8 @@
 
   /* 초기 실행 */
   function ncInit() {
-    ncBuildDots();
+    buildCarousel('pop', 'pop-track', 'pop-dots', 'pop-prev', 'pop-next');
+    buildCarousel('new', 'new-track', 'new-dots', 'new-prev', 'new-next');
     renderPersonalBox();
   }
   if (document.readyState === 'loading') {
@@ -3926,18 +3990,7 @@ function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggl
             return '<div class="carousel-slide">'+buildCard(c, 'featured-card featured-card--linked', '', i===0?'card-chulgeo':'')+'</div>';
           }).join('');
 
-          /* 도트를 카드 수에 맞게 다시 생성 */
-          var dotBox=document.getElementById('carousel-dots');
-          if(dotBox){
-            dotBox.innerHTML = by.featured.length > 1
-              ? by.featured.map(function(_,i){ return '<span class="dot'+(i===0?' active':'')+'" data-idx="'+i+'"></span>'; }).join('')
-              : '';
-            dotBox.querySelectorAll('.dot').forEach(function(d){
-              d.addEventListener('click', function(){ if(window.__goToSlide) window.__goToSlide(+d.dataset.idx); });
-            });
-          }
-
-          /* 캐러셀 개수/화살표 갱신 */
+          /* 카드 수/화살표/도트 갱신 (도트는 refreshFeaturedCarousel이 슬라이드 수에 맞춰 재생성) */
           if(window.refreshFeaturedCarousel) window.refreshFeaturedCarousel();
         }
       }
@@ -3945,17 +3998,23 @@ function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggl
       /* 요즘 인기있는 */
       if(by.popular.length){
         var pt=document.querySelector('#popular .nc-track');
-        if(pt) pt.innerHTML = by.popular.map(function(c,i){
-          return buildCard(c, 'nc-card', i===0 ? '<span class="ucorner u-hot">🔥 인기</span>' : '');
-        }).join('');
+        if(pt){
+          pt.innerHTML = by.popular.map(function(c,i){
+            return buildCard(c, 'nc-card', i===0 ? '<span class="ucorner u-hot">🔥 인기</span>' : '');
+          }).join('');
+          if(window.refreshCarousel) window.refreshCarousel('pop');   // 카드 수에 맞춰 도트·화살표 재계산
+        }
       }
 
       /* 신규 */
       if(by.new.length){
-        var nt=document.querySelector('#newclass .auto-row');
-        if(nt) nt.innerHTML = by.new.map(function(c){
-          return buildCard(c, 'auto-card', '');
-        }).join('');
+        var nt=document.querySelector('#newclass .nc-track');
+        if(nt){
+          nt.innerHTML = by.new.map(function(c){
+            return buildCard(c, 'nc-card', '');
+          }).join('');
+          if(window.refreshCarousel) window.refreshCarousel('new');   // 카드 수에 맞춰 도트·화살표 재계산
+        }
       }
     }catch(e){ /* 실패 시 기본 카드 유지 */ }
   }
