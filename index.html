@@ -2144,8 +2144,6 @@
     #card-chulgeo .featured-keys-m .cat-m{ color:#005BFF; }
   }
 
-  /* 모집중 단일 카드: 캐러셀 네비 숨김 */
-  #carousel-prev, #carousel-next, .carousel-divider, .carousel-counter, #carousel-dots{ display:none !important; }
 
   /* ===== 모집중 통일 카드(작은 크기, PC·모바일 동일) ===== */
   #card-chulgeo.ucard{ display:block !important; height:auto !important; margin-bottom:0 !important; width:100%; max-width:373px; background:#fff !important; border:1px solid #E8EDF3 !important; border-radius:16px !important; overflow:hidden !important; box-shadow:0 8px 24px rgba(15,23,42,.07) !important; padding:0 !important; position:relative; text-decoration:none; color:inherit; }
@@ -2845,31 +2843,41 @@
   const dots        = document.querySelectorAll('.dot');
 
   let current = 0;
-  const total = 1;
+  let total = track.querySelectorAll('.carousel-slide').length || 1;
   totalEl.textContent = total;
+
+  /* 카드가 다시 그려지면 개수/네비 갱신 (Supabase 렌더 후 호출됨) */
+  window.refreshFeaturedCarousel = function(){
+    total = track.querySelectorAll('.carousel-slide').length || 1;
+    totalEl.textContent = total;
+    const wrap = document.querySelector('.carousel-header');
+    const single = total <= 1;
+    if (prevBtn) prevBtn.style.display = single ? 'none' : '';
+    if (nextBtn) nextBtn.style.display = single ? 'none' : '';
+    const dv = document.querySelector('.carousel-divider');
+    const ct = document.querySelector('.carousel-counter');
+    if (dv) dv.style.display = single ? 'none' : '';
+    if (ct) ct.style.display = single ? 'none' : '';
+    if (current >= total) current = 0;
+    goTo(current);
+  };
 
   /* ─────────────────────────────────────────
      캐러셀 함수
   ───────────────────────────────────────── */
-  const COURSE_LABELS = [
-    '<span style="display:inline-flex;align-items:center;gap:5px;background:#E9F0FF;color:#005BFF;font-size:12px;font-weight:800;padding:4px 11px;border-radius:100px;"><span style="width:6px;height:6px;border-radius:50%;background:#005BFF;"></span>현재 모집중</span>',
-    '🔜 오픈 예정',
-    '🔜 오픈 예정',
-    '🔜 오픈 예정',
-    '🔜 오픈 예정',
-  ];
+  const RECRUIT_LABEL = '<span style="display:inline-flex;align-items:center;gap:5px;background:#E9F0FF;color:#005BFF;font-size:12px;font-weight:800;padding:4px 11px;border-radius:100px;"><span style="width:6px;height:6px;border-radius:50%;background:#005BFF;"></span>현재 모집중</span>';
 
   function goTo(idx) {
     current = Math.max(0, Math.min(idx, total - 1));
     track.style.transform = `translateX(-${current * 100}%)`;
     curEl.textContent = current + 1;
-    statusLabel.innerHTML = COURSE_LABELS[current];
-    statusLabel.style.color = current === 0 ? 'var(--blue-dark)' : 'var(--gray-400)';
+    statusLabel.innerHTML = RECRUIT_LABEL;
     prevBtn.disabled = current === 0;
     nextBtn.disabled = current === total - 1;
-    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    document.querySelectorAll('#carousel-dots .dot').forEach((d, i) => d.classList.toggle('active', i === current));
   }
 
+  window.__goToSlide = goTo;
   prevBtn.addEventListener('click', () => goTo(current - 1));
   nextBtn.addEventListener('click', () => goTo(current + 1));
   dots.forEach(dot => dot.addEventListener('click', () => goTo(+dot.dataset.idx)));
@@ -3917,8 +3925,20 @@ function mdToggleCat(btn){ var c=btn.closest('.md-cat'); if(c) c.classList.toggl
           track.innerHTML = by.featured.map(function(c,i){
             return '<div class="carousel-slide">'+buildCard(c, 'featured-card featured-card--linked', '', i===0?'card-chulgeo':'')+'</div>';
           }).join('');
-          var tot=document.getElementById('carousel-total');
-          if(tot) tot.textContent = by.featured.length;
+
+          /* 도트를 카드 수에 맞게 다시 생성 */
+          var dotBox=document.getElementById('carousel-dots');
+          if(dotBox){
+            dotBox.innerHTML = by.featured.length > 1
+              ? by.featured.map(function(_,i){ return '<span class="dot'+(i===0?' active':'')+'" data-idx="'+i+'"></span>'; }).join('')
+              : '';
+            dotBox.querySelectorAll('.dot').forEach(function(d){
+              d.addEventListener('click', function(){ if(window.__goToSlide) window.__goToSlide(+d.dataset.idx); });
+            });
+          }
+
+          /* 캐러셀 개수/화살표 갱신 */
+          if(window.refreshFeaturedCarousel) window.refreshFeaturedCarousel();
         }
       }
 
