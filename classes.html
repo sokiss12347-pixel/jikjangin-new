@@ -2259,12 +2259,84 @@
 </section>
 
 <!-- ─── MAIN ─── -->
+<style>
+  /* ===== 카테고리 사이드바 레이아웃 (Class101형) ===== */
+  .cat-layout{ display:flex; gap:46px; align-items:flex-start; }
+  .cat-sidebar{ flex:0 0 240px; position:sticky; top:78px; align-self:flex-start;
+    background:#fff; border:1px solid #EEF2F8; border-radius:16px; padding:12px 10px;
+    max-height:calc(100vh - 96px); overflow-y:auto; box-shadow:0 2px 14px rgba(15,40,90,.04); }
+  .cat-sidebar::-webkit-scrollbar{ width:6px; } .cat-sidebar::-webkit-scrollbar-thumb{ background:#E2E8F0; border-radius:100px; }
+  .csb-title{ font-size:12px; font-weight:800; color:#94A3B8; letter-spacing:1px; padding:6px 12px 8px; }
+  .cat-sidebar a{ display:block; text-decoration:none; transition:background .12s,color .12s; }
+  .csb-all{ font-size:14.5px; font-weight:800; color:#0B1120; padding:9px 12px; border-radius:9px; }
+  .csb-all:hover{ background:#F5F8FD; }
+  .csb-all.on{ background:#EBF1FF; color:#005BFF; }
+  .csb-grp{ margin-top:4px; }
+  .csb-major{ display:flex; align-items:center; gap:8px; font-size:14px; font-weight:800; color:#1E293B; padding:9px 12px; border-radius:9px; }
+  .csb-major:hover{ background:#F5F8FD; }
+  .csb-major.on{ background:#EBF1FF; color:#005BFF; }
+  .csb-ic{ width:18px; height:18px; display:inline-flex; flex-shrink:0; }
+  .csb-ic svg{ width:18px; height:18px; }
+  .csb-subs{ padding:2px 0 6px; margin:2px 0 2px 21px; border-left:1.5px solid #EEF2F8; }
+  .csb-sub{ font-size:13px; color:#5A6B86; padding:7px 12px; border-radius:8px; }
+  .csb-sub:hover{ background:#F5F8FD; color:#0B1120; }
+  .csb-sub.on{ background:#EBF1FF; color:#005BFF; font-weight:700; }
+  .cat-content{ flex:1; min-width:0; }
+  /* 모바일 카테고리 네비 (대분류 가운데 제목 + 세부 칩 2줄) */
+  #cat-mobnav{ display:none; }
+  .mn-back{ display:inline-block; font-size:12.5px; color:#94A3B8; font-weight:700; text-decoration:none; margin-bottom:6px; }
+  .mn-title{ text-align:center; font-size:19px; font-weight:900; color:#0B1120; letter-spacing:-.5px; margin-bottom:14px; }
+  .mn-chips{ display:flex; flex-wrap:nowrap; gap:8px; overflow-x:auto; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none; padding:2px 2px 5px; }
+  .mn-chips::-webkit-scrollbar{ display:none; }
+  .mn-chip{ flex:0 0 auto; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; font-size:12.5px; font-weight:700; color:#33415C;
+    background:#fff; border:1px solid #E2EAF6; border-radius:100px; padding:8px 13px; text-decoration:none; }
+  .mn-chip.on{ background:#005BFF; border-color:#005BFF; color:#fff; }
+  .mn-ic{ width:15px; height:15px; display:inline-flex; } .mn-ic svg{ width:15px; height:15px; }
+
+  @media (max-width:900px){
+    .cat-layout{ flex-direction:column; gap:0; }
+    .cat-sidebar{ display:none !important; }
+    #cat-mobnav{ display:block; margin-bottom:18px; }
+    .cat-content .cat-page-title{ display:none; }   /* 모바일은 mobnav 제목 사용 */
+    .cat-content .cat-page-head{ display:none !important; }
+    .cat-grid{ grid-template-columns:1fr 1fr !important; }
+  }
+
+  /* ===== 클래스 그리드: 카드 작게 + 오버레이 글씨 축소 (한 줄에 여러 장) ===== */
+  .cat-content .cat-page-title{ font-size:18px; }
+  .cat-content .cat-page-head{ margin-bottom:18px; }
+  .cat-grid{ display:grid !important; grid-template-columns:repeat(auto-fill, minmax(216px,1fr)) !important; gap:18px 16px !important; }
+  .cat-grid > .kard{ flex:none !important; width:auto !important; max-width:none !important; }
+  .cat-grid .kard .bthumb{ height:172px; }
+  .cat-grid .kard .blogo{ top:10px; left:11px; font-size:12px; }
+  .cat-grid .kard .btext{ top:38px; left:11px; right:54px; }
+  .cat-grid .kard .bsmall{ font-size:10px; margin-bottom:4px; }
+  .cat-grid .kard .bbig{ font-size:14.5px; letter-spacing:-.5px; line-height:1.26; }
+  .cat-grid .kard .bbar{ font-size:12.5px; padding:2px 7px; margin-top:5px; }
+  .cat-grid .kard .bfoot{ left:11px; bottom:10px; font-size:10px; }
+  .cat-grid .kard .kbadges{ margin:8px 0 5px; }
+  .cat-grid .kard .kb{ font-size:9.5px; padding:2.5px 6px; }
+  .cat-grid .kard .ktitle{ font-size:12.5px; line-height:1.42; }
+  @media (max-width:640px){
+    .cat-grid{ grid-template-columns:1fr 1fr !important; gap:14px 12px !important; }
+    .cat-grid .kard .bthumb{ height:150px; }
+    .cat-grid .kard .bsmall, .cat-grid .kard .bfoot{ display:none; }   /* 작은 카드: 안내문·전문가명 숨겨 겹침 방지 */
+    .cat-grid .kard .btext{ top:auto; bottom:11px; left:11px; right:10px; }
+    .cat-grid .kard .blogo{ font-size:11px; }
+    .cat-grid .kard .bbig{ font-size:13px; line-height:1.24; }
+    .cat-grid .kard .bbar{ font-size:11.5px; padding:2px 6px; margin-top:4px; }
+    .cat-grid .kard .ktitle{ font-size:11.5px; line-height:1.4; }
+  }
+</style>
 <main class="main">
-  <div class="cat-page-head" id="cat-page-head">
-    <h1 class="cat-page-title"><span>직장인</span> 클래스</h1>
-    <p class="cat-page-sub">카테고리별 창업 클래스를 만나보세요.</p>
+  <div class="cat-layout">
+    <aside class="cat-sidebar" id="cat-sidebar"></aside>
+    <div class="cat-content">
+      <div id="cat-mobnav"></div>
+      <div id="cat-root"></div>
+    </div>
   </div>
-  <div id="cat-root"></div>
 </main>
 
 
@@ -2378,54 +2450,89 @@ function catScroll(id, dir){
   el.scrollBy({left: el.clientWidth*0.8*dir, behavior:'smooth'});
 }
 
-function renderAll(){
-  var head=document.getElementById('cat-page-head'); if(head) head.style.display='';
-  var root=document.getElementById('cat-root');
-  var html='';
-  GROUPS.forEach(function(g, gi){
-    var list=CLASSES.filter(function(c){return c.group===g.name;});
-    html+='<div class="cat-section">';
-    html+='<div class="cat-head"><div class="cat-title"><span class="cat-emoji">'+g.icon+'</span>'+g.name+'</div>';
-    if(list.length){ html+='<a class="cat-all" href="classes.html?cat='+encodeURIComponent(g.name)+'">'+g.name+' 전체보기 →</a>'; }
-    html+='</div>';
-    if(list.length===0){
-      html+='<div class="cat-empty">아직 등록된 클래스가 없습니다. 곧 만나보실 수 있어요!</div>';
-    } else {
-      var sid='sld'+gi;
-      html+='<div class="cat-slider-wrap">';
-      if(list.length>3){ html+='<button class="cat-arrow prev" onclick="catScroll(\''+sid+'\',-1)">&#8249;</button><button class="cat-arrow next" onclick="catScroll(\''+sid+'\',1)">&#8250;</button>'; }
-      html+='<div class="cat-slider" id="'+sid+'">'+list.map(catCard).join('')+'</div></div>';
+/* 대분류 → 세부 카테고리 목록 (사이드바용, 순서 유지) */
+var GROUP_FIELDS={
+ '인테리어·건축·목공':['철거·원상복구','인테리어·목공','도배·도장','타일·조적','줄눈 시공','누수·방수','에어컨청소'],
+ '기계·전기':['전기·설비'],
+ '뷰티·패션':['미용·헤어','네일·속눈썹','피부·에스테틱','메이크업·반영구'],
+ '요리':['베이커리·제과','바리스타·카페'],
+ '펫':['애견미용'],
+ '기타':['기타']
+};
+
+/* 좌측 카테고리 사이드바 */
+function renderSidebar(activeCat, activeField){
+  var sb=document.getElementById('cat-sidebar'); if(!sb) return;
+  var html='<div class="csb-title">카테고리</div>';
+  html+='<a class="csb-all'+((!activeCat&&!activeField)?' on':'')+'" href="classes.html">전체 클래스</a>';
+  GROUPS.forEach(function(g){
+    var fields=GROUP_FIELDS[g.name]||[];
+    var gOn=(activeCat===g.name);
+    html+='<div class="csb-grp'+(gOn?' on-grp':'')+'">';
+    html+='<a class="csb-major'+(gOn?' on':'')+'" href="classes.html?cat='+encodeURIComponent(g.name)+'"><span class="csb-ic">'+g.icon+'</span>'+g.name+'</a>';
+    if(fields.length){
+      html+='<div class="csb-subs">';
+      fields.forEach(function(f){
+        html+='<a class="csb-sub'+((activeField===f)?' on':'')+'" href="classes.html?field='+encodeURIComponent(f)+'">'+f+'</a>';
+      });
+      html+='</div>';
     }
     html+='</div>';
   });
-  root.innerHTML=html;
+  sb.innerHTML=html;
+  renderMobNav(activeCat, activeField);
 }
 
+/* 모바일 카테고리 네비: 대분류 가운데 제목 + 세부 칩(2줄) */
+function renderMobNav(activeCat, activeField){
+  var el=document.getElementById('cat-mobnav'); if(!el) return;
+  var html='';
+  if(!activeCat){
+    html+='<div class="mn-title">전체 클래스</div>';
+    html+='<div class="mn-chips">';
+    GROUPS.forEach(function(g){
+      html+='<a class="mn-chip" href="classes.html?cat='+encodeURIComponent(g.name)+'"><span class="mn-ic">'+g.icon+'</span>'+g.name+'</a>';
+    });
+    html+='</div>';
+  } else {
+    html+='<a class="mn-back" href="classes.html">‹ 전체 카테고리</a>';
+    html+='<div class="mn-title">'+activeCat+'</div>';
+    html+='<div class="mn-chips">';
+    html+='<a class="mn-chip'+(!activeField?' on':'')+'" href="classes.html?cat='+encodeURIComponent(activeCat)+'">전체</a>';
+    (GROUP_FIELDS[activeCat]||[]).forEach(function(f){
+      html+='<a class="mn-chip'+((activeField===f)?' on':'')+'" href="classes.html?field='+encodeURIComponent(f)+'">'+f+'</a>';
+    });
+    html+='</div>';
+  }
+  el.innerHTML=html;
+}
+
+/* 우측 콘텐츠: 제목 + 카드 그리드 */
+function gridHTML(title, sub, list){
+  var h='<div class="cat-page-head" style="display:block;margin-top:0;">'
+    +'<h1 class="cat-page-title">'+title+'</h1></div>';
+  if(!list.length){ h+='<div class="cat-empty">아직 등록된 클래스가 없습니다. 곧 만나보실 수 있어요!</div>'; }
+  else { h+='<div class="cat-grid">'+list.map(catCard).join('')+'</div>'; }
+  return h;
+}
+
+function renderAll(){
+  renderSidebar(null,null);
+  var root=document.getElementById('cat-root'); if(!root) return;
+  root.innerHTML=gridHTML('<span>전체</span> 클래스','전체 창업 클래스를 만나보세요.', CLASSES.slice());
+}
 function renderGroup(cat){
-  var head=document.getElementById('cat-page-head'); if(head) head.style.display='none';
-  var root=document.getElementById('cat-root');
+  renderSidebar(cat,null);
+  var root=document.getElementById('cat-root'); if(!root) return;
   var list=CLASSES.filter(function(c){return c.group===cat;});
-  var g=GROUPS.filter(function(x){return x.name===cat;})[0];
-  var emoji=g?g.icon:'';
-  var html='<a class="cat-back" href="classes.html">← 전체 카테고리</a>';
-  html+='<div class="cat-page-head" style="display:block;"><h1 class="cat-page-title">'+emoji+' '+cat+'</h1><p class="cat-page-sub">'+cat+' 분야의 모든 클래스</p></div>';
-  if(list.length===0){ html+='<div class="cat-empty">아직 등록된 클래스가 없습니다.</div>'; }
-  else { html+='<div class="cat-grid">'+list.map(catCard).join('')+'</div>'; }
-  root.innerHTML=html;
+  root.innerHTML=gridHTML('<span>['+cat+']</span> 클래스', cat+' 분야의 모든 클래스', list);
 }
 function renderField(field){
-  var head=document.getElementById('cat-page-head'); if(head) head.style.display='none';
-  var root=document.getElementById('cat-root');
-  var list=CLASSES.filter(function(c){return c.cat===field;});
   var grp=FIELD_TO_GROUP[field]||'';
-  var g=GROUPS.filter(function(x){return x.name===grp;})[0];
-  var emoji=g?g.icon:'';
-  var back=grp?('<a class="cat-back" href="classes.html?cat='+encodeURIComponent(grp)+'">← '+grp+' 전체</a>'):'<a class="cat-back" href="classes.html">← 전체 카테고리</a>';
-  var html=back;
-  html+='<div class="cat-page-head" style="display:block;"><h1 class="cat-page-title">'+emoji+' '+field+'</h1><p class="cat-page-sub">'+field+' 클래스</p></div>';
-  if(list.length===0){ html+='<div class="cat-empty">아직 등록된 클래스가 없습니다.</div>'; }
-  else { html+='<div class="cat-grid">'+list.map(catCard).join('')+'</div>'; }
-  root.innerHTML=html;
+  renderSidebar(grp,field);
+  var root=document.getElementById('cat-root'); if(!root) return;
+  var list=CLASSES.filter(function(c){return c.cat===field;});
+  root.innerHTML=gridHTML('<span>['+field+']</span> 클래스', field+' 클래스', list);
 }
 
 /* 강사 지원 링크: 기본 이동 허용 (로그인 체크는 해당 페이지에서) */
