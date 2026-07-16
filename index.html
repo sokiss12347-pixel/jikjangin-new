@@ -1770,7 +1770,7 @@
     overflow: hidden; height: 44px; flex: none;
   }
   .course-card .card-footer { margin-top: auto; }
-  .ps-card-wrap { flex: 0 0 calc(33.333% - 11px); min-width: 0; }
+  .ps-card-wrap { flex: 0 0 420px; max-width: 420px; min-width: 0; }   /* 다른 섹션과 동일한 카드 폭(찌그러짐 방지) */
 
   /* ── 드롭다운 메뉴 ── */
   .nav-dropdown { position: relative; }
@@ -1890,9 +1890,9 @@
     .featured-img{ min-height:200px; height:auto; }
 
     /* 모바일: 세 섹션 모두 데스크톱과 동일하게 화살표·드래그로 카드 1장씩 넘김.
-       카드 폭은 컨테이너 기준 88%(vw가 아니라 %라 패딩 넘침·유령 스크롤 없음) */
-    .carousel-slide{ flex:0 0 88% !important; max-width:none; }
-    #popular .nc-track > .nc-card, #newclass .nc-track > .nc-card{ flex:0 0 88% !important; max-width:none; }
+       카드 폭은 컨테이너 기준 88%(vw가 아니라 %라 패딩 넘침·유령 스크롤 없음), 단 420px 초과 금지(늘어남 방지) */
+    .carousel-slide{ flex:0 0 88% !important; max-width:420px; }
+    #popular .nc-track > .nc-card, #newclass .nc-track > .nc-card{ flex:0 0 88% !important; max-width:420px; }
     /* 화살표를 카드 위 가장자리에 딱 붙여 손가락으로 누르기 쉽게 */
     .nc-btn.nc-prev{ left:2px; }
     .nc-btn.nc-next{ right:2px; }
@@ -2081,7 +2081,7 @@
     .cat-grid .nc-tag, .cat-slider .nc-tag{ font-size:9px; padding:2px 6px; }
     .cat-grid .nc-price, .cat-slider .nc-price{ font-size:11px; }
     .personal-box{ padding-left:12px !important; padding-right:12px !important; }
-    .ps-card-wrap{ flex:0 0 88% !important; max-width:none; }   /* 모바일: 찌그러뜨리지 말고 카드 1장 전체 폭(컨테이너 기준) 유지 */
+    .ps-card-wrap{ flex:0 0 88% !important; max-width:420px; }   /* 모바일: 찌그러뜨리지 말고 카드 1장 전체 폭(컨테이너 기준, 420px 이내) 유지 */
     .ps-card-wrap .card-thumb{ height:118px; }
     .ps-card-wrap .card-body{ padding:10px 12px 12px; gap:6px; }
     .ps-card-wrap .card-desc{ display:none; }
@@ -2426,37 +2426,31 @@
     <a href="classes.html" class="view-all">클래스 보러가기 →</a>
   </div>
 
-  <!-- ─── COURSE CAROUSEL ─── -->
+  <!-- ─── COURSE CAROUSEL (인기 섹션과 동일한 방식: 옆 화살표 + 도트) ─── -->
   <div class="carousel-header">
     <div class="carousel-header-left">
       <div class="section-label" id="carousel-status-label"><span style="display:inline-flex;align-items:center;gap:5px;background:#E9F0FF;color:#005BFF;font-size:12px;font-weight:800;padding:4px 11px;border-radius:100px;"><span style="width:6px;height:6px;border-radius:50%;background:#005BFF;"></span>현재 모집중</span></div>
-      <div class="carousel-divider"></div><div class="carousel-counter"><span id="carousel-cur">1</span> / <span id="carousel-total">1</span></div>
-    </div>
-    <div class="carousel-nav">
-      <button class="carousel-btn" id="carousel-prev" aria-label="이전 교육">&#9664;</button>
-      <button class="carousel-btn" id="carousel-next" aria-label="다음 교육">&#9654;</button>
+      <div class="carousel-divider" style="display:none;"></div><div class="carousel-counter" style="display:none;"><span id="carousel-cur">1</span> / <span id="carousel-total">1</span></div>
     </div>
   </div>
 
-  <div class="carousel-wrap">
-    <div class="carousel-track" id="carousel-track">
+  <div class="nc-carousel-wrap" id="feat-carousel-wrap">
+    <button class="nc-btn nc-prev" id="carousel-prev" aria-label="이전 교육">&#9664;</button>
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carousel-track">
 
-      <!-- ── SLIDE 1: 철거 ALL-IN-ONE ── -->
-      <div class="carousel-slide">
-        <a href="chulgeo_detail.html" class="featured-card featured-card--linked kard" id="card-chulgeo" onclick="ncTrackView('chulgeo_detail.html')"><div class="bthumb"><div class="bphoto"></div><div class="bgrad"></div><span class="blogo"><span class="lb">직</span>장인</span><div class="btext"><div class="bsmall">무경험 OK · 철거 기술 완전 정복</div><div class="bbig">직장 때려치고,<br>월 <span class="hl">2,000만 원</span> 버는</div><div class="bbar">철거 사장님!</div></div><div class="bfoot">철거 기술 전문가 <b>정우진</b></div></div><div class="kbadges"><span class="kb kb-hot">HOT</span><span class="kb kb-best">BEST</span></div><div class="ktitle">[철거·원상복구] 요즘 2030 사이에서 뜨고있는 철거 기술</div></a>
-      </div>
+        <!-- ── SLIDE 1: 철거 ALL-IN-ONE ── -->
+        <div class="carousel-slide">
+          <a href="chulgeo_detail.html" class="featured-card featured-card--linked kard" id="card-chulgeo" onclick="ncTrackView('chulgeo_detail.html')"><div class="bthumb"><div class="bphoto"></div><div class="bgrad"></div><span class="blogo"><span class="lb">직</span>장인</span><div class="btext"><div class="bsmall">무경험 OK · 철거 기술 완전 정복</div><div class="bbig">직장 때려치고,<br>월 <span class="hl">2,000만 원</span> 버는</div><div class="bbar">철거 사장님!</div></div><div class="bfoot">철거 기술 전문가 <b>정우진</b></div></div><div class="kbadges"><span class="kb kb-hot">HOT</span><span class="kb kb-best">BEST</span></div><div class="ktitle">[철거·원상복구] 요즘 2030 사이에서 뜨고있는 철거 기술</div></a>
+        </div>
 
-    </div><!-- /carousel-track -->
-  </div><!-- /carousel-wrap -->
-
-  <!-- 도트 인디케이터 -->
-  <div class="carousel-dots" id="carousel-dots">
-    <button class="dot active" data-idx="0" aria-label="철거"></button>
-    <button class="dot" data-idx="1" aria-label="인테리어"></button>
-    <button class="dot" data-idx="2" aria-label="줄눈"></button>
-    <button class="dot" data-idx="3" aria-label="누수"></button>
-    <button class="dot" data-idx="4" aria-label="에어컨청소"></button>
+      </div><!-- /carousel-track -->
+    </div><!-- /carousel-wrap -->
+    <button class="nc-btn nc-next" id="carousel-next" aria-label="다음 교육">&#9654;</button>
   </div>
+
+  <!-- 도트 인디케이터 (인기 섹션과 동일 스타일) -->
+  <div class="nc-dots" id="carousel-dots"></div>
 
   <!-- ─── CATEGORY GRID VIEW ─── -->
   <div id="grid-view" style="display:none;">
@@ -2812,7 +2806,7 @@
   /* ─────────────────────────────────────────
      DOM 참조
   ───────────────────────────────────────── */
-  const carouselSection = document.getElementById('carousel-track').closest('.carousel-wrap');
+  const carouselSection = document.getElementById('feat-carousel-wrap') || document.getElementById('carousel-track').closest('.carousel-wrap');
   const carouselHeader  = document.querySelector('.carousel-header');
   const carouselDots    = document.getElementById('carousel-dots');
   const gridView        = document.getElementById('grid-view');
@@ -2862,11 +2856,11 @@
       if (scrollable) {
         var _h = '';
         for (var _i = 0; _i <= featMax; _i++) {
-          _h += '<button class="dot' + (_i === current ? ' active' : '') + '" data-idx="' + _i + '"></button>';
+          _h += '<button class="nc-dot' + (_i === current ? ' active' : '') + '" data-idx="' + _i + '"></button>';
         }
         carouselDots.innerHTML = _h;
         carouselDots.style.display = '';
-        carouselDots.querySelectorAll('.dot').forEach(function(d){
+        carouselDots.querySelectorAll('.nc-dot').forEach(function(d){
           d.addEventListener('click', function(){ goTo(+d.dataset.idx); });
         });
       } else {
@@ -2889,7 +2883,7 @@
     statusLabel.innerHTML = RECRUIT_LABEL;
     if (prevBtn) prevBtn.disabled = current === 0;
     if (nextBtn) nextBtn.disabled = current === featMax;
-    document.querySelectorAll('#carousel-dots .dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    document.querySelectorAll('#carousel-dots .nc-dot').forEach((d, i) => d.classList.toggle('active', i === current));
   }
 
   window.__goToSlide = goTo;
@@ -3418,7 +3412,7 @@ function checkInstructorAccess(e) {
 
 <!-- 관심 클래스 카드 템플릿 (hidden) -->
 <div id="card-templates" style="display:none;">
-  <div data-href="chulgeo_detail.html"><div class="ps-card-wrap"><a href="chulgeo_detail.html" class="kard mini-kard" onclick="ncTrackView('chulgeo_detail.html')"><div class="bthumb"><div class="bphoto"></div><div class="bgrad"></div><span class="blogo"><span class="lb">직</span>장인</span><div class="btext"><div class="bsmall">무경험 OK · 철거 기술 완전 정복</div><div class="bbig">직장 때려치고,<br>월 <span class="hl">2,000만 원</span> 버는</div><div class="bbar">철거 사장님!</div></div><div class="bfoot">철거 기술 전문가 <b>정우진</b></div></div></a></div></div>
+  <div data-href="chulgeo_detail.html"><div class="ps-card-wrap"><a href="chulgeo_detail.html" class="kard" onclick="ncTrackView('chulgeo_detail.html')"><div class="bthumb"><div class="bphoto"></div><div class="bgrad"></div><span class="blogo"><span class="lb">직</span>장인</span><div class="btext"><div class="bsmall">무경험 OK · 철거 기술 완전 정복</div><div class="bbig">직장 때려치고,<br>월 <span class="hl">2,000만 원</span> 버는</div><div class="bbar">철거 사장님!</div></div><div class="bfoot">철거 기술 전문가 <b>정우진</b></div></div></a></div></div>
 
 </div>
 <script>
