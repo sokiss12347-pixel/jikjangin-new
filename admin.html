@@ -311,7 +311,7 @@
 
   <div id="tab-cards" style="display:none;">
     <div class="card">
-      <h2>클래스 카드 등록</h2>
+      <h2 id="c-form-title">클래스 카드 등록</h2>
       <div style="font-size:13px;color:#64748B;margin-bottom:14px;">
         메인/인기/신규 섹션에 노출되는 배너형 카드를 등록합니다.
         후킹 문구 1줄·2줄 모두 강조하고 싶은 단어를 <b>{중괄호}</b>로 감싸면 파란색으로 표시됩니다. (예: <b>{직장}</b> 때려치고, / 월 <b>{2,000만 원}</b> 버는)
@@ -408,7 +408,10 @@
       </div>
       <input id="c-sort" type="hidden" value="0">
 
-      <button id="c-add-btn" class="btn" style="margin-top:16px;" onclick="addCard()">카드 등록</button>
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <button id="c-add-btn" class="btn" onclick="addCard()">카드 등록</button>
+        <button id="c-cancel-btn" class="btn" style="display:none;background:#fff;color:#64748B;border:1px solid #CBD5E1;" onclick="cancelEdit()">취소</button>
+      </div>
       <div id="c-msg" style="margin-top:10px;font-size:13px;"></div>
     </div>
 
@@ -1451,6 +1454,8 @@ function hlText(t){
   return esc.replace(/\{([^}]*)\}/g, '<span class="hl">$1</span>');
 }
 
+var editingId = null;
+
 async function addCard(){
   var btn=document.getElementById('c-add-btn');
   var showF=document.getElementById('c-sec-featured').checked;
@@ -1502,26 +1507,88 @@ async function addCard(){
       is_active: true
     };
 
-    var ins=await sb.from('class_cards').insert(rec);
+    var ins;
+    if(editingId){
+      /* 수정: 이미지 새로 안 올렸으면 기존 유지, 순서는 건드리지 않음 */
+      if(!url) delete rec.thumbnail_url;
+      delete rec.sort_featured; delete rec.sort_popular; delete rec.sort_new;
+      ins=await sb.from('class_cards').update(rec).eq('id', editingId);
+    }else{
+      ins=await sb.from('class_cards').insert(rec);
+    }
     if(ins.error){
       if(path) await sb.storage.from('class-cards').remove([path]);
-      cMsg('등록 실패: '+ins.error.message);
+      cMsg((editingId?'수정':'등록')+' 실패: '+ins.error.message);
     }else{
-      cMsg('카드가 등록되었습니다.', true);
-      ['c-small','c-hook1','c-hook2','c-bar','c-ename','c-title'].forEach(function(id){ document.getElementById(id).value=''; });
-      fileEl.value=''; document.getElementById('c-preview').style.display='none';
-      document.getElementById('c-hot').checked=false;
-      document.getElementById('c-best').checked=false;
-      document.getElementById('c-new').checked=false;
-      document.getElementById('c-sec-featured').checked=false;
-      document.getElementById('c-sec-popular').checked=false;
-      document.getElementById('c-sec-new').checked=false;
+      cMsg(editingId ? '카드가 수정되었습니다.' : '카드가 등록되었습니다.', true);
+      cancelEdit(true);
       loadCards();
     }
   }catch(e){
     cMsg('오류: '+(e.message||e));
   }
-  btn.disabled=false; btn.textContent='카드 등록';
+  btn.disabled=false; btn.textContent = editingId ? '수정 완료' : '카드 등록';
+}
+
+/* ===== 카드 수정 ===== */
+function editCard(id){
+  var c=allCards.find(function(x){ return x.id===id; });
+  if(!c) return;
+  editingId=id;
+
+  document.getElementById('c-sec-featured').checked = !!c.show_featured;
+  document.getElementById('c-sec-popular').checked  = !!c.show_popular;
+  document.getElementById('c-sec-new').checked      = !!c.show_new;
+  document.getElementById('c-link').value  = c.link_url || '';
+
+  var pos=(c.photo_position||'20% 30%').replace(/%/g,'').split(' ');
+  document.getElementById('c-posx').value = pos[0]||'20';
+  document.getElementById('c-posy').value = pos[1]||'30';
+
+  document.getElementById('c-small').value  = c.small_text  || '';
+  document.getElementById('c-hook1').value  = c.hook_line1  || '';
+  document.getElementById('c-hook2').value  = c.hook_line2  || '';
+  document.getElementById('c-bar').value    = c.bar_text    || '';
+  document.getElementById('c-elabel').value = c.expert_label || '';
+  document.getElementById('c-ename').value  = c.expert_name  || '';
+
+  document.getElementById('c-hot').checked  = !!c.is_hot;
+  document.getElementById('c-best').checked = !!c.is_best;
+  document.getElementById('c-new').checked  = !!c.is_new;
+
+  initCatSelects();
+  document.getElementById('c-group').value = c.group_name || '';
+  fillSubCats();
+  document.getElementById('c-cat').value = c.category || '';
+  document.getElementById('c-title').value = c.title || '';
+
+  var prev=document.getElementById('c-preview'), img=document.getElementById('c-preview-img');
+  if(c.thumbnail_url){ img.src=c.thumbnail_url; prev.style.display='block'; }
+  else prev.style.display='none';
+  document.getElementById('c-file').value='';
+
+  document.getElementById('c-form-title').textContent='클래스 카드 수정';
+  document.getElementById('c-add-btn').textContent='수정 완료';
+  document.getElementById('c-cancel-btn').style.display='';
+  cMsg('수정할 내용을 바꾸고 [수정 완료]를 눌러주세요. 이미지를 새로 올리지 않으면 기존 이미지가 유지됩니다.', true);
+  document.getElementById('c-form-title').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function cancelEdit(silent){
+  editingId=null;
+  ['c-small','c-hook1','c-hook2','c-bar','c-ename','c-title','c-link'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['c-hot','c-best','c-new','c-sec-featured','c-sec-popular','c-sec-new'].forEach(function(id){ document.getElementById(id).checked=false; });
+  document.getElementById('c-posx').value='20';
+  document.getElementById('c-posy').value='30';
+  document.getElementById('c-elabel').value='';
+  document.getElementById('c-group').value='';
+  fillSubCats();
+  document.getElementById('c-file').value='';
+  document.getElementById('c-preview').style.display='none';
+  document.getElementById('c-form-title').textContent='클래스 카드 등록';
+  document.getElementById('c-add-btn').textContent='카드 등록';
+  document.getElementById('c-cancel-btn').style.display='none';
+  if(!silent) cMsg('');
 }
 
 var SECTION_LABEL={ featured:'현재 모집중', popular:'요즘 인기있는', new:'신규' };
@@ -1591,6 +1658,7 @@ function renderCardList(){
       +   '<div style="display:flex;gap:5px;margin-top:5px;">'+badges.join('')+'</div>'
       + '</div>'
       + '<div style="display:flex;gap:6px;flex:0 0 auto;">'
+      +   '<button class="btn-sm" style="color:#005BFF;border-color:#93C5FD;" onclick="editCard('+c.id+')">수정</button>'
       +   '<button class="btn-sm" onclick="toggleCard('+c.id+','+(!c.is_active)+')">'+(c.is_active?'숨기기':'노출')+'</button>'
       +   '<button class="btn-sm" style="color:#EF4444;border-color:#FCA5A5;" onclick="delCard('+c.id+')">삭제</button>'
       + '</div>'
