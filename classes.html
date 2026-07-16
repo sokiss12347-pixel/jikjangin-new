@@ -2287,7 +2287,9 @@
   .mn-back{ display:inline-block; font-size:12.5px; color:#94A3B8; font-weight:700; text-decoration:none; margin-bottom:6px; }
   .mn-title{ text-align:center; font-size:19px; font-weight:900; color:#0B1120; letter-spacing:-.5px; margin-bottom:14px; }
   .mn-chips{ display:flex; flex-wrap:nowrap; gap:8px; overflow-x:auto; -webkit-overflow-scrolling:touch;
-    scrollbar-width:none; padding:2px 2px 5px; }
+    scrollbar-width:none; padding:2px 2px 5px;
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 92%,transparent 100%);
+            mask-image:linear-gradient(90deg,#000 0,#000 92%,transparent 100%); }
   .mn-chips::-webkit-scrollbar{ display:none; }
   .mn-chip{ flex:0 0 auto; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; font-size:12.5px; font-weight:700; color:#33415C;
     background:#fff; border:1px solid #E2EAF6; border-radius:100px; padding:8px 13px; text-decoration:none; }
@@ -2295,38 +2297,45 @@
   .mn-ic{ width:15px; height:15px; display:inline-flex; } .mn-ic svg{ width:15px; height:15px; }
 
   @media (max-width:900px){
-    .cat-layout{ flex-direction:column; gap:0; }
+    .cat-layout{ flex-direction:column; gap:0; align-items:stretch; }
+    .cat-content{ width:100%; min-width:0; }
     .cat-sidebar{ display:none !important; }
     #cat-mobnav{ display:block; margin-bottom:18px; }
     .cat-content .cat-page-title{ display:none; }   /* 모바일은 mobnav 제목 사용 */
     .cat-content .cat-page-head{ display:none !important; }
-    .cat-grid{ grid-template-columns:1fr 1fr !important; }
   }
 
-  /* ===== 클래스 그리드: 카드 작게 + 오버레이 글씨 축소 (한 줄에 여러 장) ===== */
+  /* ===== 클래스 그리드: 넓은 폭 활용 + 데스크톱 4열(카드 크게) ===== */
+  .main{ max-width:1560px; }
   .cat-content .cat-page-title{ font-size:18px; }
   .cat-content .cat-page-head{ margin-bottom:18px; }
-  .cat-grid{ display:grid !important; grid-template-columns:repeat(auto-fill, minmax(216px,1fr)) !important; gap:18px 16px !important; }
-  .cat-grid > .kard{ flex:none !important; width:auto !important; max-width:none !important; }
-  .cat-grid .kard .bthumb{ height:172px; }
-  .cat-grid .kard .blogo{ top:10px; left:11px; font-size:12px; }
-  .cat-grid .kard .btext{ top:38px; left:11px; right:54px; }
-  .cat-grid .kard .bsmall{ font-size:10px; margin-bottom:4px; }
-  .cat-grid .kard .bbig{ font-size:14.5px; letter-spacing:-.5px; line-height:1.26; }
-  .cat-grid .kard .bbar{ font-size:12.5px; padding:2px 7px; margin-top:5px; }
-  .cat-grid .kard .bfoot{ left:11px; bottom:10px; font-size:10px; }
-  .cat-grid .kard .kbadges{ margin:8px 0 5px; }
-  .cat-grid .kard .kb{ font-size:9.5px; padding:2.5px 6px; }
-  .cat-grid .kard .ktitle{ font-size:12.5px; line-height:1.42; }
+  .cat-content .cat-grid{ display:grid !important; grid-template-columns:repeat(auto-fill, minmax(268px,1fr)) !important; gap:22px 20px !important; }
+  .cat-content .cat-grid > .kard{ flex:none !important; width:auto !important; max-width:none !important; min-width:0 !important; }
+  .cat-content .cat-grid .kard .bthumb{ min-width:0; }
+  .cat-content .cat-grid .kard .bthumb{ height:205px; }
+  .cat-content .cat-grid .kard .blogo{ top:12px; left:13px; font-size:13px; }
+  .cat-content .cat-grid .kard .btext{ top:46px; left:13px; right:66px; }
+  .cat-content .cat-grid .kard .bsmall{ font-size:11px; margin-bottom:6px; }
+  .cat-content .cat-grid .kard .bbig{ font-size:17px; letter-spacing:-.6px; line-height:1.3; }
+  .cat-content .cat-grid .kard .bbar{ font-size:15px; padding:3px 9px; margin-top:6px; }
+  .cat-content .cat-grid .kard .bfoot{ left:13px; bottom:12px; font-size:11px; }
+  .cat-content .cat-grid .kard .kbadges{ margin:9px 0 6px; }
+  .cat-content .cat-grid .kard .kb{ font-size:10px; padding:3px 7px; }
+  .cat-content .cat-grid .kard .ktitle{ font-size:13.5px; line-height:1.45; }
+
+  @media (max-width:900px){ .main{ max-width:100%; } }
+
+  /* 모바일: 원래 카드 오버레이 그대로, 가로 2개씩 (늘어짐 방지) */
   @media (max-width:640px){
-    .cat-grid{ grid-template-columns:1fr 1fr !important; gap:14px 12px !important; }
-    .cat-grid .kard .bthumb{ height:150px; }
-    .cat-grid .kard .bsmall, .cat-grid .kard .bfoot{ display:none; }   /* 작은 카드: 안내문·전문가명 숨겨 겹침 방지 */
-    .cat-grid .kard .btext{ top:auto; bottom:11px; left:11px; right:10px; }
-    .cat-grid .kard .blogo{ font-size:11px; }
-    .cat-grid .kard .bbig{ font-size:13px; line-height:1.24; }
-    .cat-grid .kard .bbar{ font-size:11.5px; padding:2px 6px; margin-top:4px; }
-    .cat-grid .kard .ktitle{ font-size:11.5px; line-height:1.4; }
+    .cat-content .cat-grid{ grid-template-columns:1fr 1fr !important; gap:14px 12px !important; }
+    .cat-content .cat-grid .kard .bthumb{ height:158px; }
+    .cat-content .cat-grid .kard .blogo{ top:9px; left:10px; font-size:11px; }
+    .cat-content .cat-grid .kard .btext{ top:32px; left:10px; right:38px; }
+    .cat-content .cat-grid .kard .bsmall{ font-size:9px; margin-bottom:3px; }
+    .cat-content .cat-grid .kard .bbig{ font-size:12.5px; line-height:1.2; }
+    .cat-content .cat-grid .kard .bbar{ font-size:11px; padding:2px 6px; margin-top:3px; }
+    .cat-content .cat-grid .kard .bfoot{ left:10px; bottom:8px; font-size:9px; }
+    .cat-content .cat-grid .kard .ktitle{ font-size:11.5px; line-height:1.38; }
   }
 </style>
 <main class="main">
