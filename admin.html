@@ -495,7 +495,8 @@
       </div>
       <div style="margin-bottom:12px;"><label>상단 부제 (선택)</label><input id="detail-sub" placeholder="예: 현장에서 직접 배우고 창업까지 함께합니다"></div>
       <div id="detail-editor"></div>
-      <div style="display:flex;gap:10px;align-items:center;margin-top:14px;">
+      <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:#475569;margin-top:12px;font-weight:600;"><input type="checkbox" id="detail-autolink" checked style="width:auto;margin:0;"> 저장 시 이 클래스 카드가 이 상세페이지를 열도록 링크 자동 설정</label>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:12px;">
         <button class="btn btn-blue" onclick="detailSave()">저장</button>
         <span id="detail-msg" class="msg"></span>
       </div>
@@ -578,12 +579,25 @@ function detailSlug(){ var e=document.getElementById('detail-class'); return e?e
 function detailMsg(t,cls){ var m=document.getElementById('detail-msg'); m.className='msg show '+(cls||''); m.textContent=t; }
 
 async function loadDetailUI(){
-  var pr=await sb.from('programs').select('id,name').order('created_at',{ascending:false});
-  DETAIL_PROGRAMS=pr.data||[];
+  // 편집 대상 = 사이트에 등록된 클래스 카드(class_cards). 없으면 교육(programs)으로 폴백.
+  var list=[];
+  try{
+    var cr=await sb.from('class_cards').select('id,title,category');
+    if(cr && !cr.error && cr.data && cr.data.length){
+      list=cr.data.map(function(p){ return { id:p.id, label:(p.category?('['+p.category+'] '):'')+(p.title||p.id) }; });
+    }
+  }catch(e){}
+  if(!list.length){
+    try{
+      var pr=await sb.from('programs').select('id,name,title');
+      list=(pr.data||[]).map(function(p){ return { id:p.id, label:(p.name||p.title||p.id) }; });
+    }catch(e){}
+  }
+  DETAIL_PROGRAMS=list;
   var sel=document.getElementById('detail-class');
-  sel.innerHTML=DETAIL_PROGRAMS.length
-    ? DETAIL_PROGRAMS.map(function(p){return '<option value="'+p.id+'">'+esc(p.name||p.id)+'</option>';}).join('')
-    : '<option value="">등록된 교육이 없습니다</option>';
+  sel.innerHTML=list.length
+    ? list.map(function(p){return '<option value="'+p.id+'">'+esc(p.label)+'</option>';}).join('')
+    : '<option value="">등록된 클래스가 없습니다</option>';
 
   if(!detailEditor && window.toastui){
     detailEditor=new toastui.Editor({
@@ -641,6 +655,12 @@ async function detailSave(){
   };
   var res=await sb.from('course_pages').upsert(rec,{onConflict:'slug'});
   if(res.error){ detailMsg('저장 실패: '+res.error.message,'err'); return; }
+
+  // 이 카드가 상세페이지를 열도록 링크 자동 설정 (옵션)
+  var auto=document.getElementById('detail-autolink');
+  if(auto && auto.checked){
+    try{ await sb.from('class_cards').update({ link_url:'class_detail.html?slug='+slug }).eq('id', slug); }catch(e){}
+  }
   detailMsg('✓ 저장되었습니다. "미리보기 ↗"로 확인하세요.','ok');
 }
 
