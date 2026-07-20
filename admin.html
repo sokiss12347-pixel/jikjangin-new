@@ -504,7 +504,7 @@
       </div>
       <label style="margin-bottom:6px;">본문</label>
       <div id="detail-editor"></div>
-      <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:#475569;margin-top:12px;font-weight:600;"><input type="checkbox" id="detail-autolink" checked style="width:auto;margin:0;"> 저장 시 이 클래스 카드가 이 상세페이지를 열도록 링크 자동 설정</label>
+      <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:#475569;margin-top:12px;font-weight:600;"><input type="checkbox" id="detail-autolink" checked style="width:auto;margin:0;"> 저장 시 이 클래스 카드가 이 상세페이지를 열도록 링크 자동 설정 <span style="color:#94A3B8;font-weight:500;">(기존 커스텀 링크가 있으면 덮어쓰지 않음)</span></label>
       <div style="display:flex;gap:10px;align-items:center;margin-top:12px;">
         <button class="btn btn-blue" onclick="detailSave()">저장</button>
         <span id="detail-msg" class="msg"></span>
@@ -688,9 +688,19 @@ async function detailSave(){
   if(res.error){ detailMsg('저장 실패: '+res.error.message,'err'); return; }
 
   // 이 카드가 상세페이지를 열도록 링크 자동 설정 (옵션)
+  // ★ 안전장치: 카드에 이미 커스텀 링크(chulgeo_detail.html 등)가 있으면 덮어쓰지 않음
   var auto=document.getElementById('detail-autolink');
   if(auto && auto.checked){
-    try{ await sb.from('class_cards').update({ link_url:'class_detail.html?slug='+slug }).eq('id', slug); }catch(e){}
+    try{
+      var cur=await sb.from('class_cards').select('link_url').eq('id', slug).maybeSingle();
+      var link=(cur && cur.data && cur.data.link_url) ? cur.data.link_url : '';
+      if(!link || link.indexOf('class_detail.html')===0){
+        await sb.from('class_cards').update({ link_url:'class_detail.html?slug='+slug }).eq('id', slug);
+      } else {
+        detailMsg('✓ 저장되었습니다. (이 카드엔 기존 링크 "'+link+'" 가 있어 자동연결은 건너뛰었어요. 편집기 페이지로 바꾸려면 클래스 카드 탭에서 링크를 직접 수정하세요.)','ok');
+        return;
+      }
+    }catch(e){}
   }
   detailMsg('✓ 저장되었습니다. "미리보기 ↗"로 확인하세요.','ok');
 }
