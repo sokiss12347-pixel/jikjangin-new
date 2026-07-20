@@ -100,7 +100,6 @@
     <button class="tab" data-tab="instr" onclick="switchTab('instr')">강사 지원 관리</button>
     <button class="tab" data-tab="programs" onclick="switchTab('programs')">교육 등록</button>
     <button class="tab" data-tab="notify" onclick="switchTab('notify')">다음 기수 알림</button>
-    <button class="tab" data-tab="photos" onclick="switchTab('photos')">사진 관리</button>
     <button class="tab" data-tab="detail" onclick="switchTab('detail')">상세페이지 편집</button>
     <button class="tab" data-tab="banners" onclick="switchTab('banners')">배너 관리</button>
     <button class="tab" data-tab="cards" onclick="switchTab('cards')">클래스 카드</button>
@@ -494,6 +493,16 @@
         <div style="flex:1;min-width:150px;"><label>상단 뱃지 (선택)</label><input id="detail-badge" placeholder="예: 🔥 3기 모집 중"></div>
       </div>
       <div style="margin-bottom:12px;"><label>상단 부제 (선택)</label><input id="detail-sub" placeholder="예: 현장에서 직접 배우고 창업까지 함께합니다"></div>
+      <div style="margin-bottom:14px;">
+        <label>상단 배너 이미지 (선택 · 가로로 긴 이미지 권장)</label>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;">
+          <input id="detail-hero-file" type="file" accept="image/*" onchange="detailHeroUpload(this)" style="font-size:14px;">
+          <button type="button" class="btn btn-sm btn-ghost" onclick="detailHeroClear()">배너 제거</button>
+          <span id="detail-hero-status" style="font-size:12px;color:#64748B;"></span>
+        </div>
+        <img id="detail-hero-preview" src="" alt="" style="display:none;margin-top:8px;max-width:360px;width:100%;border-radius:10px;">
+      </div>
+      <label style="margin-bottom:6px;">본문</label>
       <div id="detail-editor"></div>
       <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:#475569;margin-top:12px;font-weight:600;"><input type="checkbox" id="detail-autolink" checked style="width:auto;margin:0;"> 저장 시 이 클래스 카드가 이 상세페이지를 열도록 링크 자동 설정</label>
       <div style="display:flex;gap:10px;align-items:center;margin-top:12px;">
@@ -574,9 +583,28 @@ function switchTab(name){
 }
 
 // ===== 상세페이지 편집 (자유 편집기 / Toast UI) =====
-var detailInit=false, detailEditor=null, DETAIL_PROGRAMS=[];
+var detailInit=false, detailEditor=null, DETAIL_PROGRAMS=[], detailHeroUrl='';
 function detailSlug(){ var e=document.getElementById('detail-class'); return e?e.value:''; }
 function detailMsg(t,cls){ var m=document.getElementById('detail-msg'); m.className='msg show '+(cls||''); m.textContent=t; }
+
+/* 상단 배너 이미지 */
+function detailHeroShow(){ var img=document.getElementById('detail-hero-preview'); if(!img) return;
+  if(detailHeroUrl){ img.src=detailHeroUrl; img.style.display='block'; } else { img.src=''; img.style.display='none'; } }
+async function detailHeroUpload(input){
+  var f=input.files&&input.files[0]; if(!f) return;
+  var st=document.getElementById('detail-hero-status'); st.textContent='업로드 중…';
+  try{
+    var slug=detailSlug()||'common'; var type=f.type||'image/jpeg';
+    var ext=(type.split('/')[1]||'jpg').replace('jpeg','jpg').replace('svg+xml','svg');
+    var pathk=slug+'/hero-'+Date.now()+'.'+ext;
+    var up=await sb.storage.from('course-content').upload(pathk, f, {cacheControl:'3600', upsert:true, contentType:type});
+    if(up.error) throw up.error;
+    detailHeroUrl=sb.storage.from('course-content').getPublicUrl(pathk).data.publicUrl;
+    detailHeroShow(); st.textContent='✓ 업로드됨 (저장을 눌러야 반영됩니다)';
+  }catch(e){ st.textContent='업로드 실패: '+(e.message||e); }
+  input.value='';
+}
+function detailHeroClear(){ detailHeroUrl=''; detailHeroShow(); var st=document.getElementById('detail-hero-status'); if(st) st.textContent='배너 제거됨 (저장을 눌러야 반영됩니다)'; }
 
 async function loadDetailUI(){
   // 편집 대상 = 사이트에 등록된 클래스 카드(class_cards). 없으면 교육(programs)으로 폴백.
@@ -636,6 +664,8 @@ async function detailLoad(){
     document.getElementById('detail-title').value=d.title||'';
     document.getElementById('detail-sub').value=d.subtitle||'';
     document.getElementById('detail-badge').value=d.badge||'';
+    detailHeroUrl=d.hero_url||''; detailHeroShow();
+    document.getElementById('detail-hero-status').textContent='';
     if(detailEditor) detailEditor.setHTML(d.html||'');
   }catch(e){ detailMsg('불러오기 오류: '+(e.message||e),'err'); }
 }
@@ -650,6 +680,7 @@ async function detailSave(){
     title:(document.getElementById('detail-title').value||'').trim()||null,
     subtitle:(document.getElementById('detail-sub').value||'').trim()||null,
     badge:(document.getElementById('detail-badge').value||'').trim()||null,
+    hero_url:detailHeroUrl||null,
     html:detailEditor.getHTML(),
     updated_at:new Date().toISOString()
   };
