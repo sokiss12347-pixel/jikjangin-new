@@ -6,8 +6,6 @@
 <meta name="robots" content="noindex,nofollow">
 <title>운영자 관리 · 직장인</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:#F4F6FB;color:#1E293B;padding:28px 16px 80px;}
@@ -49,8 +47,9 @@
   .apps-table td:nth-child(6),.apps-table th:nth-child(6){min-width:90px;white-space:nowrap;}
   .apps-table td:nth-child(7),.apps-table th:nth-child(7){min-width:170px;}
   .apps-table td:nth-child(8),.apps-table th:nth-child(8){min-width:120px;}
-  .tabbar{display:flex;gap:8px;margin:18px 0 22px;border-bottom:1px solid #E2E8F0;}
-  .tab{padding:10px 18px;font-size:14px;font-weight:700;color:#64748B;background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;font-family:inherit;margin-bottom:-1px;}
+  .tabbar{display:flex;gap:8px;margin:18px 0 22px;border-bottom:1px solid #E2E8F0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
+  .tabbar::-webkit-scrollbar{display:none;}
+  .tab{padding:10px 18px;font-size:14px;font-weight:700;color:#64748B;background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;font-family:inherit;margin-bottom:-1px;white-space:nowrap;word-break:keep-all;flex:0 0 auto;}
   .tab.on{color:#005BFF;border-bottom-color:#005BFF;}
   .role-pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;}
   .role-student{background:#EBF0FF;color:#005BFF;}
@@ -98,11 +97,9 @@
     <button class="tab on" data-tab="apps" onclick="switchTab('apps')">수강신청 관리</button>
     <button class="tab" data-tab="members" onclick="switchTab('members')">가입회원 관리</button>
     <button class="tab" data-tab="instr" onclick="switchTab('instr')">강사 지원 관리</button>
-    <button class="tab" data-tab="programs" onclick="switchTab('programs')">교육 등록</button>
+    <button class="tab" data-tab="classes" onclick="switchTab('classes')">클래스 관리</button>
     <button class="tab" data-tab="notify" onclick="switchTab('notify')">다음 기수 알림</button>
-    <button class="tab" data-tab="detail" onclick="switchTab('detail')">상세페이지 편집</button>
     <button class="tab" data-tab="banners" onclick="switchTab('banners')">배너 관리</button>
-    <button class="tab" data-tab="cards" onclick="switchTab('cards')">클래스 카드</button>
   </div>
 
   <div id="tab-apps">
@@ -479,38 +476,6 @@
       <div id="ban-list"><div class="empty">불러오는 중…</div></div>
     </div>
   </div>
-
-  <div id="tab-detail" style="display:none;">
-    <div class="card">
-      <h2>상세페이지 편집</h2>
-      <div style="font-size:13px;color:#64748B;margin-bottom:14px;">클래스를 고르고 본문을 자유롭게 작성하세요. 소제목·굵게·목록·인용은 툴바로, <b>사진은 이미지 버튼이나 드래그로 원하는 위치에 바로</b> 넣을 수 있어요(자동으로 저장소에 업로드). 강사마다 사진 위치·개수를 마음대로 구성할 수 있습니다. 저장 후 <b>미리보기 ↗</b>로 실제 화면을 확인하세요.</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:14px;">
-        <div style="flex:1;min-width:200px;"><label>클래스</label><select id="detail-class" onchange="detailLoad()" style="display:block;margin-top:6px;"></select></div>
-        <a id="detail-preview" href="#" target="_blank" class="btn btn-ghost btn-sm" style="pointer-events:none;opacity:.5;">미리보기 ↗</a>
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
-        <div style="flex:2;min-width:220px;"><label>상단 제목 (선택)</label><input id="detail-title" placeholder="예: 무경험에서 철거 사장님까지"></div>
-        <div style="flex:1;min-width:150px;"><label>상단 뱃지 (선택)</label><input id="detail-badge" placeholder="예: 🔥 3기 모집 중"></div>
-      </div>
-      <div style="margin-bottom:12px;"><label>상단 부제 (선택)</label><input id="detail-sub" placeholder="예: 현장에서 직접 배우고 창업까지 함께합니다"></div>
-      <div style="margin-bottom:14px;">
-        <label>상단 배너 이미지 (선택 · 가로로 긴 이미지 권장)</label>
-        <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;">
-          <input id="detail-hero-file" type="file" accept="image/*" onchange="detailHeroUpload(this)" style="font-size:14px;">
-          <button type="button" class="btn btn-sm btn-ghost" onclick="detailHeroClear()">배너 제거</button>
-          <span id="detail-hero-status" style="font-size:12px;color:#64748B;"></span>
-        </div>
-        <img id="detail-hero-preview" src="" alt="" style="display:none;margin-top:8px;max-width:360px;width:100%;border-radius:10px;">
-      </div>
-      <label style="margin-bottom:6px;">본문</label>
-      <div id="detail-editor"></div>
-      <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:#475569;margin-top:12px;font-weight:600;"><input type="checkbox" id="detail-autolink" checked style="width:auto;margin:0;"> 저장 시 이 클래스 카드가 이 상세페이지를 열도록 링크 자동 설정 <span style="color:#94A3B8;font-weight:500;">(기존 커스텀 링크가 있으면 덮어쓰지 않음)</span></label>
-      <div style="display:flex;gap:10px;align-items:center;margin-top:12px;">
-        <button class="btn btn-blue" onclick="detailSave()">저장</button>
-        <span id="detail-msg" class="msg"></span>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -563,146 +528,20 @@ var programsLoaded = false;
 var bannersLoaded = false;
 function switchTab(name){
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t.getAttribute('data-tab')===name); });
+  var isClasses = (name==='classes');
   document.getElementById('tab-apps').style.display = (name==='apps') ? 'block' : 'none';
   document.getElementById('tab-members').style.display = (name==='members') ? 'block' : 'none';
   document.getElementById('tab-instr').style.display = (name==='instr') ? 'block' : 'none';
-  document.getElementById('tab-programs').style.display = (name==='programs') ? 'block' : 'none';
+  document.getElementById('tab-programs').style.display = isClasses ? 'block' : 'none';
+  document.getElementById('tab-cards').style.display = isClasses ? 'block' : 'none';
   document.getElementById('tab-notify').style.display = (name==='notify') ? 'block' : 'none';
   document.getElementById('tab-banners').style.display = (name==='banners') ? 'block' : 'none';
-  document.getElementById('tab-photos').style.display = (name==='photos') ? 'block' : 'none';
-  document.getElementById('tab-detail').style.display = (name==='detail') ? 'block' : 'none';
-  document.getElementById('tab-cards').style.display = (name==='cards') ? 'block' : 'none';
-  if(name==='cards'){ loadCards(); }
+  var ph=document.getElementById('tab-photos'); if(ph) ph.style.display='none';
+  if(isClasses){ loadCards(); if(!programsLoaded){ programsLoaded=true; loadPrograms(); } }
   if(name==='members' && !membersLoaded){ membersLoaded = true; loadMembers(); }
   if(name==='instr' && !instrLoaded){ instrLoaded = true; loadInstructors(); }
-  if(name==='programs' && !programsLoaded){ programsLoaded = true; loadPrograms(); }
   if(name==='notify'){ loadWaitlist(); }
   if(name==='banners' && !bannersLoaded){ bannersLoaded = true; loadBanners(); }
-  if(name==='photos' && !photosInit){ photosInit=true; loadPhotoUI(); }
-  if(name==='detail' && !detailInit){ detailInit=true; loadDetailUI(); }
-}
-
-// ===== 상세페이지 편집 (자유 편집기 / Toast UI) =====
-var detailInit=false, detailEditor=null, DETAIL_PROGRAMS=[], detailHeroUrl='';
-function detailSlug(){ var e=document.getElementById('detail-class'); return e?e.value:''; }
-function detailMsg(t,cls){ var m=document.getElementById('detail-msg'); m.className='msg show '+(cls||''); m.textContent=t; }
-
-/* 상단 배너 이미지 */
-function detailHeroShow(){ var img=document.getElementById('detail-hero-preview'); if(!img) return;
-  if(detailHeroUrl){ img.src=detailHeroUrl; img.style.display='block'; } else { img.src=''; img.style.display='none'; } }
-async function detailHeroUpload(input){
-  var f=input.files&&input.files[0]; if(!f) return;
-  var st=document.getElementById('detail-hero-status'); st.textContent='업로드 중…';
-  try{
-    var slug=detailSlug()||'common'; var type=f.type||'image/jpeg';
-    var ext=(type.split('/')[1]||'jpg').replace('jpeg','jpg').replace('svg+xml','svg');
-    var pathk=slug+'/hero-'+Date.now()+'.'+ext;
-    var up=await sb.storage.from('course-content').upload(pathk, f, {cacheControl:'3600', upsert:true, contentType:type});
-    if(up.error) throw up.error;
-    detailHeroUrl=sb.storage.from('course-content').getPublicUrl(pathk).data.publicUrl;
-    detailHeroShow(); st.textContent='✓ 업로드됨 (저장을 눌러야 반영됩니다)';
-  }catch(e){ st.textContent='업로드 실패: '+(e.message||e); }
-  input.value='';
-}
-function detailHeroClear(){ detailHeroUrl=''; detailHeroShow(); var st=document.getElementById('detail-hero-status'); if(st) st.textContent='배너 제거됨 (저장을 눌러야 반영됩니다)'; }
-
-async function loadDetailUI(){
-  // 편집 대상 = 사이트에 등록된 클래스 카드(class_cards). 없으면 교육(programs)으로 폴백.
-  var list=[];
-  try{
-    var cr=await sb.from('class_cards').select('id,title,category');
-    if(cr && !cr.error && cr.data && cr.data.length){
-      list=cr.data.map(function(p){ return { id:p.id, label:(p.category?('['+p.category+'] '):'')+(p.title||p.id) }; });
-    }
-  }catch(e){}
-  if(!list.length){
-    try{
-      var pr=await sb.from('programs').select('id,name,title');
-      list=(pr.data||[]).map(function(p){ return { id:p.id, label:(p.name||p.title||p.id) }; });
-    }catch(e){}
-  }
-  DETAIL_PROGRAMS=list;
-  var sel=document.getElementById('detail-class');
-  sel.innerHTML=list.length
-    ? list.map(function(p){return '<option value="'+p.id+'">'+esc(p.label)+'</option>';}).join('')
-    : '<option value="">등록된 클래스가 없습니다</option>';
-
-  if(!detailEditor && window.toastui){
-    detailEditor=new toastui.Editor({
-      el:document.getElementById('detail-editor'),
-      height:'620px', initialEditType:'wysiwyg', previewStyle:'vertical', language:'ko',
-      hooks:{ addImageBlobHook: detailUploadImage }
-    });
-  }
-  detailLoad();
-}
-
-/* 이미지 삽입 시 Supabase Storage(course-content 버킷)에 업로드 후 URL 삽입 */
-async function detailUploadImage(blob, callback){
-  try{
-    var slug=detailSlug()||'common';
-    var type=blob.type||'image/jpeg';
-    var ext=(type.split('/')[1]||'jpg').replace('jpeg','jpg').replace('svg+xml','svg');
-    var path=slug+'/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
-    var up=await sb.storage.from('course-content').upload(path, blob, {cacheControl:'3600', upsert:false, contentType:type});
-    if(up.error) throw up.error;
-    var pub=sb.storage.from('course-content').getPublicUrl(path);
-    callback(pub.data.publicUrl, '');
-  }catch(e){ alert('이미지 업로드 실패: '+(e.message||e)); }
-  return false;
-}
-
-async function detailLoad(){
-  var slug=detailSlug();
-  var prev=document.getElementById('detail-preview');
-  if(!slug){ if(prev){ prev.style.pointerEvents='none'; prev.style.opacity='.5'; } return; }
-  if(prev){ prev.href='class_detail.html?slug='+encodeURIComponent(slug); prev.style.pointerEvents='auto'; prev.style.opacity='1'; }
-  detailMsg('','');
-  try{
-    var r=await sb.from('course_pages').select('*').eq('slug',slug).maybeSingle();
-    var d=r.data||{};
-    document.getElementById('detail-title').value=d.title||'';
-    document.getElementById('detail-sub').value=d.subtitle||'';
-    document.getElementById('detail-badge').value=d.badge||'';
-    detailHeroUrl=d.hero_url||''; detailHeroShow();
-    document.getElementById('detail-hero-status').textContent='';
-    if(detailEditor) detailEditor.setHTML(d.html||'');
-  }catch(e){ detailMsg('불러오기 오류: '+(e.message||e),'err'); }
-}
-
-async function detailSave(){
-  var slug=detailSlug();
-  if(!slug){ detailMsg('클래스를 선택하세요.','err'); return; }
-  if(!detailEditor){ detailMsg('편집기가 아직 준비되지 않았어요.','err'); return; }
-  detailMsg('저장 중…','');
-  var rec={
-    slug:slug,
-    title:(document.getElementById('detail-title').value||'').trim()||null,
-    subtitle:(document.getElementById('detail-sub').value||'').trim()||null,
-    badge:(document.getElementById('detail-badge').value||'').trim()||null,
-    hero_url:detailHeroUrl||null,
-    html:detailEditor.getHTML(),
-    updated_at:new Date().toISOString()
-  };
-  var res=await sb.from('course_pages').upsert(rec,{onConflict:'slug'});
-  if(res.error){ detailMsg('저장 실패: '+res.error.message,'err'); return; }
-
-  // 이 카드가 상세페이지를 열도록 링크 자동 설정 (옵션)
-  // ★ 안전장치: 카드에 이미 커스텀 링크(chulgeo_detail.html 등)가 있으면 덮어쓰지 않음
-  var auto=document.getElementById('detail-autolink');
-  if(auto && auto.checked){
-    try{
-      var cur=await sb.from('class_cards').select('link_url').eq('id', slug).maybeSingle();
-      var link=(cur && cur.data && cur.data.link_url) ? cur.data.link_url : '';
-      if(!link || link.indexOf('class_detail.html')===0){
-        await sb.from('class_cards').update({ link_url:'class_detail.html?slug='+slug }).eq('id', slug);
-      } else {
-        detailMsg('✓ 저장되었습니다. (이 카드엔 기존 링크 "'+link+'" 가 있어 자동연결은 건너뛰었어요. 편집기 페이지로 바꾸려면 클래스 카드 탭에서 링크를 직접 수정하세요.)','ok');
-        return;
-      }
-    }catch(e){}
-  }
-  detailMsg('✓ 저장되었습니다. "미리보기 ↗"로 확인하세요.','ok');
 }
 
 // ===== 가입회원 관리 =====
