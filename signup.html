@@ -8,128 +8,137 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Noto Sans KR', sans-serif; background: #F8FAFC; color: #1E293B; min-height: 100vh; display: flex; flex-direction: column; }
-  .right-link { font-size: 13px; color: rgba(255,255,255,.5); text-decoration: none; margin-left: auto; }
-  .right-link:hover { color: #fff; }
-  .right-link b { color: #005BFF; }
-  .wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
-  .card { background: #fff; border-radius: 20px; border: 1px solid #E2E8F0; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 4px 24px rgba(0,0,0,.07); }
-  .card-title { font-size: 24px; font-weight: 900; color: #1E293B; letter-spacing: -.5px; margin-bottom: 6px; }
-  .card-sub { font-size: 14px; color: #94A3B8; margin-bottom: 32px; }
-  .form-group { margin-bottom: 18px; }
-  label { display: block; font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 6px; }
-  input, select { width: 100%; height: 48px; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 0 14px; font-size: 14px; font-family: 'Noto Sans KR', sans-serif; color: #1E293B; outline: none; transition: border-color .15s; background: #fff; }
-  input:focus, select:focus { border-color: #005BFF; }
-  .input-wrap { position: relative; }
-  .input-wrap input { padding-right: 48px; }
-  .eye-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; color: #94A3B8; padding: 4px; }
-  .pw-strength { display: none; margin-top: 8px; }
-  .strength-bars { display: flex; gap: 4px; margin-bottom: 4px; }
-  .strength-bars span { flex: 1; height: 4px; border-radius: 2px; background: #E2E8F0; transition: background .2s; }
-  .strength-label { font-size: 12px; color: #94A3B8; }
-  .submit-btn { width: 100%; height: 50px; background: #005BFF; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; transition: background .15s; }
-  .submit-btn:hover { background: #0041CC; }
-  .submit-btn:disabled { background: #94A3B8; cursor: not-allowed; }
-  .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #E2E8F0; }
-  .divider span { font-size: 12px; color: #94A3B8; }
-  .kakao-btn { width: 100%; height: 50px; background: #FEE500; color: #191919; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .15s; }
-  .kakao-btn:hover { background: #F0D800; }
-  .terms-txt { font-size: 13px; color: #94A3B8; text-align: center; margin-top: 20px; line-height: 1.7; }
-  .terms-txt a { color: #005BFF; text-decoration: none; font-weight: 700; }
-  .role-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
-  .role-btn { border: 2px solid #E2E8F0; border-radius: 14px; padding: 20px 16px; cursor: pointer; text-align: center; transition: all .2s; background: #fff; }
-  .role-btn:hover { border-color: #005BFF; }
-  .role-btn.active { border-color: #005BFF; background: #EBF0FF; }
-  .role-btn .r-icon { font-size: 28px; margin-bottom: 8px; }
-  .role-btn .r-title { font-size: 15px; font-weight: 900; color: #1E293B; margin-bottom: 3px; }
-  .role-btn .r-desc { font-size: 12px; color: #94A3B8; }
-  .role-btn.active .r-title { color: #005BFF; }
-  .extra-fields { display: none; }
-  .extra-fields.show { display: block; }
-  .error-msg { font-size: 13px; color: #EF4444; margin-top: 12px; text-align: center; display: none; }
-  .error-msg.show { display: block; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: #fff; color: #1E293B; min-height: 100vh; display: flex; flex-direction: column; }
+
   header { background: #0B1120; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
   .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; height: 62px; gap: 32px; }
   .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
-  .logo-text { font-family: 'Noto Sans KR', sans-serif; font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; display: flex; align-items: center; gap: 1px; line-height: 1; }
+  .logo-text { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
   .logo-blue { color: #005BFF; }
+  .right-link { font-size: 13px; color: rgba(255,255,255,.55); text-decoration: none; margin-left: auto; }
+  .right-link:hover { color: #fff; }
+  .right-link b { color: #4C9EFF; }
+
+  .wrap { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 44px 20px 64px; }
+  .card { background: #fff; padding: 30px 24px 56px; width: 100%; max-width: 500px; }
+  .card-title { font-size: 23px; font-weight: 900; color: #0F172A; letter-spacing: -.6px; }
+  .card-sub { font-size: 14px; color: #94A3B8; margin-top: 7px; margin-bottom: 26px; }
+
+  .field { margin-bottom: 18px; }
+  label.lbl { display: block; font-size: 14px; font-weight: 800; color: #0F172A; margin-bottom: 8px; letter-spacing: -.2px; }
+  input, select { width: 100%; height: 50px; border: 1.5px solid #E5E9F0; border-radius: 8px; padding: 0 14px; font-size: 14.5px; font-family: inherit; color: #1E293B; outline: none; transition: border-color .15s, box-shadow .15s; background: #fff; }
+  input::placeholder { color: #AEB7C6; }
+  input:focus, select:focus { border-color: #005BFF; background: #fff; box-shadow: 0 0 0 2px rgba(0,91,255,.10); }
+
+  /* 세그먼트 토글 (가입 유형) */
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .seg-btn { height: 50px; border: 1.5px solid #E5E9F0; border-radius: 8px; background: #fff; font-family: inherit; font-size: 15px; font-weight: 700; color: #64748B; cursor: pointer; transition: all .15s; }
+  .seg-btn:hover { border-color: #C7D6EE; }
+  .seg-btn.active { border-color: #005BFF; background: #EEF4FF; color: #005BFF; }
+
+  .input-wrap { position: relative; }
+  .input-wrap input { padding-right: 48px; }
+  .eye-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 17px; color: #94A3B8; padding: 4px; }
+
+  .pw-strength { display: none; margin-top: 10px; }
+  .strength-bars { display: flex; gap: 4px; margin-bottom: 6px; }
+  .strength-bars span { flex: 1; height: 4px; border-radius: 2px; background: #E5E9F0; transition: background .2s; }
+  .strength-label { font-size: 12px; color: #94A3B8; }
   .pw-rule { font-size: 12px; color: #94A3B8; transition: color .15s; }
   .pw-rule.pass { color: #22C55E; }
   .pw-rule.fail { color: #EF4444; }
 
+  /* 휴대폰 인증 */
+  .phone-row { display: flex; gap: 8px; }
+  .phone-row input { flex: 1; min-width: 0; }
+  .btn-verify { flex: 0 0 auto; padding: 0 16px; height: 50px; border: 1.5px solid #005BFF; background: #fff; color: #005BFF; border-radius: 8px; font-size: 13.5px; font-weight: 800; cursor: pointer; white-space: nowrap; font-family: inherit; transition: all .15s; }
+  .btn-verify:hover:not(:disabled) { background: #005BFF; color: #fff; }
+  .btn-verify:disabled { opacity: .4; cursor: not-allowed; border-color: #CBD5E1; color: #94A3B8; }
+  .code-row { display: none; gap: 8px; margin-top: 8px; align-items: center; position: relative; }
+  .code-row.show { display: flex; }
+  .code-row input { flex: 1; min-width: 0; padding-right: 96px; }
+  .code-timer { position: absolute; right: 92px; top: 50%; transform: translateY(-50%); font-size: 12.5px; font-weight: 800; color: #EF4444; pointer-events: none; }
+  .verify-msg { font-size: 12.5px; margin-top: 8px; display: none; }
+  .verify-msg.show { display: block; }
+  .verify-msg.ok { color: #10B981; }
+  .verify-msg.err { color: #EF4444; }
+
+  .extra-fields { display: none; }
+  .extra-fields.show { display: block; }
+
+  /* 약관 동의 */
+  .agree { margin-top: 22px; padding-top: 18px; border-top: 1px solid #EEF1F6; }
+  .agree-all { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 800; color: #0F172A; cursor: pointer; }
+  .agree-line { height: 1px; background: #F1F4F9; margin: 11px 0; }
+  .agree-item { display: flex; align-items: center; gap: 9px; font-size: 12px; color: #64748B; cursor: pointer; padding: 5px 0; }
+  .agree-item .txt { flex: 1; }
+  .agree-item .req { color: #005BFF; font-weight: 800; }
+  .agree-item .opt { color: #94A3B8; font-weight: 800; }
+  .agree-view { font-size: 11px; color: #AEB7C6; text-decoration: none; white-space: nowrap; }
+  .agree-view:hover { color: #005BFF; }
+  .agree input[type=checkbox] { width: 17px; height: 17px; flex: 0 0 auto; accent-color: #005BFF; cursor: pointer; }
+  .agree-desc { font-size: 11px; color: #AEB7C6; line-height: 1.55; margin: 3px 0 2px 26px; }
+
+  .submit-btn { width: 100%; height: 52px; margin-top: 22px; background: #005BFF; color: #fff; border: none; border-radius: 10px; font-size: 14.5px; font-weight: 800; cursor: pointer; font-family: inherit; transition: background .15s; }
+  .submit-btn:hover { background: #0041CC; }
+  .submit-btn:disabled { background: #94A3B8; cursor: not-allowed; }
+  .error-msg { font-size: 13px; color: #EF4444; margin-top: 12px; text-align: center; display: none; }
+  .error-msg.show { display: block; }
+
+  .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #E5E9F0; }
+  .divider span { font-size: 12px; color: #AEB7C6; }
+  .kakao-btn { width: 100%; height: 52px; background: #FEE500; color: #191919; border: none; border-radius: 14px; font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .15s; }
+  .kakao-btn:hover { background: #F0D800; }
+
   @media (max-width: 480px){
     .header-inner{ height:auto; min-height:56px; padding:10px 16px; flex-wrap:wrap; row-gap:6px; }
-    .right-link, .back-btn, .back-link{ font-size:12px; margin-left:0; }
-    .wrap{ padding:32px 16px; }
-    .card{ padding:32px 20px; border-radius:16px; }
+    .right-link{ font-size:12px; margin-left:0; }
+    .wrap{ padding:28px 14px 48px; }
+    .card{ padding:30px 20px; border-radius:18px; }
   }
-
-  /* 휴대폰 인증 */
-  .phone-row{ display:flex; gap:8px; }
-  .phone-row input{ flex:1; min-width:0; }
-  .btn-verify{ flex:0 0 auto; padding:0 14px; height:46px; border:1px solid #005BFF; background:#fff; color:#005BFF;
-               border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; font-family:inherit; }
-  .btn-verify:hover:not(:disabled){ background:#005BFF; color:#fff; }
-  .btn-verify:disabled{ opacity:.45; cursor:not-allowed; }
-  .code-row{ display:none; gap:8px; margin-top:8px; align-items:center; position:relative; }
-  .code-row.show{ display:flex; }
-  .code-row input{ flex:1; min-width:0; padding-right:52px; }
-  .code-timer{ position:absolute; left:50%; transform:translateX(-50%); font-size:12.5px; font-weight:700; color:#EF4444; pointer-events:none; }
-  .verify-msg{ font-size:12.5px; margin-top:7px; display:none; }
-  .verify-msg.show{ display:block; }
-  .verify-msg.ok{ color:#10B981; }
-  .verify-msg.err{ color:#EF4444; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <a href="index.html" class="logo">
-      <span class="logo-text"><span class="logo-blue">직</span>장인</span>
-    </a>
+    <a href="index.html" class="logo"><span class="logo-text"><span class="logo-blue">직</span>장인</span></a>
     <a href="login.html" class="right-link">이미 계정이 있으신가요? <b>로그인</b></a>
   </div>
 </header>
 
 <div class="wrap">
   <div class="card">
-    <div class="card-title">회원가입</div>
-    <div class="card-sub">어떤 분으로 가입하시겠어요?</div>
-    <div class="role-select">
-      <div class="role-btn active" id="role-student" onclick="selectRole('student')">
-        <div class="r-icon">🎓</div>
-        <div class="r-title">교육생</div>
-        <div class="r-desc">기술을 배우고 싶어요</div>
-      </div>
-      <div class="role-btn" id="role-instructor" onclick="selectRole('instructor')">
-        <div class="r-icon">👨‍🏫</div>
-        <div class="r-title">강사</div>
-        <div class="r-desc">교육을 제공하고 싶어요</div>
+    <div class="card-title"><span style="color:#005BFF">'직장'</span>인에서 <span style="color:#005BFF">'직'</span>장인으로</div>
+    <div class="card-sub">월급 말고, 내 기술로 버는 삶을 시작하세요.</div>
+
+    <div class="field">
+      <label class="lbl">가입 유형</label>
+      <div class="seg">
+        <button type="button" class="seg-btn active" id="role-student" onclick="selectRole('student')">교육생</button>
+        <button type="button" class="seg-btn" id="role-instructor" onclick="selectRole('instructor')">강사</button>
       </div>
     </div>
 
-    <div class="form-group">
-      <label>이름</label>
-      <input type="text" id="name" placeholder="실명을 입력해주세요">
+    <div class="field">
+      <label class="lbl">이름</label>
+      <input type="text" id="name" placeholder="실명을 입력해 주세요">
     </div>
 
-    <div class="form-group">
-      <label>이메일</label>
+    <div class="field">
+      <label class="lbl">이메일</label>
       <input type="email" id="email" placeholder="example@email.com">
     </div>
 
-    <div class="form-group">
-      <label>비밀번호</label>
+    <div class="field">
+      <label class="lbl">비밀번호</label>
       <div class="input-wrap">
-        <input type="password" id="password" placeholder="8자 이상 입력해주세요" oninput="checkPwStrength()">
+        <input type="password" id="password" placeholder="영문 대·소문자+숫자+특수문자 8자 이상" oninput="checkPwStrength()">
         <button type="button" class="eye-btn" id="pw-eye" onclick="togglePwVisibility()">👁</button>
       </div>
       <div class="pw-strength" id="pw-strength">
-        <div class="strength-bars">
-          <span id="ps1"></span><span id="ps2"></span><span id="ps3"></span>
-        </div>
+        <div class="strength-bars"><span id="ps1"></span><span id="ps2"></span><span id="ps3"></span></div>
         <div class="strength-label" id="pw-label"></div>
         <div style="margin-top:10px;display:flex;flex-direction:column;gap:4px;" id="pw-rules">
           <div class="pw-rule" id="rule-len">✗ 8자 이상</div>
@@ -141,11 +150,11 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label>연락처</label>
+    <div class="field">
+      <label class="lbl">휴대폰 번호</label>
       <div class="phone-row">
         <input type="tel" id="phone" placeholder="010-0000-0000" maxlength="13" oninput="autoHyphen(this); onPhoneChange();">
-        <button type="button" class="btn-verify" id="btn-send-code" onclick="sendCode()">인증번호 받기</button>
+        <button type="button" class="btn-verify" id="btn-send-code" onclick="sendCode()">인증 요청</button>
       </div>
       <div class="code-row" id="code-row">
         <input type="tel" id="code" placeholder="인증번호 6자리" maxlength="6" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
@@ -156,71 +165,56 @@
     </div>
 
     <div class="extra-fields show" id="student-fields">
-      <div class="form-group">
-        <label>관심 분야</label>
+      <div class="field">
+        <label class="lbl">관심 분야</label>
         <select id="interest">
           <option value="">선택해주세요</option>
-          <option>철거·원상복구</option>
-          <option>인테리어·목공</option>
-          <option>줄눈 시공</option>
-          <option>누수·방수</option>
-          <option>에어컨청소</option>
-          <option>도배·도장</option>
-          <option>타일·조적</option>
-          <option>전기·설비</option>
-          <option>미용·헤어</option>
-          <option>네일·속눈썹</option>
-          <option>피부·에스테틱</option>
-          <option>메이크업·반영구</option>
-          <option>베이커리·제과</option>
-          <option>바리스타·카페</option>
-          <option>애견미용</option>
-          <option>기타</option>
+          <option>철거·원상복구</option><option>인테리어·목공</option><option>줄눈 시공</option>
+          <option>누수·방수</option><option>에어컨청소</option><option>도배·도장</option>
+          <option>타일·조적</option><option>전기·설비</option><option>미용·헤어</option>
+          <option>네일·속눈썹</option><option>피부·에스테틱</option><option>메이크업·반영구</option>
+          <option>베이커리·제과</option><option>바리스타·카페</option><option>애견미용</option><option>기타</option>
         </select>
       </div>
     </div>
 
     <div class="extra-fields" id="instructor-fields">
-      <div class="form-group">
-        <label>전문 분야</label>
+      <div class="field">
+        <label class="lbl">전문 분야</label>
         <select id="specialty">
           <option value="">선택해주세요</option>
-          <option>철거·원상복구</option>
-          <option>인테리어·목공</option>
-          <option>줄눈 시공</option>
-          <option>누수·방수</option>
-          <option>에어컨청소</option>
-          <option>도배·도장</option>
-          <option>타일·조적</option>
-          <option>전기·설비</option>
-          <option>미용·헤어</option>
-          <option>네일·속눈썹</option>
-          <option>피부·에스테틱</option>
-          <option>메이크업·반영구</option>
-          <option>베이커리·제과</option>
-          <option>바리스타·카페</option>
-          <option>애견미용</option>
-          <option>기타</option>
+          <option>철거·원상복구</option><option>인테리어·목공</option><option>줄눈 시공</option>
+          <option>누수·방수</option><option>에어컨청소</option><option>도배·도장</option>
+          <option>타일·조적</option><option>전기·설비</option><option>미용·헤어</option>
+          <option>네일·속눈썹</option><option>피부·에스테틱</option><option>메이크업·반영구</option>
+          <option>베이커리·제과</option><option>바리스타·카페</option><option>애견미용</option><option>기타</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>현장 경력</label>
+      <div class="field">
+        <label class="lbl">현장 경력</label>
         <select id="career">
           <option value="">선택해주세요</option>
-          <option>1년 미만</option>
-          <option>1~3년</option>
-          <option>3~5년</option>
-          <option>5~10년</option>
-          <option>10년 이상</option>
+          <option>1년 미만</option><option>1~3년</option><option>3~5년</option>
+          <option>5~10년</option><option>10년 이상</option>
         </select>
       </div>
     </div>
 
-    <button class="submit-btn" id="signup-btn" onclick="doSignup()">가입하기</button>
+    <!-- 약관 동의 -->
+    <div class="agree">
+      <label class="agree-all"><input type="checkbox" id="agree-all" onchange="toggleAllAgree(this)"><span>전체 동의하기</span></label>
+      <div class="agree-line"></div>
+      <label class="agree-item"><input type="checkbox" class="agree-req" id="agree-terms" onchange="syncAgree()"><span class="txt"><b class="req">(필수)</b> 직장인 이용약관</span><a href="terms.html" target="_blank" class="agree-view">전체보기 ›</a></label>
+      <label class="agree-item"><input type="checkbox" class="agree-req" id="agree-privacy" onchange="syncAgree()"><span class="txt"><b class="req">(필수)</b> 개인정보 수집 및 이용</span><a href="privacy.html" target="_blank" class="agree-view">전체보기 ›</a></label>
+      <label class="agree-item"><input type="checkbox" id="agree-marketing" onchange="syncAgree()"><span class="txt"><b class="opt">(선택)</b> 마케팅 정보 수신</span></label>
+      <div class="agree-desc">전자적 전송매체(SMS·MMS·이메일 등)를 통한 광고성 정보 수신에 동의합니다. 동의 여부는 언제든지 변경할 수 있습니다.</div>
+    </div>
+
+    <button class="submit-btn" id="signup-btn" onclick="doSignup()">회원 가입 하기</button>
     <div class="error-msg" id="error-msg"></div>
+
     <div class="divider"><span>또는</span></div>
     <button class="kakao-btn" onclick="doKakaoLogin()">💬 카카오로 시작하기</button>
-    <p class="terms-txt">가입하면 <a href="terms.html">이용약관</a> 및 <a href="privacy.html">개인정보 처리방침</a>에 동의하는 것으로 간주됩니다.</p>
   </div>
 </div>
 
@@ -231,7 +225,6 @@ const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 var currentRole = 'student';
 
-// 역할 선택
 function selectRole(role) {
   currentRole = role;
   document.getElementById('role-student').classList.toggle('active', role === 'student');
@@ -240,235 +233,133 @@ function selectRole(role) {
   document.getElementById('instructor-fields').classList.toggle('show', role === 'instructor');
 }
 
-// 비밀번호 보기/숨기기
 function togglePwVisibility() {
   var input = document.getElementById('password');
   var eye = document.getElementById('pw-eye');
-  if (input.type === 'password') {
-    input.type = 'text';
-    eye.textContent = '🙈';
-  } else {
-    input.type = 'password';
-    eye.textContent = '👁';
-  }
+  if (input.type === 'password') { input.type = 'text'; eye.textContent = '🙈'; }
+  else { input.type = 'password'; eye.textContent = '👁'; }
 }
 
-// 비밀번호 강도 + 조건 체크
 function checkPwStrength() {
   var pw = document.getElementById('password').value;
   var strengthEl = document.getElementById('pw-strength');
-  var s1 = document.getElementById('ps1');
-  var s2 = document.getElementById('ps2');
-  var s3 = document.getElementById('ps3');
+  var s1 = document.getElementById('ps1'), s2 = document.getElementById('ps2'), s3 = document.getElementById('ps3');
   var label = document.getElementById('pw-label');
   var input = document.getElementById('password');
 
-  if (pw.length === 0) {
-    strengthEl.style.display = 'none';
-    input.style.borderColor = '#E2E8F0';
-    return;
-  }
+  if (pw.length === 0) { strengthEl.style.display = 'none'; input.style.borderColor = '#E5E9F0'; return; }
   strengthEl.style.display = 'block';
 
-  // 조건 체크
-  var rules = {
-    len:     pw.length >= 8,
-    upper:   /[A-Z]/.test(pw),
-    lower:   /[a-z]/.test(pw),
-    num:     /[0-9]/.test(pw),
-    special: /[^A-Za-z0-9]/.test(pw)
-  };
-
-  setRule('rule-len',     rules.len,     '8자 이상');
-  setRule('rule-upper',   rules.upper,   '대문자 포함 (A-Z)');
-  setRule('rule-lower',   rules.lower,   '소문자 포함 (a-z)');
-  setRule('rule-num',     rules.num,     '숫자 포함 (0-9)');
+  var rules = { len: pw.length >= 8, upper: /[A-Z]/.test(pw), lower: /[a-z]/.test(pw), num: /[0-9]/.test(pw), special: /[^A-Za-z0-9]/.test(pw) };
+  setRule('rule-len', rules.len, '8자 이상');
+  setRule('rule-upper', rules.upper, '대문자 포함 (A-Z)');
+  setRule('rule-lower', rules.lower, '소문자 포함 (a-z)');
+  setRule('rule-num', rules.num, '숫자 포함 (0-9)');
   setRule('rule-special', rules.special, '특수문자 포함 (!@#$ 등)');
 
-  // 강도 계산
   var passed = Object.values(rules).filter(Boolean).length;
-
-  s1.style.background = '#E2E8F0';
-  s2.style.background = '#E2E8F0';
-  s3.style.background = '#E2E8F0';
-
-  if (passed <= 2) {
-    s1.style.background = '#EF4444';
-    label.textContent = '취약한 비밀번호';
-    label.style.color = '#EF4444';
-    input.style.borderColor = '#EF4444';
-  } else if (passed <= 3) {
-    s1.style.background = '#F59E0B';
-    s2.style.background = '#F59E0B';
-    label.textContent = '보통 비밀번호';
-    label.style.color = '#F59E0B';
-    input.style.borderColor = '#F59E0B';
-  } else if (passed === 4) {
-    s1.style.background = '#22C55E';
-    s2.style.background = '#22C55E';
-    label.textContent = '강한 비밀번호';
-    label.style.color = '#22C55E';
-    input.style.borderColor = '#22C55E';
-  } else {
-    s1.style.background = '#22C55E';
-    s2.style.background = '#22C55E';
-    s3.style.background = '#22C55E';
-    label.textContent = '매우 강한 비밀번호 👍';
-    label.style.color = '#22C55E';
-    input.style.borderColor = '#22C55E';
-  }
+  s1.style.background = '#E5E9F0'; s2.style.background = '#E5E9F0'; s3.style.background = '#E5E9F0';
+  if (passed <= 2) { s1.style.background = '#EF4444'; label.textContent = '취약한 비밀번호'; label.style.color = '#EF4444'; input.style.borderColor = '#EF4444'; }
+  else if (passed <= 3) { s1.style.background = '#F59E0B'; s2.style.background = '#F59E0B'; label.textContent = '보통 비밀번호'; label.style.color = '#F59E0B'; input.style.borderColor = '#F59E0B'; }
+  else if (passed === 4) { s1.style.background = '#22C55E'; s2.style.background = '#22C55E'; label.textContent = '강한 비밀번호'; label.style.color = '#22C55E'; input.style.borderColor = '#22C55E'; }
+  else { s1.style.background = '#22C55E'; s2.style.background = '#22C55E'; s3.style.background = '#22C55E'; label.textContent = '매우 강한 비밀번호 👍'; label.style.color = '#22C55E'; input.style.borderColor = '#22C55E'; }
 }
 
 function setRule(id, pass, text) {
-  var el = document.getElementById(id);
-  if (!el) return;
+  var el = document.getElementById(id); if (!el) return;
   el.textContent = (pass ? '✓ ' : '✗ ') + text;
   el.className = 'pw-rule ' + (pass ? 'pass' : 'fail');
 }
 
 function isPwValid() {
   var pw = document.getElementById('password').value;
-  return pw.length >= 8
-    && /[A-Z]/.test(pw)
-    && /[a-z]/.test(pw)
-    && /[0-9]/.test(pw)
-    && /[^A-Za-z0-9]/.test(pw);
+  return pw.length >= 8 && /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /[0-9]/.test(pw) && /[^A-Za-z0-9]/.test(pw);
 }
 
-// 연락처 자동 하이픈
 function autoHyphen(input) {
   var val = input.value.replace(/[^0-9]/g, '');
-  if (val.length <= 3) {
-    input.value = val;
-  } else if (val.length <= 7) {
-    input.value = val.slice(0,3) + '-' + val.slice(3);
-  } else {
-    input.value = val.slice(0,3) + '-' + val.slice(3,7) + '-' + val.slice(7,11);
-  }
+  if (val.length <= 3) input.value = val;
+  else if (val.length <= 7) input.value = val.slice(0,3) + '-' + val.slice(3);
+  else input.value = val.slice(0,3) + '-' + val.slice(3,7) + '-' + val.slice(7,11);
 }
 
-// 에러 표시
-function showError(msg) {
-  var el = document.getElementById('error-msg');
-  el.textContent = msg;
-  el.classList.add('show');
-}
+function showError(msg) { var el = document.getElementById('error-msg'); el.textContent = msg; el.classList.add('show'); }
 
-// 회원가입
+/* ===== 약관 동의 ===== */
+function toggleAllAgree(master){
+  var on = master.checked;
+  ['agree-terms','agree-privacy','agree-marketing'].forEach(function(id){ document.getElementById(id).checked = on; });
+}
+function syncAgree(){
+  var all = ['agree-terms','agree-privacy','agree-marketing'].every(function(id){ return document.getElementById(id).checked; });
+  document.getElementById('agree-all').checked = all;
+}
+function agreementsOk(){
+  return document.getElementById('agree-terms').checked && document.getElementById('agree-privacy').checked;
+}
 
 /* ===== 휴대폰 인증 ===== */
-var phoneVerified = false;
-var verifiedPhone = '';
-var codeTimer = null;
+var phoneVerified = false, verifiedPhone = '', codeTimer = null;
 
 function onPhoneChange(){
   var p = document.getElementById('phone').value.replace(/[^0-9]/g,'');
   if (phoneVerified && p !== verifiedPhone) {
     phoneVerified = false;
     document.getElementById('btn-send-code').disabled = false;
-    document.getElementById('btn-send-code').textContent = '인증번호 받기';
+    document.getElementById('btn-send-code').textContent = '인증 요청';
     document.getElementById('code-row').classList.remove('show');
     setVerifyMsg('', '');
   }
 }
-
 function setVerifyMsg(msg, type){
   var el = document.getElementById('verify-msg');
   el.textContent = msg || '';
   el.className = 'verify-msg' + (msg ? ' show ' + type : '');
 }
-
 function startTimer(sec){
   clearInterval(codeTimer);
-  var el = document.getElementById('code-timer');
-  var left = sec;
+  var el = document.getElementById('code-timer'); var left = sec;
   function tick(){
-    if (left <= 0) {
-      clearInterval(codeTimer);
-      el.textContent = '만료됨';
-      return;
-    }
+    if (left <= 0) { clearInterval(codeTimer); el.textContent = '만료됨'; return; }
     var m = Math.floor(left/60), s2 = left % 60;
-    el.textContent = m + ':' + (s2 < 10 ? '0' : '') + s2;
-    left--;
+    el.textContent = m + ':' + (s2 < 10 ? '0' : '') + s2; left--;
   }
-  tick();
-  codeTimer = setInterval(tick, 1000);
+  tick(); codeTimer = setInterval(tick, 1000);
 }
-
 async function sendCode(){
   var phone = document.getElementById('phone').value.trim();
-  if (!/^01[016789]-?[0-9]{3,4}-?[0-9]{4}$/.test(phone)) {
-    setVerifyMsg('올바른 휴대폰 번호를 입력해주세요.', 'err');
-    return;
-  }
+  if (!/^01[016789]-?[0-9]{3,4}-?[0-9]{4}$/.test(phone)) { setVerifyMsg('올바른 휴대폰 번호를 입력해주세요.', 'err'); return; }
   var btn = document.getElementById('btn-send-code');
-  btn.disabled = true;
-  btn.textContent = '발송 중...';
-  setVerifyMsg('', '');
-
+  btn.disabled = true; btn.textContent = '발송 중...'; setVerifyMsg('', '');
   try {
-    var res = await fetch('/.netlify/functions/send-verification', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: phone })
-    });
+    var res = await fetch('/.netlify/functions/send-verification', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: phone }) });
     var data = await res.json();
-    if (!data.ok) {
-      btn.disabled = false;
-      btn.textContent = '인증번호 받기';
-      setVerifyMsg(data.error || '발송에 실패했습니다.', 'err');
-      return;
-    }
+    if (!data.ok) { btn.disabled = false; btn.textContent = '인증 요청'; setVerifyMsg(data.error || '발송에 실패했습니다.', 'err'); return; }
     document.getElementById('code-row').classList.add('show');
-    document.getElementById('code').value = '';
-    document.getElementById('code').focus();
-    btn.textContent = '재발송';
-    btn.disabled = false;
+    document.getElementById('code').value = ''; document.getElementById('code').focus();
+    btn.textContent = '재발송'; btn.disabled = false;
     startTimer(data.ttl || 180);
     setVerifyMsg('인증번호를 발송했습니다. 문자를 확인해주세요.', 'ok');
-  } catch (e) {
-    btn.disabled = false;
-    btn.textContent = '인증번호 받기';
-    setVerifyMsg('네트워크 오류가 발생했습니다.', 'err');
-  }
+  } catch (e) { btn.disabled = false; btn.textContent = '인증 요청'; setVerifyMsg('네트워크 오류가 발생했습니다.', 'err'); }
 }
-
 async function checkCode(){
   var phone = document.getElementById('phone').value.trim();
   var code  = document.getElementById('code').value.trim();
   if (code.length !== 6) { setVerifyMsg('인증번호 6자리를 입력해주세요.', 'err'); return; }
-
   var btn = document.getElementById('btn-check-code');
-  btn.disabled = true;
-  btn.textContent = '확인 중...';
-
+  btn.disabled = true; btn.textContent = '확인 중...';
   try {
-    var res = await fetch('/.netlify/functions/verify-code', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: phone, code: code })
-    });
+    var res = await fetch('/.netlify/functions/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: phone, code: code }) });
     var data = await res.json();
-    btn.disabled = false;
-    btn.textContent = '확인';
-
+    btn.disabled = false; btn.textContent = '확인';
     if (!data.ok) { setVerifyMsg(data.error || '인증에 실패했습니다.', 'err'); return; }
-
-    phoneVerified = true;
-    verifiedPhone = phone.replace(/[^0-9]/g,'');
-    clearInterval(codeTimer);
-    document.getElementById('code-timer').textContent = '';
-    document.getElementById('code').disabled = true;
-    btn.disabled = true;
+    phoneVerified = true; verifiedPhone = phone.replace(/[^0-9]/g,'');
+    clearInterval(codeTimer); document.getElementById('code-timer').textContent = '';
+    document.getElementById('code').disabled = true; btn.disabled = true;
     document.getElementById('btn-send-code').disabled = true;
     document.getElementById('btn-send-code').textContent = '인증완료';
     setVerifyMsg('휴대폰 인증이 완료되었습니다.', 'ok');
-  } catch (e) {
-    btn.disabled = false;
-    btn.textContent = '확인';
-    setVerifyMsg('네트워크 오류가 발생했습니다.', 'err');
-  }
+  } catch (e) { btn.disabled = false; btn.textContent = '확인'; setVerifyMsg('네트워크 오류가 발생했습니다.', 'err'); }
 }
 
 async function doSignup() {
@@ -478,45 +369,32 @@ async function doSignup() {
   var phone = document.getElementById('phone').value.trim();
 
   if (!name || !email || !pw || !phone) { showError('모든 필수 항목을 입력해주세요.'); return; }
-  if (!phoneVerified || phone.replace(/[^0-9]/g,'') !== verifiedPhone) {
-    showError('휴대폰 인증을 완료해주세요.');
-    return;
-  }
+  if (!phoneVerified || phone.replace(/[^0-9]/g,'') !== verifiedPhone) { showError('휴대폰 인증을 완료해주세요.'); return; }
   if (!isPwValid()) {
-    showError('비밀번호 조건을 모두 충족해야 합니다. (8자 이상, 대문자·소문자·숫자·특수문자 포함)');
-    document.getElementById('pw-strength').style.display = 'block';
-    checkPwStrength();
-    return;
+    showError('비밀번호 조건을 모두 충족해야 합니다. (8자 이상, 대·소문자·숫자·특수문자 포함)');
+    document.getElementById('pw-strength').style.display = 'block'; checkPwStrength(); return;
   }
+  if (!agreementsOk()) { showError('필수 약관에 동의해주세요.'); return; }
 
   var btn = document.getElementById('signup-btn');
-  btn.disabled = true;
-  btn.textContent = '가입 중...';
+  btn.disabled = true; btn.textContent = '가입 중...';
   document.getElementById('error-msg').classList.remove('show');
 
   var { data, error } = await sbClient.auth.signUp({
-    email: email,
-    password: pw,
-    options: {
-      data: {
-        name: name,
-        phone: phone,
-        role: currentRole,
-        interest: currentRole === 'student' ? document.getElementById('interest').value : null,
-        specialty: currentRole === 'instructor' ? document.getElementById('specialty').value : null,
-        career: currentRole === 'instructor' ? document.getElementById('career').value : null
-      }
-    }
+    email: email, password: pw,
+    options: { data: {
+      name: name, phone: phone, role: currentRole,
+      interest: currentRole === 'student' ? document.getElementById('interest').value : null,
+      specialty: currentRole === 'instructor' ? document.getElementById('specialty').value : null,
+      career: currentRole === 'instructor' ? document.getElementById('career').value : null,
+      marketing_consent: document.getElementById('agree-marketing').checked
+    } }
   });
 
   if (error) {
-    btn.disabled = false;
-    btn.textContent = '가입하기';
-    if (error.message.includes('already registered')) {
-      showError('이미 사용 중인 이메일입니다.');
-    } else {
-      showError('가입 중 오류가 발생했습니다: ' + error.message);
-    }
+    btn.disabled = false; btn.textContent = '회원 가입 하기';
+    if (error.message.includes('already registered')) showError('이미 사용 중인 이메일입니다.');
+    else showError('가입 중 오류가 발생했습니다: ' + error.message);
     return;
   }
 
@@ -527,12 +405,7 @@ async function doSignup() {
 }
 
 async function doKakaoLogin() {
-  var { error } = await sbClient.auth.signInWithOAuth({
-    provider: 'kakao',
-    options: {
-      redirectTo: window.location.origin + '/kakao_register.html'
-    }
-  });
+  var { error } = await sbClient.auth.signInWithOAuth({ provider: 'kakao', options: { redirectTo: window.location.origin + '/kakao_register.html' } });
   if (error) alert('카카오 로그인 중 오류가 발생했습니다.');
 }
 </script>
